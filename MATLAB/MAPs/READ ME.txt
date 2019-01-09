@@ -1,0 +1,4 @@
+% MAPs
+
+This folder contains sample MAPs.
+Create new MAP files for your subjects by modifying the parameters.

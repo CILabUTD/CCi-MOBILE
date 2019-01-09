@@ -1,0 +1,8 @@
+% AudioScope
+% GUI to visualize audio signal from the BTE in realtime
+
+AudioScope is a simple application to visualize the incoming acoustic signals from the BTEs. It displays the acoustic waveforms in real-time as they are captured.
+Run AudioScope.m, a GUI will appear. On pressing the start button, acoustic signal waveform will appear. This will run in real-time, similar to an oscilloscope. Press the stop button to stop the process.
+
+
+

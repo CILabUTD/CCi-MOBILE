@@ -1,0 +1,15 @@
+% AudioFileProcessor
+% GUI to processes audio files (.wav format)
+% Processed stimuli is sent to the RF coils via USB/UART
+
+This application performs ACE processing on the audio wave files with ‘.wav’ format. 
+The audio signal acquired from mono/stereo file and is passed to ACE_Process.m for processing, which implements the basic ACE program. 
+The complete signal is processed in one call (unlike real-time processing) and the processed stimuli is streamed to the board using function call Stream.m which is called inside stimulate.m file. 
+
+Start by running AudioFileProcessor.m
+You will be prompted to select a MAP file. Sample MAP files are provided in the MAPs folder under CCIMobile/MAPs/ 
+Select a map file for your subject and a GUI will be displayed.
+
+
+Browse to the directory where the audio files are located. Select an audio file, and press the Stream button to start processing and streaming data. 
+Sliders can be used to change gain levels. Use small increments when changing gain. 

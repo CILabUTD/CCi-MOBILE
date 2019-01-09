@@ -1,0 +1,20 @@
+% RealtimeStimulator
+% GUI to processes audio from the BTE in realtime
+% Processed stimuli is sent to the RF coils via USB/UART
+
+This application performs real-time ACE processing on the incoming acoustic signal frames. 
+The acoustic signal is acquired bilaterally (i.e., for both ears) and is passed to ACE_Processing_Realtime.m for subsequent processing. 
+ACE_Processing_Realtime.m implements the basic ACE program. 
+
+The application is written in two flavors: 1) GUI and 2) Script-form. 
+Start by running RealtimeStimulator.m
+You will be prompted to select a MAP file. Sample MAP files are provided in the MAPs folder under CCIMobile/MAPs/ 
+Select a map file for your subject and a GUI will be displayed.
+
+
+Press the start button to start processing/streaming data. 
+Sliders can be used to change sensitivity levels of microphones, gain, and volume levels. 
+
+Press the stop button to finish.
+
+The script version of the application: RealtimeStimulator_Script.m works in a similar way.
