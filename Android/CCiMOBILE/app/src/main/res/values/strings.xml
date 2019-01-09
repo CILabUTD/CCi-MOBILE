@@ -1,0 +1,100 @@
+<resources>
+    <string name="app_name">CCiMOBILE</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="settings">Settings</string>
+    <string name="environments">Environments</string>
+
+    <string name="updateMapBtn">Update Map</string>
+
+    <string name="earText">Ear</string>
+    <string name="implantTypeText">Implant Type</string>
+    <string name="soundProcessingText">Sound Processing Strategy</string>
+    <string name="samplingFreqText">Sampling Frequency (kHz) </string>
+    <string name="numChannelsText">Number of Channels</string>
+    <string name="nMaximaText">nMaxima</string>
+    <string name="stimulationModeText">Stimulation Mode</string>
+    <string name="stimulationRateText">Stimulation Rate (pps)</string>
+    <string name="pulseWidthText">Pulse Width (us)</string>
+    <string name="sensitivityText">Sensitivity</string>
+    <string name="gainText">Gain (dB)</string>
+    <string name="volumeText">Volume</string>
+    <string name="qFactorText">Q-factor</string>
+    <string name="baseLevelText">Base Level</string>
+    <string name="saturationLevelText">Saturation Level</string>
+    <string name="stimulationOrderText">Stimulation Order</string>
+    <string name="freqTableText">Frequency Table</string>
+    <string name="windowText">Window</string>
+
+    <string name="stuff">…</string>
+    <string name="left">Left</string>
+    <string name="right">Right</string>
+
+    <string name="electrodeString">El</string>
+    <string name="numBand">Band #</string>
+    <string name="THRstring">THR</string>
+    <string name="MCLstring">MCL</string>
+    <string name="gainString">Gain</string>
+
+    <string name="one">1</string>
+    <string name="two">2</string>
+    <string name="three">3</string>
+    <string name="four">4</string>
+    <string name="five">5</string>
+    <string name="six">6</string>
+    <string name="seven">7</string>
+    <string name="eight">8</string>
+    <string name="nine">9</string>
+    <string name="ten">10</string>
+    <string name="eleven">11</string>
+    <string name="twelve">12</string>
+    <string name="thirteen">13</string>
+    <string name="fourteen">14</string>
+    <string name="fifteen">15</string>
+    <string name="sixteen">16</string>
+    <string name="seventeen">17</string>
+    <string name="eighteen">18</string>
+    <string name="nineteen">19</string>
+    <string name="twenty">20</string>
+    <string name="twentyone">21</string>
+    <string name="twentytwo">22</string>
+    <string name="cci_mobile">CCi-MOBILE</string>
+    <string name="not_connected">Not Connected</string>
+    <string name="left_sensitivity">Left Sensitivity:</string>
+    <string name="left_gain">Left Gain:</string>
+    <string name="right_sensitivity">Right Sensitivity:</string>
+    <string name="right_gain">Right Gain:</string>
+
+    <string-array name="volumeSpinnerItems">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </string-array>
+
+    <string-array name="strategySpinnerItems">
+        <item>ACE</item>
+    </string-array>
+
+    <string-array name="stimModeSpinnerItems">
+        <item>MP1+2</item>
+    </string-array>
+
+    <string-array name="stimOrderSpinnerItems">
+        <item>base-to-apex</item>
+        <item>apex-to-base</item>
+        <item>no order</item>
+    </string-array>
+
+    <string-array name="windowSpinnerItems">
+        <item>Hanning</item>
+        <item>Hamming</item>
+        <item>Blackman</item>
+    </string-array>
+</resources>
