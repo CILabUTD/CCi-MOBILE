@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CCiMOBILE</string>
+    <string name="app_name">CCiMOBILEAndroid</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="settings">Settings</string>
     <string name="environments">Environments</string>
@@ -63,6 +63,10 @@
     <string name="left_gain">Left Gain:</string>
     <string name="right_sensitivity">Right Sensitivity:</string>
     <string name="right_gain">Right Gain:</string>
+    <string name="Connecting3">Connecting…</string>
+    <string name="Connecting1">Connecting.</string>
+    <string name="Connecting2">Connecting..</string>
+    <string name="leftSensitivityPlaceholder">Left Sensitivity: %1$d</string>
 
     <string-array name="volumeSpinnerItems">
         <item>0</item>
@@ -97,4 +101,30 @@
         <item>Hamming</item>
         <item>Blackman</item>
     </string-array>
+
+    <string name="manage_maps_text">Please select your MAP.</string>
+    <string name="manage_map_filename">Your MAP filename:</string>
+    <string name="dotdotdot">…</string>
+    <string name="manage_map_button">SELECT MAP</string>
+    <string name="textReady">Ready</string>
+    <string name="textConnected">Connected</string>
+    <string name="textLeftSens">Left Sensitivity:\u0020</string>
+    <string name="textLeftGain">Left Gain (dB):\u0020</string>
+    <string name="textRunning">Running</string>
+    <string name="textStopped">Stopped</string>
+    <string name="textRightSens">Right Sensitivity:\u0020</string>
+    <string name="textRightGain">Right Gain (dB):\u0020</string>
+    <string name="textStep1">Step 1 completed</string>
+    <string name="textStep2">Step 2 completed</string>
+    <string name="textSaveMap">Save MAP</string>
+    <string name="textMAPSelect">Please select a MAP</string>
+    <string name="textMAPfilename">Map filename:</string>
+    <string name="imageDesc">Connection status symbol</string>
+    <string name="textftDevnull">ftDev is null</string>
+    <string name="textftDevset">ftDev is set</string>
+    <string name="textBoardReadyNow">BOARD IS READY NOW</string>
+    <string name="textStatusTextOut" />
+    <string name="textDeviceNull">DEVICE IS NULL</string>
+
+
 </resources>

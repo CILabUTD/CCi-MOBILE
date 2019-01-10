@@ -4,13 +4,30 @@
             "outputFile": "C:\\Users\\asb180001\\Desktop\\CCi-MOBILE\\CCi-MOBILE\\Android\\CCiMOBILE\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-zh-rTW\\values-zh-rTW.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\asb180001\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-23.4.0.aar\\6d0230433dec9d6159fde103cf124eb4\\res\\values-zh-rTW\\values-zh-rTW.xml",
+                    "source": "C:\\Users\\asb180001\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\79908e844493f147f29e9a0efca28c2c\\res\\values-zh-rTW\\values-zh-rTW.xml",
                     "from": {
-                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,150,257,380,473,573,655,752,860,936,1012,1090,1186,1282,1377,1474,1569,1669,1782,1876",
-                        "endColumns": "94,106,122,92,99,81,96,107,75,75,77,95,95,94,96,94,99,112,93,100",
-                        "endOffsets": "145,252,375,468,568,650,747,855,931,1007,1085,1181,1277,1372,1469,1564,1664,1777,1871,1972"
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "20",
+                        "startColumns": "4",
+                        "startOffsets": "1811",
+                        "endColumns": "100",
+                        "endOffsets": "1907"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\asb180001\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-27.1.1.aar\\0a5dc1494df79c3706940911aa26c451\\res\\values-zh-rTW\\values-zh-rTW.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,200,293,393,475,572,680,756,832,910,1006,1102,1197,1294,1389,1489,1639,1733",
+                        "endColumns": "94,92,99,81,96,107,75,75,77,95,95,94,96,94,99,149,93,77",
+                        "endOffsets": "195,288,388,470,567,675,751,827,905,1001,1097,1192,1289,1384,1484,1634,1728,1806"
                     }
                 }
             ]

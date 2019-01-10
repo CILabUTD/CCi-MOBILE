@@ -4,7 +4,17 @@
             "outputFile": "C:\\Users\\asb180001\\Desktop\\CCi-MOBILE\\CCi-MOBILE\\Android\\CCiMOBILE\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-land\\values-land.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\asb180001\\.gradle\\caches\\transforms-1\\files-1.1\\design-23.4.0.aar\\ee9e6cbac2ef8778a764769cc69b00c2\\res\\values-land\\values-land.xml",
+                    "source": "C:\\Users\\asb180001\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-27.1.1.aar\\0a5dc1494df79c3706940911aa26c451\\res\\values-land\\values-land.xml",
+                    "from": {
+                        "startLines": "2,3,4,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,125,189,260",
+                        "endColumns": "69,63,70,67",
+                        "endOffsets": "120,184,255,323"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\asb180001\\.gradle\\caches\\transforms-1\\files-1.1\\design-27.1.1.aar\\85e9e24b9acdccfaa5259591af07255d\\res\\values-land\\values-land.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -14,22 +24,12 @@
                         "endOffsets": "232"
                     },
                     "to": {
-                        "startLines": "8",
+                        "startLines": "6",
                         "startColumns": "4",
-                        "startOffsets": "462",
-                        "endLines": "11",
+                        "startOffsets": "328",
+                        "endLines": "9",
                         "endColumns": "12",
-                        "endOffsets": "639"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\asb180001\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-23.4.0.aar\\6d0230433dec9d6159fde103cf124eb4\\res\\values-land\\values-land.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7",
-                        "startColumns": "4,4,4,4,4,4",
-                        "startOffsets": "55,117,189,259,323,394",
-                        "endColumns": "61,71,69,63,70,67",
-                        "endOffsets": "112,184,254,318,389,457"
+                        "endOffsets": "505"
                     }
                 }
             ]

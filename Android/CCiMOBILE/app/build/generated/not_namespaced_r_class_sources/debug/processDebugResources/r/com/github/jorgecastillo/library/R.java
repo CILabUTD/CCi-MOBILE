@@ -12,55 +12,55 @@ public final class R {
     public static final class attr {
         private attr() {}
 
-        public static final int fl_clippingTransform = 0x7f03007a;
-        public static final int fl_fillColor = 0x7f03007b;
-        public static final int fl_fillDuration = 0x7f03007c;
-        public static final int fl_fillPercentage = 0x7f03007d;
-        public static final int fl_originalHeight = 0x7f03007e;
-        public static final int fl_originalWidth = 0x7f03007f;
-        public static final int fl_strokeColor = 0x7f030080;
-        public static final int fl_strokeDrawingDuration = 0x7f030081;
-        public static final int fl_strokeWidth = 0x7f030082;
+        public static final int fl_clippingTransform = 0x7f040091;
+        public static final int fl_fillColor = 0x7f040092;
+        public static final int fl_fillDuration = 0x7f040093;
+        public static final int fl_fillPercentage = 0x7f040094;
+        public static final int fl_originalHeight = 0x7f040095;
+        public static final int fl_originalWidth = 0x7f040096;
+        public static final int fl_strokeColor = 0x7f040097;
+        public static final int fl_strokeDrawingDuration = 0x7f040098;
+        public static final int fl_strokeWidth = 0x7f040099;
     }
     public static final class color {
         private color() {}
 
-        public static final int fillColor = 0x7f05002d;
-        public static final int strokeColor = 0x7f05004e;
+        public static final int fillColor = 0x7f060039;
+        public static final int strokeColor = 0x7f06005b;
     }
     public static final class dimen {
         private dimen() {}
 
-        public static final int fourthSampleStrokeWidth = 0x7f060064;
-        public static final int fourthSampleViewSize = 0x7f060065;
-        public static final int strokeWidth = 0x7f06006f;
+        public static final int fourthSampleStrokeWidth = 0x7f07007d;
+        public static final int fourthSampleViewSize = 0x7f07007e;
+        public static final int strokeWidth = 0x7f070098;
     }
     public static final class id {
         private id() {}
 
-        public static final int bites = 0x7f080013;
-        public static final int plain = 0x7f08006d;
-        public static final int rounded = 0x7f080072;
-        public static final int spikes = 0x7f080092;
-        public static final int squares = 0x7f080094;
-        public static final int waves = 0x7f080194;
+        public static final int bites = 0x7f090021;
+        public static final int plain = 0x7f09008a;
+        public static final int rounded = 0x7f090091;
+        public static final int spikes = 0x7f0900b6;
+        public static final int squares = 0x7f0900b8;
+        public static final int waves = 0x7f0901c8;
     }
     public static final class integer {
         private integer() {}
 
-        public static final int fillDuration = 0x7f090006;
-        public static final int fillPercentage = 0x7f090007;
-        public static final int strokeDrawingDuration = 0x7f090009;
+        public static final int fillDuration = 0x7f0a0007;
+        public static final int fillPercentage = 0x7f0a0008;
+        public static final int strokeDrawingDuration = 0x7f0a000c;
     }
     public static final class string {
         private string() {}
 
-        public static final int app_name = 0x7f0d0015;
+        public static final int app_name = 0x7f0e0022;
     }
     public static final class styleable {
         private styleable() {}
 
-        public static final int[] FillableLoader = { 0x7f03007a, 0x7f03007b, 0x7f03007c, 0x7f03007d, 0x7f03007e, 0x7f03007f, 0x7f030080, 0x7f030081, 0x7f030082 };
+        public static final int[] FillableLoader = { 0x7f040091, 0x7f040092, 0x7f040093, 0x7f040094, 0x7f040095, 0x7f040096, 0x7f040097, 0x7f040098, 0x7f040099 };
         public static final int FillableLoader_fl_clippingTransform = 0;
         public static final int FillableLoader_fl_fillColor = 1;
         public static final int FillableLoader_fl_fillDuration = 2;

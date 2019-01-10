@@ -1,27 +1,32 @@
 package cilab.utdallas.edu.ccimobile;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.provider.OpenableColumns;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -33,25 +38,23 @@ import com.ftdi.j2xx.FT_Device;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.Objects;
 import java.util.Queue;
 
+/**
+ * The MainActivity class manages the home activity of the application
+ */
 public class MainActivity extends AppCompatActivity implements InitializationResultReceiver.Receiver {
 
-    boolean folderExists;
-    boolean settingsMono, settingsLeft, settingsRight, settingsStereo;
-    int disabledAlpha = 38; //color for sliders (grey-disabled)
-
-    private InitializationResultReceiver mReceiver;
+    boolean settingsMono, settingsLeft, settingsRight, settingsStereo, folderExists;
+    boolean first = true; // First time MAP is selected
 
     public static D2xxManager ftD2xx = null;
-    FT_Device ft_device_0;
-    FT_Device ft_device_1;
-    FT_Device ftDev; //ftDev
+    FT_Device ft_device_0, ft_device_1, ftDev;
     int DevCount = -1;
     int currentPortIndex = -1;
     int portIndex = -1;
@@ -72,40 +75,173 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
     final byte XOFF = 0x13;    // Pause transmission //
 
     private boolean start = false;
-    short sine_stim[];
-    short sin_token[]; short null_token[];
-    short sine_token[];
+    short sine_stim[], sin_token[], null_token[], sine_token[];
 
     public MAP leftMAP, rightMAP;
     private ACE leftACE, rightACE;
 
     private double leftScaleFactor, rightScaleFactor;
 
-    Stimuli stimuli;
-    Stimuli leftStimuli, rightStimuli;
+    Stimuli stimuli, leftStimuli, rightStimuli;
     D2xxManager.DriverParameters s;
 
-    TextView status, connectionStatus, leftSensitivity, rightSensitivity, leftGain, rightGain;
+    TextView status, connectionStatus, leftSensitivity, rightSensitivity, leftGain, rightGain, textViewMAP;
     ImageView statusImage;
     ToggleButton buttonStartStop;
     SeekBar seekBarLeftSensitivity, seekBarRightSensitivity, seekBarLeftGain, seekBarRightGain;
 
+    private static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 12;
+    private static final int READ_REQUEST_CODE = 42;
+    private static final int RETURN_FROM_SETTINGS = 3;
 
+    /**
+     * Called when the application is first created.
+     * @param savedInstanceState saved state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         global_context = this;
-        verifyStoragePermissions(this);
-        verifyFolderExists();
-        new VeryLongAsyncTask(this).execute();
+        status = findViewById(R.id.textStatus);
+        textViewMAP = findViewById(R.id.textView215);
 
-        status = (TextView) findViewById(R.id.textStatus) ;
-        initialize();
-        callInitializationService();
     }
 
+    /**
+     * Called when the SELECT MAP button is pressed. It checks for permission from the user to
+     * access external storage on the phone (to retrieve the MAP text files). Then it calls
+     * performFileSearch to open the MAP file.
+     * @param view view
+     */
+    public void selectMAP(View view) {
+        // Check if permission already exists
+        int permission = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        // If permission does not already exist
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            Log.e("MainActivity.java", "Permission DOES NOT ALREADY EXIST for " +
+                    "WRITE_EXTERNAL_STORAGE.");
+            // If user has previously denied permission, first explain why the permission is needed,
+            // then make request
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("Permission to access device files is required for this app " +
+                        "to load your MAP file(s). Please allow the permission.")
+                        .setTitle("Permission required");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Log.e("MainActivity.java", "Alert dialogue clicked.");
+                        makeRequest();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            } else {
+                // If user has not previously denied permission, make request without explanation
+                makeRequest();
+            }
+        } else {
+            // If permission already exists, perform file search
+            Log.e("MainActivity.java", "Permission was already granted.");
+            performFileSearch();
+        }
+    }
+
+    /**
+     * Prompts the user for permission.
+     */
+    protected void makeRequest() {
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
+    }
+
+    /**
+     * Opens the file selector
+     */
+    public void performFileSearch() {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("text/plain");
+        startActivityForResult(intent, READ_REQUEST_CODE);
+    }
+
+    /**
+     * Main functions
+     */
+    void startMainFunctions() {
+        if (first) {
+            initialize();
+            callInitializationService();
+        }
+        else {
+            initializeMAP();
+            updateGUILeft();
+            updateGUIRight();
+
+        }
+        //verifyFolderExists();
+        //new VeryLongAsyncTask(this).execute();
+    }
+
+    /**
+     * Receives result from requesting permission (for file access).
+     * @param requestCode request code
+     * @param permissions permission
+     * @param grantResults result
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission granted
+                    Log.e("MainActivity.java", "Permission GRANTED for " +
+                            "WRITE_EXTERNAL_STORAGE.");
+                    performFileSearch();
+                } else {
+                    // permission denied
+                    Log.e("MainActivity.java", "Permission DENIED for " +
+                            "WRITE_EXTERNAL_STORAGE.");
+                }
+            }
+        }
+    }
+
+    /**
+     * Returns the MAP filename.
+     * @param uri uri
+     * @return MAP filename
+     */
+    public String getFileName(Uri uri) {
+        String result = null;
+        if (Objects.equals(uri.getScheme(), "content")) {
+            try (Cursor cursor = getContentResolver().query(uri, null, null, null, null)) {
+                if (cursor != null && cursor.moveToFirst()) {
+                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                }
+            }
+        }
+        if (result == null) {
+            result = uri.getPath();
+            assert result != null;
+            int cut = result.lastIndexOf('/');
+            if (cut != -1) {
+                result = result.substring(cut + 1);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Inflates the menu.
+     * @param menu menu
+     * @return true
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -113,8 +249,10 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         return true;
     }
 
+    /**
+     * Creates a folder in phone storage if one doesn't exist.
+     */
     void verifyFolderExists() {
-        // Create a folder in phone storage if one doesn't already exist
         File folder = new File(Environment.getExternalStorageDirectory() +
                 File.separator + "CCiMOBILE_files");
         boolean success = true;
@@ -124,131 +262,188 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         folderExists = success;
     }
 
+    /**
+     * Selects new activity from menu options.
+     * @param item menu
+     * @return true if valid activity selected
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menuSettings:
-                // User chose the "Settings" item, show the app settings UI...
                 Intent myIntent = new Intent(MainActivity.this, SettingsActivity.class);
-                MainActivity.this.startActivityForResult(myIntent, 1);
+                MainActivity.this.startActivityForResult(myIntent, RETURN_FROM_SETTINGS);
                 return true;
             case R.id.menuEnvironments:
-                // User chose the "Settings" item, show the app settings UI...
                 myIntent = new Intent(MainActivity.this, EnvironmentsActivity.class);
                 MainActivity.this.startActivityForResult(myIntent, 1);
                 return true;
             default:
-                // If we got here, the user's action was not recognized.
+                // The user's action was not recognized.
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-                if (leftMAP.exists) {
-                    leftMAP.sensitivity = data.getDoubleExtra("leftSensitivity", 0);
-                    if (leftMAP.sensitivity > 10) {
-                        leftMAP.sensitivity = 10;
-                    } else if (leftMAP.sensitivity < 0) {
-                        leftMAP.sensitivity = 0;
-                    }
-                    leftSensitivity.setText("Left Sensitivity: " + leftMAP.sensitivity);
-                    seekBarLeftSensitivity.setProgress((int) leftMAP.sensitivity * 10);
+    /**
+     * Updates the MAP after returning from the Settings activity.
+     * @param data updated MAP data
+     */
+    void updateMAPFromSettings(Intent data) {
+        if (leftMAP.exists) {
+            leftMAP.sensitivity = data.getDoubleExtra("leftSensitivity", 0);
+            if (leftMAP.sensitivity > 10) {
+                leftMAP.sensitivity = 10;
+            } else if (leftMAP.sensitivity < 0) {
+                leftMAP.sensitivity = 0;
+            }
+            leftSensitivity.setText(String.format("%s%s", getString(R.string.textLeftSens), leftMAP.sensitivity));
+            seekBarLeftSensitivity.setProgress((int) leftMAP.sensitivity * 10);
 
-                    leftMAP.gain = data.getDoubleExtra("leftGain", 0);
-                    if (leftMAP.gain > 50) {
-                        leftMAP.gain = 50;
-                    } else if (leftMAP.gain < 0) {
-                        leftMAP.gain = 0;
-                    }
-                    leftGain.setText("Left Gain: " + leftMAP.gain + " dB");
-                    seekBarLeftGain.setProgress((int) leftMAP.gain);
+            leftMAP.gain = data.getDoubleExtra("leftGain", 0);
+            if (leftMAP.gain > 50) {
+                leftMAP.gain = 50;
+            } else if (leftMAP.gain < 0) {
+                leftMAP.gain = 0;
+            }
+            leftGain.setText(String.format("%s%s", getString(R.string.textLeftGain), leftMAP.gain));
+            seekBarLeftGain.setProgress((int) leftMAP.gain);
 
-                    leftMAP.implantGeneration = data.getStringExtra("leftMAPimplantGeneration");
-                    leftMAP.stimulationModeCode = data.getIntExtra("leftMAPstimulationModeCode",0);
-                    leftMAP.pulsesPerFramePerChannel = data.getIntExtra("leftMAPpulsesPerFramePerChannel",0);
-                    leftMAP.pulsesPerFrame = data.getIntExtra("leftMAPpulsesPerFrame",0);
-                    leftMAP.interpulseDuration = data.getDoubleExtra("leftMAPinterpulseDuration",0);
-                    leftMAP.nRFcycles = data.getIntExtra("leftMAPnRFcycles",0);
+            leftMAP.implantGeneration = data.getStringExtra("leftMAPimplantGeneration");
+            leftMAP.stimulationModeCode = data.getIntExtra("leftMAPstimulationModeCode", 0);
+            leftMAP.pulsesPerFramePerChannel = data.getIntExtra("leftMAPpulsesPerFramePerChannel", 0);
+            leftMAP.pulsesPerFrame = data.getIntExtra("leftMAPpulsesPerFrame", 0);
+            leftMAP.interpulseDuration = data.getDoubleExtra("leftMAPinterpulseDuration", 0);
+            leftMAP.nRFcycles = data.getIntExtra("leftMAPnRFcycles", 0);
 
-                    // need to update pulsewidth and all the other parameters here
-                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-                    leftMAP.stimulationRate = preferences.getInt("Left.stimulationRate", 0);
-                    leftMAP.pulseWidth = preferences.getInt("Left.pulseWidth",0);
-                    leftMAP.sensitivity = getDouble(preferences,"Left.sensitivity",0);
-                    leftMAP.gain = getDouble(preferences,"Left.gain",0);
-                    leftMAP.Qfactor = getDouble(preferences,"Left.Qfactor",0);
-                    leftMAP.baseLevel = getDouble(preferences,"Left.baseLevel",0);
-                    leftMAP.saturationLevel = getDouble(preferences,"Left.saturationLevel",0);
-                    leftMAP.nMaxima = preferences.getInt("Left.nMaxima",0);
-                    leftMAP.volume = preferences.getInt("Left.volume",0);
-                    leftMAP.stimulationOrder = preferences.getString("Left.stimulationOrder","");
-                    leftMAP.window = preferences.getString("Left.window","");
+            // need to update pulsewidth and all the other parameters
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            leftMAP.stimulationRate = preferences.getInt("Left.stimulationRate", 0);
+            leftMAP.pulseWidth = preferences.getInt("Left.pulseWidth", 0);
+            leftMAP.sensitivity = getDouble(preferences, "Left.sensitivity", 0);
+            leftMAP.gain = getDouble(preferences, "Left.gain", 0);
+            leftMAP.Qfactor = getDouble(preferences, "Left.Qfactor", 0);
+            leftMAP.baseLevel = getDouble(preferences, "Left.baseLevel", 0);
+            leftMAP.saturationLevel = getDouble(preferences, "Left.saturationLevel", 0);
+            leftMAP.nMaxima = preferences.getInt("Left.nMaxima", 0);
+            leftMAP.volume = preferences.getInt("Left.volume", 0);
+            leftMAP.stimulationOrder = preferences.getString("Left.stimulationOrder", "");
+            leftMAP.window = preferences.getString("Left.window", "");
 
-                    // re-initialize ACE
-                    leftACE = new ACE(leftMAP);
-                }
-                if (rightMAP.exists) {
-                    rightMAP.sensitivity = data.getDoubleExtra("rightSensitivity", 0);
-                    if (rightMAP.sensitivity > 10) {
-                        rightMAP.sensitivity = 10;
-                    } else if (rightMAP.sensitivity < 0) {
-                        rightMAP.sensitivity = 0;
-                    }
-                    rightSensitivity.setText("Right Sensitivity: " + rightMAP.sensitivity);
-                    seekBarRightSensitivity.setProgress((int) rightMAP.sensitivity * 10);
+            // re-initialize ACE
+            leftACE = new ACE(leftMAP);
+        }
+        if (rightMAP.exists) {
+            rightMAP.sensitivity = data.getDoubleExtra("rightSensitivity", 0);
+            if (rightMAP.sensitivity > 10) {
+                rightMAP.sensitivity = 10;
+            } else if (rightMAP.sensitivity < 0) {
+                rightMAP.sensitivity = 0;
+            }
+            rightSensitivity.setText(String.format("%s%s", getString(R.string.textRightSens), rightMAP.sensitivity));
+            seekBarRightSensitivity.setProgress((int) rightMAP.sensitivity * 10);
 
-                    rightMAP.gain = data.getDoubleExtra("rightGain", 0);
-                    if (rightMAP.gain > 50) {
-                        rightMAP.gain = 50;
-                    } else if (rightMAP.gain < 0) {
-                        rightMAP.gain = 0;
-                    }
-                    rightGain.setText("Left Gain: " + rightMAP.gain + " dB");
-                    seekBarRightGain.setProgress((int) rightMAP.gain);
+            rightMAP.gain = data.getDoubleExtra("rightGain", 0);
+            if (rightMAP.gain > 50) {
+                rightMAP.gain = 50;
+            } else if (rightMAP.gain < 0) {
+                rightMAP.gain = 0;
+            }
+            rightGain.setText(String.format("%s%s", getString(R.string.textRightGain), rightMAP.gain));
+            seekBarRightGain.setProgress((int) rightMAP.gain);
 
-                    rightMAP.implantGeneration = data.getStringExtra("rightMAPimplantGeneration");
-                    rightMAP.stimulationModeCode = data.getIntExtra("rightMAPstimulationModeCode",0);
-                    rightMAP.pulsesPerFramePerChannel = data.getIntExtra("rightMAPpulsesPerFramePerChannel",0);
-                    rightMAP.pulsesPerFrame = data.getIntExtra("rightMAPpulsesPerFrame",0);
-                    rightMAP.interpulseDuration = data.getDoubleExtra("rightMAPinterpulseDuration",0);
-                    rightMAP.nRFcycles = data.getIntExtra("rightMAPnRFcycles",0);
+            rightMAP.implantGeneration = data.getStringExtra("rightMAPimplantGeneration");
+            rightMAP.stimulationModeCode = data.getIntExtra("rightMAPstimulationModeCode", 0);
+            rightMAP.pulsesPerFramePerChannel = data.getIntExtra("rightMAPpulsesPerFramePerChannel", 0);
+            rightMAP.pulsesPerFrame = data.getIntExtra("rightMAPpulsesPerFrame", 0);
+            rightMAP.interpulseDuration = data.getDoubleExtra("rightMAPinterpulseDuration", 0);
+            rightMAP.nRFcycles = data.getIntExtra("rightMAPnRFcycles", 0);
 
-                    // need to update pulsewidth and all the other parameters here
-                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-                    rightMAP.stimulationRate = preferences.getInt("Right.stimulationRate", 0);
-                    rightMAP.pulseWidth = preferences.getInt("Right.pulseWidth",0);
-                    rightMAP.sensitivity = getDouble(preferences,"Right.sensitivity",0);
-                    rightMAP.gain = getDouble(preferences,"Right.gain",0);
-                    rightMAP.Qfactor = getDouble(preferences,"Right.Qfactor",0);
-                    rightMAP.baseLevel = getDouble(preferences,"Right.baseLevel",0);
-                    rightMAP.saturationLevel = getDouble(preferences,"Right.saturationLevel",0);
-                    rightMAP.nMaxima = preferences.getInt("Right.nMaxima",0);
-                    rightMAP.volume = preferences.getInt("Right.volume",0);
-                    rightMAP.stimulationOrder = preferences.getString("Right.stimulationOrder","");
-                    rightMAP.window = preferences.getString("Right.window","");
+            // need to update pulsewidth and all the other parameters
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            rightMAP.stimulationRate = preferences.getInt("Right.stimulationRate", 0);
+            rightMAP.pulseWidth = preferences.getInt("Right.pulseWidth", 0);
+            rightMAP.sensitivity = getDouble(preferences, "Right.sensitivity", 0);
+            rightMAP.gain = getDouble(preferences, "Right.gain", 0);
+            rightMAP.Qfactor = getDouble(preferences, "Right.Qfactor", 0);
+            rightMAP.baseLevel = getDouble(preferences, "Right.baseLevel", 0);
+            rightMAP.saturationLevel = getDouble(preferences, "Right.saturationLevel", 0);
+            rightMAP.nMaxima = preferences.getInt("Right.nMaxima", 0);
+            rightMAP.volume = preferences.getInt("Right.volume", 0);
+            rightMAP.stimulationOrder = preferences.getString("Right.stimulationOrder", "");
+            rightMAP.window = preferences.getString("Right.window", "");
 
-                    // re-initialize ACE
-                    rightACE = new ACE(rightMAP);
-                }
-                if (leftMAP.exists&&rightMAP.exists){ // both left and right
-                    setOutputBuffer(writeBuffer, leftMAP, rightMAP); // update Output Buffer
-                }
-                else if ((leftMAP.exists) &&(!rightMAP.exists)) { // only left
-                    setOutputBuffer(writeBuffer, leftMAP, leftMAP); // zero buffer
-                }
-                else if ((rightMAP.exists)&&(!leftMAP.exists)){ // only right
-                    setOutputBuffer(writeBuffer, rightMAP, rightMAP); // zero buffer
-                }
+            // re-initialize ACE
+            rightACE = new ACE(rightMAP);
+        }
+        updateOutputBufferMAP();
+    }
+
+    /**
+     * Updates the output buffer.
+     */
+    void updateOutputBufferMAP() {
+        if (writeBuffer != null)
+        {
+            if (leftMAP.exists && rightMAP.exists) { // both left and right
+                setOutputBuffer(writeBuffer, leftMAP, rightMAP);
+            } else if (leftMAP.exists) { // only left
+                setOutputBuffer(writeBuffer, leftMAP, leftMAP); // zero buffer
+            } else if (rightMAP.exists) { // only right
+                setOutputBuffer(writeBuffer, rightMAP, rightMAP); // zero buffer
             }
         }
     }
 
-    private class VeryLongAsyncTask extends AsyncTask<Void, Void, Void> {
+    /**
+     * Responds to an activity result.
+     * @param requestCode request
+     * @param resultCode result
+     * @param data data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case RETURN_FROM_SETTINGS:
+                    updateMAPFromSettings(data); // returning from Settings activity
+                    break;
+                case READ_REQUEST_CODE:
+                    updateMAPfile(data); // selected a MAP
+                    break;
+            }
+        }
+    }
+
+    /**
+     * Gets the selected MAP filename and updates the MAP.
+     * @param data data
+     */
+    void updateMAPfile(Intent data) {
+        Uri uri;
+        if (data != null) {
+            uri = data.getData();
+            assert uri != null;
+            Log.e("MainActivity.java", "Uri: " + uri.toString());
+
+            String fileName = getFileName(uri);
+            textViewMAP.setText(fileName);
+
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("MAPfilename", fileName);
+            editor.apply();
+
+            startMainFunctions();
+            first = false;
+        }
+    }
+
+    /**
+     * Creates a loading animation.
+     */
+    static private class VeryLongAsyncTask extends AsyncTask<Void, Void, Void> {
         private final ProgressDialog progressDialog;
 
         VeryLongAsyncTask(Context ctx) {
@@ -283,18 +478,26 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
     }
 
 
-
+    /**
+     * Starts the board.
+     */
     private void callInitializationService() {
-        mReceiver = new InitializationResultReceiver(new Handler());
+        InitializationResultReceiver mReceiver = new InitializationResultReceiver(new Handler());
         mReceiver.setReceiver(this);
         Intent intent = new Intent(Intent.ACTION_SYNC, null, this, InitializationService.class);
         /* Send optional extras to Download IntentService */
         //intent.putExtra("url", url);
         intent.putExtra("receiver", mReceiver);
         intent.putExtra("requestId", 101);
-        startService(intent);
+        //startService(intent);
+        this.startService(intent);
     }
 
+    /**
+     * Manages result codes from the board.
+     * @param resultCode code
+     * @param resultData data
+     */
     @Override
     public void onReceiveResult(int resultCode, Bundle resultData) {
         String results;
@@ -302,45 +505,53 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             case InitializationService.STATUS_RUNNING:
                 setProgressBarIndeterminateVisibility(true);
                 break;
+
             case InitializationService.STATUS_FINISHED:
                 /* Hide progress & extract result from bundle */
                 setProgressBarIndeterminateVisibility(false);
-                results = resultData.getString("result");
+                //results = resultData.getString("result");
                 String msg = "Completion Message";
                 Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
                 break;
+
             case InitializationService.STATUS_STEP0_FINISHED:
                 /* Hide progress & extract result from bundle */
                 setProgressBarIndeterminateVisibility(false);
                 results = resultData.getString("result");
-                connectionStatus.setText("Connecting.  ");
-                try {textOut(results);} catch (IOException e) {e.printStackTrace();}
+                connectionStatus.setText(R.string.Connecting1);
+                try {
+                    textOut(results);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 break;
+
             case InitializationService.STATUS_STEP1_FINISHED:
                 /* Hide progress & extract result from bundle */
                 setProgressBarIndeterminateVisibility(false);
-                String msg1 = "Step 1 completed";
-                status.append(msg1);
-                connectionStatus.setText("Connecting.. ");
+                status.setText(R.string.textStep1);
+                connectionStatus.setText(R.string.Connecting2);
                 break;
+
             case InitializationService.STATUS_STEP2_FINISHED:
                 /* Hide progress & extract result from bundle */
                 setProgressBarIndeterminateVisibility(false);
-                String msg2 = "Step 2 completed";
-                status.append(msg2);
-                connectionStatus.setText("Connecting...");
+                status.setText(R.string.textStep2);
+                connectionStatus.setText(R.string.Connecting3);
                 break;
+
             case InitializationService.STATUS_STEP3_FINISHED:
                 /* Hide progress & extract result from bundle */
                 setProgressBarIndeterminateVisibility(false);
-                String msg3 = "Step 3 completed";
-                status.setText("Ready");
+                //String msg3 = "Step 3 completed";
+                status.setText(R.string.textReady);
                 initializeConnection();
                 buttonStartStop.setEnabled(true);
                 buttonStartStop.setButtonDrawable(R.drawable.start);
-                connectionStatus.setText("Connected");
+                connectionStatus.setText(R.string.textConnected);
                 statusImage.setImageResource(R.drawable.connected);
                 break;
+
             case InitializationService.STATUS_ERROR:
                 /* Handle the error */
                 String error = resultData.getString(Intent.EXTRA_TEXT);
@@ -349,38 +560,49 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         }
     }
 
+    /**
+     * Initializes MAPs, stimuli, and GUI.
+     */
     private void initialize() {
         initializeMAP();
-        //initializeDefaultMAP();
         initializeStimuli();
-        if (leftMAP.exists) {
-            leftACE = new ACE(leftMAP);
-        }
-        if (rightMAP.exists) {
-            rightACE = new ACE(rightMAP);
-        }
-
         initializeGUI();
     }
 
+    /**
+     * Initializes the MAPs.
+     */
     private void initializeMAP() {
         leftMAP = new MAP();
         rightMAP = new MAP();
 
-        leftMAP.getLeftMapData();
-        if (leftMAP.dataMissing) {
-            Toast.makeText(getApplicationContext(), "Left MAP could not be opened due to missing data.", Toast.LENGTH_LONG).show();
-        }
-        rightMAP.getRightMapData();
-        if (rightMAP.dataMissing) {
-            Toast.makeText(getApplicationContext(), "Right MAP could not be opened due to missing data.", Toast.LENGTH_LONG).show();
-        }
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String MAP_filename;
+        MAP_filename = preferences.getString("MAPfilename","");
 
-        if (leftMAP.exists || rightMAP.exists) {
-            writeMAPToPreferences();
+        // Check if filename string is empty
+        if (!MAP_filename.isEmpty()) {
+            leftMAP.getLeftMapData(MAP_filename);
+            if (leftMAP.dataMissing) {
+                Toast.makeText(getApplicationContext(), "Left MAP could not be opened due to missing data.", Toast.LENGTH_LONG).show();
+            }
+            rightMAP.getRightMapData(MAP_filename);
+            if (rightMAP.dataMissing) {
+                Toast.makeText(getApplicationContext(), "Right MAP could not be opened due to missing data.", Toast.LENGTH_LONG).show();
+            }
+
+            if (leftMAP.exists || rightMAP.exists) {
+                writeMAPToPreferences();
+            }
+        }
+        else {
+            Toast.makeText(getApplicationContext(), "Please select a MAP.", Toast.LENGTH_LONG).show();
         }
     }
 
+    /**
+     * Saves MAP parameters to Preferences. Called when a new MAP is selected.
+     */
     public void writeMAPToPreferences() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = preferences.edit();
@@ -412,6 +634,10 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
                 putDouble(editor,"leftgain" + i,leftMAP.gains[i]);
                 editor.putInt("leftelectrodes" + i,leftMAP.electrodes[i]);
             }
+
+            // update ACE
+            leftACE = new ACE(leftMAP);
+
         } else {
             editor.putBoolean("leftMapExists", false);
         }
@@ -443,6 +669,9 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
                 putDouble(editor,"rightgain" + i,rightMAP.gains[i]);
                 editor.putInt("rightelectrodes" + i,rightMAP.electrodes[i]);
             }
+
+            // update ACE
+            rightACE = new ACE(rightMAP);
         } else {
             editor.putBoolean("rightMapExists", false);
         }
@@ -465,198 +694,216 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         }
 
         editor.apply();
+        updateOutputBufferMAP();
     }
 
+    /**
+     * Preferences editor
+     * @param edit edit
+     * @param key key
+     * @param value value
+     * @return double
+     */
     SharedPreferences.Editor putDouble(final SharedPreferences.Editor edit, final String key, final double value) {
         return edit.putLong(key, Double.doubleToRawLongBits(value));
     }
 
+    /**
+     * Returns double
+     * @param prefs prefs
+     * @param key key
+     * @param defaultValue default
+     * @return double
+     */
     double getDouble(final SharedPreferences prefs, final String key, final double defaultValue) {
         return Double.longBitsToDouble(prefs.getLong(key, Double.doubleToLongBits(defaultValue)));
     }
 
+    /**
+     * Initializes the GUI
+     */
     private void initializeGUI() {
-        connectionStatus = (TextView) findViewById(R.id.textConnectionStatus);
-        connectionStatus.setText("Connecting...");
-        buttonStartStop = (ToggleButton) findViewById(R.id.toggleButtonStartStop);
+        connectionStatus = findViewById(R.id.textConnectionStatus);
+        connectionStatus.setText(R.string.Connecting3);
+        buttonStartStop = findViewById(R.id.toggleButtonStartStop);
         buttonStartStop.setText(null);
         buttonStartStop.setTextOn(null);
         buttonStartStop.setTextOff(null);
         buttonStartStop.setButtonDrawable(R.drawable.start0);
         buttonStartStop.setEnabled(false);
+        statusImage = findViewById(R.id.imageStatus);
 
-        statusImage = (ImageView) findViewById(R.id.imageStatus);
-        //////////////LEFT/////////////////////////////////////////////////////
+        // left
+        seekBarLeftSensitivity = findViewById(R.id.seekBarLeftSensitivity);
+        seekBarLeftGain = findViewById(R.id.seekBarLeftGain);
+        leftSensitivity = findViewById(R.id.textViewLeftSensitivity);
+        leftGain = findViewById(R.id.textViewLeftGain);
+
+        seekBarLeftSensitivity.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            double value;
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                value = (double) progress / 10;
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                leftMAP.sensitivity = value;
+                leftScaleFactor = value / 32768;
+                leftACE = new ACE(leftMAP);
+                leftSensitivity.setText(String.format("%s%s", getString(R.string.textLeftSens), value));
+                Toast.makeText(getApplicationContext(), "Left Sensitivity value changed to " + value, Toast.LENGTH_SHORT).show();
+
+                // Update preferences value
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                SharedPreferences.Editor editor = preferences.edit();
+                putDouble(editor, "Left.sensitivity", leftMAP.sensitivity);
+                editor.apply();
+            }
+        });
+
+        seekBarLeftGain.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            double value;
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                value = (double) progress;
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                leftMAP.gain = value;
+                leftACE = new ACE(leftMAP);
+                leftGain.setText(String.format("%s%s", getString(R.string.textLeftGain), value));
+                Toast.makeText(getApplicationContext(), "Left Gain value changed to " + value + " dB", Toast.LENGTH_SHORT).show();
+
+                // Update preferences value
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                SharedPreferences.Editor editor = preferences.edit();
+                putDouble(editor, "Left.gain", leftMAP.gain);
+                editor.apply();
+            }
+        });
+
+        updateGUILeft();
+
+        // right
+        seekBarRightSensitivity = findViewById(R.id.seekBarRightSensitivity);
+        seekBarRightGain = findViewById(R.id.seekBarRightGain);
+        rightSensitivity = findViewById(R.id.textViewRightSensitivity);
+        rightGain = findViewById(R.id.textViewRightGain);
+
+        seekBarRightSensitivity.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            double value;
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                value = (double) progress / 10;
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                rightMAP.sensitivity = value;
+                rightScaleFactor = value / 32768;
+                rightSensitivity.setText(String.format("%s%s", getString(R.string.textRightSens), value));
+                rightACE = new ACE(rightMAP);
+                Toast.makeText(getApplicationContext(), "Right Sensitivity value changed to " + value, Toast.LENGTH_SHORT).show();
+
+                // Update preferences value
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                SharedPreferences.Editor editor = preferences.edit();
+                putDouble(editor, "Right.sensitivity", rightMAP.sensitivity);
+                editor.apply();
+            }
+        });
+
+        seekBarRightGain.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            double value;
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                value = (double) progress;
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                rightMAP.gain = value;
+                rightACE = new ACE(rightMAP);
+                rightGain.setText(String.format("%s%s", getString(R.string.textRightGain), value));
+                Toast.makeText(getApplicationContext(), "Right Gain value changed to " + value + " dB", Toast.LENGTH_SHORT).show();
+
+                // Update preferences value
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                SharedPreferences.Editor editor = preferences.edit();
+                putDouble(editor, "Right.gain", rightMAP.gain);
+                editor.apply();
+            }
+        });
+
+        updateGUIRight();
+    }
+
+    /**
+     * Updates the left ear GUI components
+     */
+    private void updateGUILeft() {
         if (leftMAP.exists) {
+            leftSensitivity.setText(String.format("%s%s", getString(R.string.textLeftSens), leftMAP.sensitivity));
+            seekBarLeftSensitivity.setEnabled(true);
+            seekBarLeftSensitivity.setProgress((int) leftMAP.sensitivity * 10);
+            leftGain.setText(String.format("%s%s", getString(R.string.textLeftGain), leftMAP.gain));
+            seekBarLeftGain.setEnabled(true);
+            seekBarLeftGain.setProgress((int) leftMAP.gain);
 
-            leftSensitivity = (TextView) findViewById(R.id.textViewLeftSensitivity);
-            leftSensitivity.setText("Left Sensitivity: " + leftMAP.sensitivity);
-            seekBarLeftSensitivity = (SeekBar) findViewById(R.id.seekBarLeftSensitivity);
-            seekBarLeftSensitivity.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                double value;
+            leftACE = new ACE(leftMAP);
 
-                @Override
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    value = (double) progress / 10;
-                }
-
-                @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {
-
-                }
-
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {
-                    leftMAP.sensitivity = value;
-                    leftScaleFactor = value / 32768;
-                    leftSensitivity.setText("Left Sensitivity: " + value);
-                    Toast.makeText(getApplicationContext(), "Left Sensitivity value changed to " + value, Toast.LENGTH_SHORT).show();
-
-                    // Update preferences value
-                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    putDouble(editor, "Left.sensitivity", leftMAP.sensitivity);
-                    editor.apply();
-                }
-            });
-
-            leftGain = (TextView) findViewById(R.id.textViewLeftGain);
-            leftGain.setText("Left Gain: " + leftMAP.gain + " dB");
-            seekBarLeftGain = (SeekBar) findViewById(R.id.seekBarLeftGain);
-            seekBarLeftGain.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                double value;
-
-                @Override
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    value = (double) progress;
-                }
-
-                @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {
-
-                }
-
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {
-                    leftMAP.gain = value;
-                    leftACE = new ACE(leftMAP);
-                    leftGain.setText("Left Gain: " + value + " dB");
-                    Toast.makeText(getApplicationContext(), "Left Gain value changed to " + value + " dB", Toast.LENGTH_SHORT).show();
-
-                    // Update preferences value
-                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    putDouble(editor, "Left.gain", leftMAP.gain);
-                    editor.apply();
-                }
-            });
         } else {
-            seekBarLeftSensitivity = (SeekBar) findViewById(R.id.seekBarLeftSensitivity);
             seekBarLeftSensitivity.setEnabled(false);
-
-            seekBarLeftGain = (SeekBar) findViewById(R.id.seekBarLeftGain);
             seekBarLeftGain.setEnabled(false);
-
-            // Disable text (reduce alpha to 38%)
-            leftSensitivity = (TextView) findViewById(R.id.textViewLeftSensitivity);
-            leftSensitivity.setTextColor(Color.argb(disabledAlpha, 0, 0, 0));
-
-            leftGain = (TextView) findViewById(R.id.textViewLeftGain);
-            leftGain.setTextColor(Color.argb(disabledAlpha, 0, 0, 0));
-        }
-        //////////////RIGHT////////////////////////////////////////////////////
-        if (rightMAP.exists) {
-            rightSensitivity = (TextView) findViewById(R.id.textViewRightSensitivity);
-            rightSensitivity.setText("Right Sensitivity: " + rightMAP.sensitivity);
-            seekBarRightSensitivity = (SeekBar) findViewById(R.id.seekBarRightSensitivity);
-            seekBarRightSensitivity.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                double value;
-
-                @Override
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    value = (double) progress / 10;
-                }
-
-                @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {
-
-                }
-
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {
-                    rightMAP.sensitivity = value;
-                    rightScaleFactor = value / 32768;
-                    rightSensitivity.setText("Right Sensitivity: " + value);
-                    Toast.makeText(getApplicationContext(), "Right Sensitivity value changed to " + value, Toast.LENGTH_SHORT).show();
-
-                    // Update preferences value
-                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    putDouble(editor, "Right.sensitivity", rightMAP.sensitivity);
-                    editor.apply();
-                }
-            });
-
-            rightGain = (TextView) findViewById(R.id.textViewRightGain);
-            rightGain.setText("Right Gain: " + rightMAP.gain + " dB");
-            seekBarRightGain = (SeekBar) findViewById(R.id.seekBarRightGain);
-            seekBarRightGain.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                double value;
-
-                @Override
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    value = (double) progress;
-                }
-
-                @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {
-
-                }
-
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {
-                    rightMAP.gain = value;
-                    rightACE = new ACE(rightMAP);
-                    rightGain.setText("Right Gain: " + value + " dB");
-                    Toast.makeText(getApplicationContext(), "Right Gain value changed to " + value + " dB", Toast.LENGTH_SHORT).show();
-
-                    // Update preferences value
-                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    putDouble(editor, "Right.gain", rightMAP.gain);
-                    editor.apply();
-                }
-            });
-        } else {
-            seekBarRightSensitivity = (SeekBar) findViewById(R.id.seekBarRightSensitivity);
-            seekBarRightSensitivity.setEnabled(false);
-
-            seekBarRightGain = (SeekBar) findViewById(R.id.seekBarRightGain);
-            seekBarRightGain.setEnabled(false);
-
-            // Disable text (reduce alpha to 38%)
-            rightSensitivity = (TextView) findViewById(R.id.textViewRightSensitivity);
-            rightSensitivity.setTextColor(Color.argb(disabledAlpha, 0, 0, 0));
-
-            rightGain = (TextView) findViewById(R.id.textViewRightGain);
-            rightGain.setTextColor(Color.argb(disabledAlpha, 0, 0, 0));
+            leftSensitivity.setText("");
+            leftGain.setText("");
         }
     }
 
-    /*private void initializeDefaultMAP() {
-        leftMAP = new MAP();
-        String mapStatus = leftMAP.openDefaultMAP();
+    /**
+     * Updates the right ear GUI components
+     */
+    private void updateGUIRight() {
+        if (rightMAP.exists) {
+            rightGain.setText(String.format("%s%s", getString(R.string.textRightGain), rightMAP.gain));
+            seekBarRightGain.setEnabled(true);
+            seekBarRightGain.setProgress((int) rightMAP.gain);
+            rightSensitivity.setText(String.format("%s%s", getString(R.string.textRightSens), rightMAP.sensitivity));
+            seekBarRightSensitivity.setEnabled(true);
+            seekBarRightSensitivity.setProgress((int) rightMAP.sensitivity * 10);
 
-        rightMAP = new MAP();
-        mapStatus = rightMAP.openRightMAP();
+            rightACE = new ACE(rightMAP);
 
-    }*/
+        } else {
+            seekBarRightSensitivity.setEnabled(false);
+            seekBarRightGain.setEnabled(false);
+            rightSensitivity.setText("");
+            rightGain.setText("");
+        }
+    }
 
+    /**
+     * Initializes the stimuli
+     */
     private void initializeStimuli() {
-        writeBuffer = new byte[516]; nullwriteBuffer = new byte[516]; sineBuffer = new byte[516];
+        writeBuffer = new byte[516];
+        nullwriteBuffer = new byte[516];
+        sineBuffer = new byte[516];
         stimuli = new Stimuli();
         sine_stim = new short[8];
-        sin_token = new short[8]; null_token = new short[8];
+        sin_token = new short[8];
+        null_token = new short[8];
         sine_token = new short[50];
         for (int i = 0; i < 8; ++i) {
             sin_token[i] = (short)(i + 1);
@@ -667,10 +914,13 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         }
     }
 
-
+    /**
+     * Initializes the connection
+     * @return int
+     */
     private int initializeConnection() {
         boolean t = false;
-        availQ = new LinkedList<Integer>();
+        availQ = new LinkedList<>();
         try{
             ftD2xx = D2xxManager.getInstance(this);
             s =new D2xxManager.DriverParameters();
@@ -682,7 +932,10 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             Log.e("FTDI_HT", "getInstance fail!!");
         }
         //initializeStimuli();
-        try { Thread.sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); }
+        try {
+            Thread.sleep(1000); }
+        catch (InterruptedException e) {
+            e.printStackTrace(); }
         int resultInitializeConnection = initializeDevice();
         try {
             textOut(Integer.toString(resultInitializeConnection));
@@ -692,20 +945,29 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         return resultInitializeConnection;
     }
 
-
-   private int initializeDevice() {
+    /**
+     * Initializes the device
+     * @return int
+     */
+    private int initializeDevice() {
         connectFunction();
         ftDev.resetDevice();
         ftDev.clrRts();
         setConfig(baudRate, dataBit, stopBit, parity, flowControl);
-        if (ftDev==null) {
-            status.append("ftDev is null");
-            return 0;}
+        if ( ftDev == null ) {
+            //status.append("ftDev is null");
+            status.setText(R.string.textftDevnull);
+            return 0;
+        }
         else  {
-            status.append("ftDev is set");
+            //status.append("ftDev is set");
+            status.setText(R.string.textftDevset);
             return 1; }
     }
 
+    /**
+     * Restarts the board
+     */
     private void restart() {
         global_context = this;
         boolean t = false;
@@ -744,13 +1006,16 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         catch (D2xxManager.D2xxException e) {
             Log.e("FTDI_HT", "getInstance fail!!");
         }
-        status.append("BOARD IS READY NOW");
+        //status.append("BOARD IS READY NOW");
+        status.setText(R.string.textBoardReadyNow);
     }
 
-
+    /**
+     * On board resume
+     */
     protected void onResume() {
         super.onResume();
-        if(null == ftDev || false == ftDev.isOpen())
+        if(null == ftDev || !ftDev.isOpen())
         {
             createDeviceList();
             if(DevCount > 0)
@@ -761,27 +1026,39 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         }
     }
 
+    /**
+     * On board pause
+     */
     protected void onPause() {
         super.onPause();
     }
 
-
+    /**
+     * On board stop
+     */
     protected void onStop() {
         super.onStop();
     }
 
-
+    /**
+     * On board destroy
+     */
     protected void onDestroy() {
         disconnectFunction();
         android.os.Process.killProcess(android.os.Process.myPid());
         super.onDestroy();
     }
 
-
+    /**
+     * Create the board device list
+     */
     public void createDeviceList() {
 
     }
 
+    /**
+     * Disconnect
+     */
     public void disconnectFunction() {
         DevCount = -1;
         currentPortIndex = -1;
@@ -789,29 +1066,28 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         try    {  Thread.sleep(50);    }
         catch (InterruptedException e) {e.printStackTrace();}
         if(ftDev != null)  {
-            if( true == ftDev.isOpen()) {
+            if(ftDev.isOpen()) {
                 ftDev.close();          }
         }
     }
 
-    /*
-    Function that chooses the second device
+    /**
+     * Function that chooses the second device
      */
-
     public void connectFunction() {
         StringBuilder stringport = new StringBuilder("Port No.: ");
-        if( portIndex + 1 > DevCount){
+        if (portIndex + 1 > DevCount) {
             portIndex = 0;
         }
 
-        if( currentPortIndex == portIndex && ftDev != null && true == ftDev.isOpen() ){
+        if (currentPortIndex == portIndex && ftDev != null && ftDev.isOpen()) {
             stringport.append(String.valueOf(portIndex));
             try { textOut(stringport.toString());}
             catch (IOException e) { e.printStackTrace(); }
             return;
         }
 
-        if(null == ftDev){
+        if (null == ftDev) {
             ft_device_0 = ftD2xx.openByIndex(global_context, 0,s);
             ft_device_1 = ftD2xx.openByIndex(global_context, 1,s);
             ftDev = ft_device_0;
@@ -823,12 +1099,15 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         if(ftDev == null)
         {
             stringport.append(String.valueOf(portIndex));
-            try { textOut(stringport.toString());}
-            catch (IOException e) { e.printStackTrace(); }
+            try {
+                textOut(stringport.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return;
         }
 
-        if (true == ftDev.isOpen())
+        if (ftDev.isOpen())
         {
             currentPortIndex = portIndex;
             ftDev.purge(D2xxManager.FT_PURGE_RX);
@@ -836,12 +1115,21 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         else
         {
             stringport.append(String.valueOf(portIndex));
-            try { textOut(stringport.toString());}
-            catch (IOException e) { e.printStackTrace(); }
+            try {
+                textOut(stringport.toString());
+            } catch (IOException e) {
+                e.printStackTrace(); }
         }
     }
 
-
+    /**
+     * Sets configuration
+     * @param baud b
+     * @param dataBits d
+     * @param stopBits s
+     * @param parity p
+     * @param flowControl f
+     */
     void setConfig(int baud, byte dataBits, byte stopBits, byte parity, byte flowControl) {
         // configure port
         // reset to UART mode for 232 devices
@@ -923,48 +1211,39 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         uart_configured = true;
     }
 
+    /**
+     * Makes toast
+     * @param str s
+     * @param showTime st
+     */
     void midToast(String str, int showTime) {
         Toast toast = Toast.makeText(global_context, str, showTime);
         toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
 
-        TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+        TextView v = toast.getView().findViewById(android.R.id.message);
         v.setTextColor(Color.YELLOW);
         toast.show();
     }
 
+    /**
+     * Prints text
+     * @param s s
+     * @throws IOException e
+     */
     public void textOut(final String s) throws IOException {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                status.append("\n" + s);
-                //status.setText("\n"+s);
-            } }); }
-
-    // Storage Permissions variables
-    private static final int REQUEST_EXTERNAL_STORAGE = 1;
-    private static String[] PERMISSIONS_STORAGE = {
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
-
-    //permission method.
-    public static void verifyStoragePermissions(Activity activity) {
-        // Check if we have read or write permission
-        int writePermission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        int readPermission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE);
-
-        if (writePermission != PackageManager.PERMISSION_GRANTED || readPermission != PackageManager.PERMISSION_GRANTED) {
-            // We don't have permission so prompt the user
-            ActivityCompat.requestPermissions(
-                    activity,
-                    PERMISSIONS_STORAGE,
-                    REQUEST_EXTERNAL_STORAGE
-            );
-        }
+                //status.append("\n" + s);
+                status.setText(String.format("%s%s", getString(R.string.textStatusTextOut), s));
+            }
+        });
     }
 
-    /*
-     *function for setting the output data buffer as per the given guidelines
+    /**
+     * Function for setting the output data buffer as per the given guidelines
+     * @param outputBuffer ob
+     * @param sine_token st
      */
     private void setOutputBuffer(byte outputBuffer[], short sine_token[] ) {
 
@@ -1025,9 +1304,12 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
 
     }
 
-    /*
- *function for setting the output data buffer as per the given guidelines
- */
+    /**
+     * Function for setting the output data buffer as per the given guidelines
+     * @param outputBuffer ob
+     * @param left_map lm
+     * @param right_map rm
+     */
     private void setOutputBuffer(byte outputBuffer[], MAP left_map, MAP right_map) {
 
         short left_pw = (short)left_map.pulseWidth;
@@ -1072,7 +1354,10 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
     }
 
 
-
+    /**
+     * When start/stop button is pressed
+     * @param view v
+     */
     public void startOrStop(View view) {
         boolean on = ((ToggleButton) view).isChecked();
         if (on) {
@@ -1084,15 +1369,19 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         }
     }
 
+    /**
+     * Start processing
+     */
     private void startProcessing() {
         start = true;
         portIndex = 1;
-        if (ftDev==null){
-            status.append("DEVICE IS NULL");
+        if (ftDev == null){
+            //status.append("DEVICE IS NULL");
+            status.setText(R.string.textDeviceNull);
             Toast.makeText(this,"Device not Connected. Please reconnect the board,",Toast.LENGTH_LONG).show();
         }
         else {
-            status.setText("Running");
+            status.setText(R.string.textRunning);
             setOutputBuffer(nullwriteBuffer, null_token); // zero buffer
             setOutputBuffer(writeBuffer, leftMAP, rightMAP); // zero buffer
             readThread1 = new readThread();
@@ -1100,21 +1389,21 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         }
     }
 
-
+    /**
+     * Stop processing
+     */
     private void stopProcessing() {
         readThread1.interrupt();
-        status.setText("Stopped");
+        status.setText(R.string.textStopped);
     }
 
-
-    /*
- *Main core logic for reading and writing data
- */
-
+    /**
+     * Main core logic for reading and writing data
+     */
     private class readThread  extends Thread
     {
         //Handler mHandler;
-        readThread(){ this.setPriority(Thread.MAX_PRIORITY);        }
+        readThread(){this.setPriority(Thread.MAX_PRIORITY);}
 
         @Override
         public void run()
@@ -1133,7 +1422,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             leftScaleFactor = leftMAP.sensitivity/32768;
             rightScaleFactor = rightMAP.sensitivity/32768;
 
-            int k =0;
+            int k = 0;
 
             while(start) {
                 if (Thread.interrupted()) {
@@ -1146,10 +1435,10 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
                 int iavailable_0 = ftDev.getQueueStatus();
                 if(iavailable_0>=512) {
 
-                    for (int j = 0; j < 8; ++j) {
+                    /*for (int j = 0; j < 8; ++j) {
                         sine_stim[j] = sine_token[k]; //200;
                         ++k; k %= 50;  }
-                    setOutputBuffer(sineBuffer, sine_stim);
+                    setOutputBuffer(sineBuffer, sine_stim);*/
 
                     // STEP 1: READ AUDIO SIGNAL
                     Arrays.fill(buffbyte2, (byte) 0);
@@ -1173,6 +1462,9 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             }
         }
 
+        /**
+         * Updates the output buffer
+         */
         private void updateOutputBuffer() {
             for (int i = 0; i < leftMAP.pulsesPerFrame; ++i) {
                 writeBuffer[i + 6] = (byte)leftStimuli.Electrodes[i];
@@ -1184,6 +1476,9 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             }
         }
 
+        /**
+         * Sends null frames
+         */
         private void sendnullframes() {
             byte[] readBuffer = new byte[512];
             setOutputBuffer(writeBuffer, null_token); // zero buffer
@@ -1199,7 +1494,6 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             }
         }
     }
-
 
 
 }

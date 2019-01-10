@@ -149,190 +149,197 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         setUpWidgets();
+        //getMAPFromPreferences();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         getMAPFromPreferences();
+        //update preferences each time the Settings activity is opened
     }
 
     void setUpWidgets() {
         // Retrieve the widgets
-        textView18 = (TextView) findViewById(R.id.textView18);
-        textView19 = (TextView) findViewById(R.id.textView19);
-        textView20 = (TextView) findViewById(R.id.textView20);
-        textView21 = (TextView) findViewById(R.id.textView21);
-        textView22 = (TextView) findViewById(R.id.textView22);
-        textView23 = (TextView) findViewById(R.id.textView23);
-        textView24 = (TextView) findViewById(R.id.textView24);
-        textView25 = (TextView) findViewById(R.id.textView25);
+        textView18 = findViewById(R.id.textView18);
+        textView19 = findViewById(R.id.textView19);
+        textView20 = findViewById(R.id.textView20);
+        textView21 = findViewById(R.id.textView21);
+        textView22 = findViewById(R.id.textView22);
+        textView23 = findViewById(R.id.textView23);
+        textView24 = findViewById(R.id.textView24);
+        textView25 = findViewById(R.id.textView25);
 
-        textView38 = (TextView) findViewById(R.id.textView38);
-        textView46 = (TextView) findViewById(R.id.textView46);
-        textView54 = (TextView) findViewById(R.id.textView54);
-        textView62 = (TextView) findViewById(R.id.textView62);
-        textView70 = (TextView) findViewById(R.id.textView70);
-        textView78 = (TextView) findViewById(R.id.textView78);
-        textView86 = (TextView) findViewById(R.id.textView86);
-        textView94 = (TextView) findViewById(R.id.textView94);
-        textView102 = (TextView) findViewById(R.id.textView102);
-        textView110 = (TextView) findViewById(R.id.textView110);
-        textView118 = (TextView) findViewById(R.id.textView118);
-        textView126 = (TextView) findViewById(R.id.textView126);
-        textView134 = (TextView) findViewById(R.id.textView134);
-        textView142 = (TextView) findViewById(R.id.textView142);
-        textView150 = (TextView) findViewById(R.id.textView150);
-        textView158 = (TextView) findViewById(R.id.textView158);
-        textView166 = (TextView) findViewById(R.id.textView166);
-        textView174 = (TextView) findViewById(R.id.textView174);
-        textView182 = (TextView) findViewById(R.id.textView182);
-        textView190 = (TextView) findViewById(R.id.textView190);
-        textView198 = (TextView) findViewById(R.id.textView198);
-        textView206 = (TextView) findViewById(R.id.textView206);
+        textView38 = findViewById(R.id.textView38);
+        textView46 = findViewById(R.id.textView46);
+        textView54 = findViewById(R.id.textView54);
+        textView62 = findViewById(R.id.textView62);
+        textView70 = findViewById(R.id.textView70);
+        textView78 = findViewById(R.id.textView78);
+        textView86 = findViewById(R.id.textView86);
+        textView94 = findViewById(R.id.textView94);
+        textView102 = findViewById(R.id.textView102);
+        textView110 = findViewById(R.id.textView110);
+        textView118 = findViewById(R.id.textView118);
+        textView126 = findViewById(R.id.textView126);
+        textView134 = findViewById(R.id.textView134);
+        textView142 = findViewById(R.id.textView142);
+        textView150 = findViewById(R.id.textView150);
+        textView158 = findViewById(R.id.textView158);
+        textView166 = findViewById(R.id.textView166);
+        textView174 = findViewById(R.id.textView174);
+        textView182 = findViewById(R.id.textView182);
+        textView190 = findViewById(R.id.textView190);
+        textView198 = findViewById(R.id.textView198);
+        textView206 = findViewById(R.id.textView206);
 
-        textView39 = (TextView) findViewById(R.id.textView39);
-        textView47 = (TextView) findViewById(R.id.textView47);
-        textView55 = (TextView) findViewById(R.id.textView55);
-        textView63 = (TextView) findViewById(R.id.textView63);
-        textView71 = (TextView) findViewById(R.id.textView71);
-        textView79 = (TextView) findViewById(R.id.textView79);
-        textView87 = (TextView) findViewById(R.id.textView87);
-        textView95 = (TextView) findViewById(R.id.textView95);
-        textView103 = (TextView) findViewById(R.id.textView103);
-        textView111 = (TextView) findViewById(R.id.textView111);
-        textView119 = (TextView) findViewById(R.id.textView119);
-        textView127 = (TextView) findViewById(R.id.textView127);
-        textView135 = (TextView) findViewById(R.id.textView135);
-        textView143 = (TextView) findViewById(R.id.textView143);
-        textView151 = (TextView) findViewById(R.id.textView151);
-        textView159 = (TextView) findViewById(R.id.textView159);
-        textView167 = (TextView) findViewById(R.id.textView167);
-        textView175 = (TextView) findViewById(R.id.textView175);
-        textView183 = (TextView) findViewById(R.id.textView183);
-        textView191 = (TextView) findViewById(R.id.textView191);
-        textView199 = (TextView) findViewById(R.id.textView199);
-        textView207 = (TextView) findViewById(R.id.textView207);
+        textView39 = findViewById(R.id.textView39);
+        textView47 = findViewById(R.id.textView47);
+        textView55 = findViewById(R.id.textView55);
+        textView63 = findViewById(R.id.textView63);
+        textView71 = findViewById(R.id.textView71);
+        textView79 = findViewById(R.id.textView79);
+        textView87 = findViewById(R.id.textView87);
+        textView95 = findViewById(R.id.textView95);
+        textView103 = findViewById(R.id.textView103);
+        textView111 = findViewById(R.id.textView111);
+        textView119 = findViewById(R.id.textView119);
+        textView127 = findViewById(R.id.textView127);
+        textView135 = findViewById(R.id.textView135);
+        textView143 = findViewById(R.id.textView143);
+        textView151 = findViewById(R.id.textView151);
+        textView159 = findViewById(R.id.textView159);
+        textView167 = findViewById(R.id.textView167);
+        textView175 = findViewById(R.id.textView175);
+        textView183 = findViewById(R.id.textView183);
+        textView191 = findViewById(R.id.textView191);
+        textView199 = findViewById(R.id.textView199);
+        textView207 = findViewById(R.id.textView207);
 
-        textView40 = (TextView) findViewById(R.id.textView40);
-        textView48 = (TextView) findViewById(R.id.textView48);
-        textView56 = (TextView) findViewById(R.id.textView56);
-        textView64 = (TextView) findViewById(R.id.textView64);
-        textView72 = (TextView) findViewById(R.id.textView72);
-        textView80 = (TextView) findViewById(R.id.textView80);
-        textView88 = (TextView) findViewById(R.id.textView88);
-        textView96 = (TextView) findViewById(R.id.textView96);
-        textView104 = (TextView) findViewById(R.id.textView104);
-        textView112 = (TextView) findViewById(R.id.textView112);
-        textView120 = (TextView) findViewById(R.id.textView120);
-        textView128 = (TextView) findViewById(R.id.textView128);
-        textView136 = (TextView) findViewById(R.id.textView136);
-        textView144 = (TextView) findViewById(R.id.textView144);
-        textView152 = (TextView) findViewById(R.id.textView152);
-        textView160 = (TextView) findViewById(R.id.textView160);
-        textView168 = (TextView) findViewById(R.id.textView168);
-        textView176 = (TextView) findViewById(R.id.textView176);
-        textView184 = (TextView) findViewById(R.id.textView184);
-        textView192 = (TextView) findViewById(R.id.textView192);
-        textView200 = (TextView) findViewById(R.id.textView200);
-        textView208 = (TextView) findViewById(R.id.textView208);
+        textView40 = findViewById(R.id.textView40);
+        textView48 = findViewById(R.id.textView48);
+        textView56 = findViewById(R.id.textView56);
+        textView64 = findViewById(R.id.textView64);
+        textView72 = findViewById(R.id.textView72);
+        textView80 = findViewById(R.id.textView80);
+        textView88 = findViewById(R.id.textView88);
+        textView96 = findViewById(R.id.textView96);
+        textView104 = findViewById(R.id.textView104);
+        textView112 = findViewById(R.id.textView112);
+        textView120 = findViewById(R.id.textView120);
+        textView128 = findViewById(R.id.textView128);
+        textView136 = findViewById(R.id.textView136);
+        textView144 = findViewById(R.id.textView144);
+        textView152 = findViewById(R.id.textView152);
+        textView160 = findViewById(R.id.textView160);
+        textView168 = findViewById(R.id.textView168);
+        textView176 = findViewById(R.id.textView176);
+        textView184 = findViewById(R.id.textView184);
+        textView192 = findViewById(R.id.textView192);
+        textView200 = findViewById(R.id.textView200);
+        textView208 = findViewById(R.id.textView208);
 
-        editText4 = (EditText) findViewById(R.id.editText4);
-        editText5 = (EditText) findViewById(R.id.editText5);
-        editText6 = (EditText) findViewById(R.id.editText6);
-        editText7 = (EditText) findViewById(R.id.editText7);
-        editText9 = (EditText) findViewById(R.id.editText9);
-        editText10 = (EditText) findViewById(R.id.editText10);
-        editText11 = (EditText) findViewById(R.id.editText11);
-        editText17 = (EditText) findViewById(R.id.editText17);
-        editText18 = (EditText) findViewById(R.id.editText18);
-        editText19 = (EditText) findViewById(R.id.editText19);
-        editText20 = (EditText) findViewById(R.id.editText20);
-        editText22 = (EditText) findViewById(R.id.editText22);
-        editText23 = (EditText) findViewById(R.id.editText23);
-        editText24 = (EditText) findViewById(R.id.editText24);
+        editText4 = findViewById(R.id.editText4);
+        editText5 = findViewById(R.id.editText5);
+        editText6 = findViewById(R.id.editText6);
+        editText7 = findViewById(R.id.editText7);
+        editText9 = findViewById(R.id.editText9);
+        editText10 = findViewById(R.id.editText10);
+        editText11 = findViewById(R.id.editText11);
+        editText17 = findViewById(R.id.editText17);
+        editText18 = findViewById(R.id.editText18);
+        editText19 = findViewById(R.id.editText19);
+        editText20 = findViewById(R.id.editText20);
+        editText22 = findViewById(R.id.editText22);
+        editText23 = findViewById(R.id.editText23);
+        editText24 = findViewById(R.id.editText24);
 
-        textView41 = (TextView) findViewById(R.id.textView41);
-        textView49 = (TextView) findViewById(R.id.textView49);
-        textView57 = (TextView) findViewById(R.id.textView57);
-        textView65 = (TextView) findViewById(R.id.textView65);
-        textView73 = (TextView) findViewById(R.id.textView73);
-        textView79 = (TextView) findViewById(R.id.textView79);
-        textView81 = (TextView) findViewById(R.id.textView81);
-        textView89 = (TextView) findViewById(R.id.textView89);
-        textView97 = (TextView) findViewById(R.id.textView97);
-        textView105 = (TextView) findViewById(R.id.textView105);
-        textView113 = (TextView) findViewById(R.id.textView113);
-        textView121 = (TextView) findViewById(R.id.textView121);
-        textView129 = (TextView) findViewById(R.id.textView129);
-        textView137 = (TextView) findViewById(R.id.textView137);
-        textView145 = (TextView) findViewById(R.id.textView145);
-        textView153 = (TextView) findViewById(R.id.textView153);
-        textView161 = (TextView) findViewById(R.id.textView161);
-        textView169 = (TextView) findViewById(R.id.textView169);
-        textView177 = (TextView) findViewById(R.id.textView177);
-        textView185 = (TextView) findViewById(R.id.textView185);
-        textView193 = (TextView) findViewById(R.id.textView193);
-        textView201 = (TextView) findViewById(R.id.textView201);
-        textView209 = (TextView) findViewById(R.id.textView209);
+        textView41 = findViewById(R.id.textView41);
+        textView49 = findViewById(R.id.textView49);
+        textView57 = findViewById(R.id.textView57);
+        textView65 = findViewById(R.id.textView65);
+        textView73 = findViewById(R.id.textView73);
+        textView79 = findViewById(R.id.textView79);
+        textView81 = findViewById(R.id.textView81);
+        textView89 = findViewById(R.id.textView89);
+        textView97 = findViewById(R.id.textView97);
+        textView105 = findViewById(R.id.textView105);
+        textView113 = findViewById(R.id.textView113);
+        textView121 = findViewById(R.id.textView121);
+        textView129 = findViewById(R.id.textView129);
+        textView137 = findViewById(R.id.textView137);
+        textView145 = findViewById(R.id.textView145);
+        textView153 = findViewById(R.id.textView153);
+        textView161 = findViewById(R.id.textView161);
+        textView169 = findViewById(R.id.textView169);
+        textView177 = findViewById(R.id.textView177);
+        textView185 = findViewById(R.id.textView185);
+        textView193 = findViewById(R.id.textView193);
+        textView201 = findViewById(R.id.textView201);
+        textView209 = findViewById(R.id.textView209);
 
-        textView42 = (TextView) findViewById(R.id.textView42);
-        textView50 = (TextView) findViewById(R.id.textView50);
-        textView58 = (TextView) findViewById(R.id.textView58);
-        textView66 = (TextView) findViewById(R.id.textView66);
-        textView74 = (TextView) findViewById(R.id.textView74);
-        textView79 = (TextView) findViewById(R.id.textView79);
-        textView82 = (TextView) findViewById(R.id.textView82);
-        textView90 = (TextView) findViewById(R.id.textView90);
-        textView98 = (TextView) findViewById(R.id.textView98);
-        textView106 = (TextView) findViewById(R.id.textView106);
-        textView114 = (TextView) findViewById(R.id.textView114);
-        textView122 = (TextView) findViewById(R.id.textView122);
-        textView130 = (TextView) findViewById(R.id.textView130);
-        textView138 = (TextView) findViewById(R.id.textView138);
-        textView146 = (TextView) findViewById(R.id.textView146);
-        textView154 = (TextView) findViewById(R.id.textView154);
-        textView162 = (TextView) findViewById(R.id.textView162);
-        textView170 = (TextView) findViewById(R.id.textView170);
-        textView178 = (TextView) findViewById(R.id.textView178);
-        textView186 = (TextView) findViewById(R.id.textView186);
-        textView194 = (TextView) findViewById(R.id.textView194);
-        textView202 = (TextView) findViewById(R.id.textView202);
-        textView210 = (TextView) findViewById(R.id.textView210);
+        textView42 = findViewById(R.id.textView42);
+        textView50 = findViewById(R.id.textView50);
+        textView58 = findViewById(R.id.textView58);
+        textView66 = findViewById(R.id.textView66);
+        textView74 = findViewById(R.id.textView74);
+        textView79 = findViewById(R.id.textView79);
+        textView82 = findViewById(R.id.textView82);
+        textView90 = findViewById(R.id.textView90);
+        textView98 = findViewById(R.id.textView98);
+        textView106 = findViewById(R.id.textView106);
+        textView114 = findViewById(R.id.textView114);
+        textView122 = findViewById(R.id.textView122);
+        textView130 = findViewById(R.id.textView130);
+        textView138 = findViewById(R.id.textView138);
+        textView146 = findViewById(R.id.textView146);
+        textView154 = findViewById(R.id.textView154);
+        textView162 = findViewById(R.id.textView162);
+        textView170 = findViewById(R.id.textView170);
+        textView178 = findViewById(R.id.textView178);
+        textView186 = findViewById(R.id.textView186);
+        textView194 = findViewById(R.id.textView194);
+        textView202 = findViewById(R.id.textView202);
+        textView210 = findViewById(R.id.textView210);
 
-        textView43 = (TextView) findViewById(R.id.textView43);
-        textView51 = (TextView) findViewById(R.id.textView51);
-        textView59 = (TextView) findViewById(R.id.textView59);
-        textView67 = (TextView) findViewById(R.id.textView67);
-        textView75 = (TextView) findViewById(R.id.textView75);
-        textView79 = (TextView) findViewById(R.id.textView79);
-        textView83 = (TextView) findViewById(R.id.textView83);
-        textView91 = (TextView) findViewById(R.id.textView91);
-        textView99 = (TextView) findViewById(R.id.textView99);
-        textView107 = (TextView) findViewById(R.id.textView107);
-        textView115 = (TextView) findViewById(R.id.textView115);
-        textView123 = (TextView) findViewById(R.id.textView123);
-        textView131 = (TextView) findViewById(R.id.textView131);
-        textView139 = (TextView) findViewById(R.id.textView139);
-        textView147 = (TextView) findViewById(R.id.textView147);
-        textView155 = (TextView) findViewById(R.id.textView155);
-        textView163 = (TextView) findViewById(R.id.textView163);
-        textView171 = (TextView) findViewById(R.id.textView171);
-        textView179 = (TextView) findViewById(R.id.textView179);
-        textView187 = (TextView) findViewById(R.id.textView187);
-        textView195 = (TextView) findViewById(R.id.textView195);
-        textView203 = (TextView) findViewById(R.id.textView203);
-        textView211 = (TextView) findViewById(R.id.textView211);
+        textView43 = findViewById(R.id.textView43);
+        textView51 = findViewById(R.id.textView51);
+        textView59 = findViewById(R.id.textView59);
+        textView67 = findViewById(R.id.textView67);
+        textView75 = findViewById(R.id.textView75);
+        textView79 = findViewById(R.id.textView79);
+        textView83 = findViewById(R.id.textView83);
+        textView91 = findViewById(R.id.textView91);
+        textView99 = findViewById(R.id.textView99);
+        textView107 = findViewById(R.id.textView107);
+        textView115 = findViewById(R.id.textView115);
+        textView123 = findViewById(R.id.textView123);
+        textView131 = findViewById(R.id.textView131);
+        textView139 = findViewById(R.id.textView139);
+        textView147 = findViewById(R.id.textView147);
+        textView155 = findViewById(R.id.textView155);
+        textView163 = findViewById(R.id.textView163);
+        textView171 = findViewById(R.id.textView171);
+        textView179 = findViewById(R.id.textView179);
+        textView187 = findViewById(R.id.textView187);
+        textView195 = findViewById(R.id.textView195);
+        textView203 = findViewById(R.id.textView203);
+        textView211 = findViewById(R.id.textView211);
 
-        volumeSpinnerLeft = (Spinner) findViewById(R.id.volumeSpinnerLeft);
-        volumeSpinnerRight = (Spinner) findViewById(R.id.volumeSpinnerRight);
-        soundProcessSpinnerLeft = (Spinner) findViewById(R.id.soundProcessSpinnerLeft);
-        soundProcessSpinnerRight = (Spinner) findViewById(R.id.soundProcessSpinnerRight);
-        stimOrderLeft = (Spinner) findViewById(R.id.stimOrderLeft);
-        stimOrderRight = (Spinner) findViewById(R.id.stimOrderRight);
-        stimModeLeft = (Spinner) findViewById(R.id.stimModeLeft);
-        stimModeRight = (Spinner) findViewById(R.id.stimModeRight);
-        windowSpinnerLeft = (Spinner) findViewById(R.id.windowSpinnerLeft);
-        windowSpinnerRight = (Spinner) findViewById(R.id.windowSpinnerRight);
-        nMaximaSpinnerLeft = (Spinner) findViewById(R.id.nMaximaSpinnerLeft);
-        nMaximaSpinnerRight = (Spinner) findViewById(R.id.nMaximaSpinnerRight);
+        volumeSpinnerLeft = findViewById(R.id.volumeSpinnerLeft);
+        volumeSpinnerRight = findViewById(R.id.volumeSpinnerRight);
+        soundProcessSpinnerLeft = findViewById(R.id.soundProcessSpinnerLeft);
+        soundProcessSpinnerRight = findViewById(R.id.soundProcessSpinnerRight);
+        stimOrderLeft = findViewById(R.id.stimOrderLeft);
+        stimOrderRight = findViewById(R.id.stimOrderRight);
+        stimModeLeft = findViewById(R.id.stimModeLeft);
+        stimModeRight = findViewById(R.id.stimModeRight);
+        windowSpinnerLeft = findViewById(R.id.windowSpinnerLeft);
+        windowSpinnerRight = findViewById(R.id.windowSpinnerRight);
+        nMaximaSpinnerLeft = findViewById(R.id.nMaximaSpinnerLeft);
+        nMaximaSpinnerRight = findViewById(R.id.nMaximaSpinnerRight);
 
-        Button updateButton = (Button) findViewById(R.id.updateButton);
+        Button updateButton = findViewById(R.id.updateButton);
 
         nMaximaSpinnerLeft.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -792,27 +799,27 @@ public class SettingsActivity extends AppCompatActivity {
         windowSpinnerLeft.setEnabled(false);
 
         // Disable text (reduce alpha to 38%)
-        TextView textView01 = (TextView) findViewById(R.id.textView01);
+        TextView textView01 = findViewById(R.id.textView01);
         if (textView01 != null) {
             textView01.setTextColor(Color.argb(disabledAlpha, 0, 0, 0));
         }
 
-        TextView textView26 = (TextView) findViewById(R.id.textView26);
+        TextView textView26 = findViewById(R.id.textView26);
         if (textView26 != null) {
             textView26.setTextColor(Color.argb(disabledAlpha, 0, 0, 0));
         }
 
-        TextView textView30 = (TextView) findViewById(R.id.textView30);
+        TextView textView30 = findViewById(R.id.textView30);
         if (textView30 != null) {
             textView30.setTextColor(Color.argb(disabledAlpha, 0, 0, 0));
         }
 
-        TextView textView31 = (TextView) findViewById(R.id.textView31);
+        TextView textView31 = findViewById(R.id.textView31);
         if (textView31 != null) {
             textView31.setTextColor(Color.argb(disabledAlpha, 0, 0, 0));
         }
 
-        TextView textView32 = (TextView) findViewById(R.id.textView32);
+        TextView textView32 = findViewById(R.id.textView32);
         if (textView32 != null) {
             textView32.setTextColor(Color.argb(disabledAlpha, 0, 0, 0));
         }
@@ -1163,27 +1170,27 @@ public class SettingsActivity extends AppCompatActivity {
         windowSpinnerRight.setEnabled(false);
 
         // Disable text (reduce alpha to 38%)
-        TextView textView02 = (TextView) findViewById(R.id.textView02);
+        TextView textView02 = findViewById(R.id.textView02);
         if (textView02 != null) {
             textView02.setTextColor(Color.argb(disabledAlpha, 0, 0, 0));
         }
 
-        TextView textView27 = (TextView) findViewById(R.id.textView27);
+        TextView textView27 = findViewById(R.id.textView27);
         if (textView27 != null) {
             textView27.setTextColor(Color.argb(disabledAlpha, 0, 0, 0));
         }
 
-        TextView textView33 = (TextView) findViewById(R.id.textView33);
+        TextView textView33 = findViewById(R.id.textView33);
         if (textView33 != null) {
             textView33.setTextColor(Color.argb(disabledAlpha, 0, 0, 0));
         }
 
-        TextView textView34 = (TextView) findViewById(R.id.textView34);
+        TextView textView34 = findViewById(R.id.textView34);
         if (textView34 != null) {
             textView34.setTextColor(Color.argb(disabledAlpha, 0, 0, 0));
         }
 
-        TextView textView35 = (TextView) findViewById(R.id.textView35);
+        TextView textView35 = findViewById(R.id.textView35);
         if (textView35 != null) {
             textView35.setTextColor(Color.argb(disabledAlpha, 0, 0, 0));
         }
@@ -1400,7 +1407,6 @@ public class SettingsActivity extends AppCompatActivity {
         if (leftExists) {
             intent.putExtra("leftSensitivity", leftMAPsensitivity);
             intent.putExtra("leftGain", leftMAPgain);
-
             intent.putExtra("leftMAPimplantGeneration", leftImplantGeneration);
             intent.putExtra("leftMAPstimulationModeCode", leftStimulationModeCode);
             intent.putExtra("leftMAPpulsesPerFramePerChannel", leftPulsesPerFramePerChannel);
@@ -1412,7 +1418,6 @@ public class SettingsActivity extends AppCompatActivity {
         if (rightExists) {
             intent.putExtra("rightSensitivity", rightMAPsensitivity);
             intent.putExtra("rightGain", rightMAPgain);
-
             intent.putExtra("rightMAPimplantGeneration", rightImplantGeneration);
             intent.putExtra("rightMAPstimulationModeCode", rightStimulationModeCode);
             intent.putExtra("rightMAPpulsesPerFramePerChannel", rightPulsesPerFramePerChannel);

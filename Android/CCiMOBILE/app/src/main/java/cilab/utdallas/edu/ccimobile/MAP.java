@@ -1,5 +1,8 @@
 package cilab.utdallas.edu.ccimobile;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,11 +19,6 @@ class MAP {
     private final int durationSYNC = 6;             //Duration of Sycn Toekn in uS
     private final int additionalGap = 1;            //additional gap to make interpulse duration 7 uS ref. Fig. 14 in CIC4 specification
     public final int BLOCK_SIZE = 128;             //BLK_SIZE
-
-    private String FILE_NAME = "SampleMap.txt";
-    //private String FILE_NAME = "SampleMapLEFT.txt";
-    //private String FILE_NAME = "SampleMapDataMissing.txt"; // Left.volume is missing
-
     boolean exists = false;
     boolean dataMissing = false;
 
@@ -58,7 +56,7 @@ class MAP {
     double[] gains,
             lowerCutOffFrequencies, higherCutOffFrequencies;
 
-    String getLeftMapData() {
+    String getLeftMapData(String FILE_NAME) {
         String mapStatus;
 
         BufferedReader reader;
@@ -174,7 +172,7 @@ class MAP {
         return "";
     }
 
-    String getRightMapData() {
+    String getRightMapData(String FILE_NAME) {
         String mapStatus;
 
         BufferedReader reader;
