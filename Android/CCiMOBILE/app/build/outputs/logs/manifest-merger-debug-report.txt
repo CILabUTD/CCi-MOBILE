@@ -1,0 +1,142 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:2:1-43:12
+INJECTED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:2:1-43:12
+INJECTED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:2:1-43:12
+INJECTED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:2:1-43:12
+MERGED from [com.android.support:design:23.4.0] C:\Users\asb180001\.gradle\caches\transforms-1\files-1.1\design-23.4.0.aar\ee9e6cbac2ef8778a764769cc69b00c2\AndroidManifest.xml:17:1-24:12
+MERGED from [com.android.support:appcompat-v7:23.4.0] C:\Users\asb180001\.gradle\caches\transforms-1\files-1.1\appcompat-v7-23.4.0.aar\6d0230433dec9d6159fde103cf124eb4\AndroidManifest.xml:17:1-27:12
+MERGED from [com.github.jorgecastilloprz:fillableloaders:1.03] C:\Users\asb180001\.gradle\caches\transforms-1\files-1.1\fillableloaders-1.03.aar\3d5de2d1f0e13e086f40c8022fbd2ddf\AndroidManifest.xml:2:1-12:12
+MERGED from [com.android.support:recyclerview-v7:23.4.0] C:\Users\asb180001\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-23.4.0.aar\ca2f733e96963856053fcead3f69a764\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:animated-vector-drawable:23.4.0] C:\Users\asb180001\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-23.4.0.aar\a775dbd53179c69d1d1373b8d984e86b\AndroidManifest.xml:2:1-9:12
+MERGED from [com.android.support:support-vector-drawable:23.4.0] C:\Users\asb180001\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-23.4.0.aar\78c0d4dec70cc8814aef9683a6655981\AndroidManifest.xml:2:1-9:12
+MERGED from [com.android.support:support-v4:23.4.0] C:\Users\asb180001\.gradle\caches\transforms-1\files-1.1\support-v4-23.4.0.aar\965137127e5add8456b29e39893ca71a\AndroidManifest.xml:17:1-24:12
+INJECTED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:2:1-43:12
+INJECTED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:2:1-43:12
+INJECTED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:2:1-43:12
+	package
+		ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:3:5-43
+		INJECTED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml
+	android:versionName
+		INJECTED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml
+		ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:2:1-43:12
+		INJECTED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml
+	android:versionCode
+		INJECTED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml
+		ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:2:1-43:12
+		INJECTED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:2:11-69
+uses-permission#android.permission.READ_EXTERNAL_STORAGE
+ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:5:5-80
+	android:name
+		ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:5:22-77
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:6:5-81
+	android:name
+		ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:6:22-78
+uses-feature#android.hardware.usb.host
+ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:8:5-62
+	android:name
+		ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:8:19-59
+application
+ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:10:5-41:19
+MERGED from [com.android.support:design:23.4.0] C:\Users\asb180001\.gradle\caches\transforms-1\files-1.1\design-23.4.0.aar\ee9e6cbac2ef8778a764769cc69b00c2\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:design:23.4.0] C:\Users\asb180001\.gradle\caches\transforms-1\files-1.1\design-23.4.0.aar\ee9e6cbac2ef8778a764769cc69b00c2\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:appcompat-v7:23.4.0] C:\Users\asb180001\.gradle\caches\transforms-1\files-1.1\appcompat-v7-23.4.0.aar\6d0230433dec9d6159fde103cf124eb4\AndroidManifest.xml:25:5-20
+MERGED from [com.android.support:appcompat-v7:23.4.0] C:\Users\asb180001\.gradle\caches\transforms-1\files-1.1\appcompat-v7-23.4.0.aar\6d0230433dec9d6159fde103cf124eb4\AndroidManifest.xml:25:5-20
+MERGED from [com.github.jorgecastilloprz:fillableloaders:1.03] C:\Users\asb180001\.gradle\caches\transforms-1\files-1.1\fillableloaders-1.03.aar\3d5de2d1f0e13e086f40c8022fbd2ddf\AndroidManifest.xml:9:5-10:19
+MERGED from [com.github.jorgecastilloprz:fillableloaders:1.03] C:\Users\asb180001\.gradle\caches\transforms-1\files-1.1\fillableloaders-1.03.aar\3d5de2d1f0e13e086f40c8022fbd2ddf\AndroidManifest.xml:9:5-10:19
+MERGED from [com.android.support:animated-vector-drawable:23.4.0] C:\Users\asb180001\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-23.4.0.aar\a775dbd53179c69d1d1373b8d984e86b\AndroidManifest.xml:7:5-20
+MERGED from [com.android.support:animated-vector-drawable:23.4.0] C:\Users\asb180001\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-23.4.0.aar\a775dbd53179c69d1d1373b8d984e86b\AndroidManifest.xml:7:5-20
+MERGED from [com.android.support:support-vector-drawable:23.4.0] C:\Users\asb180001\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-23.4.0.aar\78c0d4dec70cc8814aef9683a6655981\AndroidManifest.xml:7:5-20
+MERGED from [com.android.support:support-vector-drawable:23.4.0] C:\Users\asb180001\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-23.4.0.aar\78c0d4dec70cc8814aef9683a6655981\AndroidManifest.xml:7:5-20
+MERGED from [com.android.support:support-v4:23.4.0] C:\Users\asb180001\.gradle\caches\transforms-1\files-1.1\support-v4-23.4.0.aar\965137127e5add8456b29e39893ca71a\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] C:\Users\asb180001\.gradle\caches\transforms-1\files-1.1\support-v4-23.4.0.aar\965137127e5add8456b29e39893ca71a\AndroidManifest.xml:22:5-20
+	android:supportsRtl
+		ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:14:9-35
+	android:label
+		ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:13:9-41
+	android:icon
+		ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:12:9-38
+	android:allowBackup
+		ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:11:9-35
+	android:theme
+		ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:15:9-40
+activity#cilab.utdallas.edu.ccimobile.MainActivity
+ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:16:9-33:20
+	android:name
+		ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:16:19-47
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:17:13-21:29
+action#android.intent.action.MAIN
+ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:18:17-69
+	android:name
+		ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:18:25-66
+category#android.intent.category.LAUNCHER
+ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:20:17-77
+	android:name
+		ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:20:27-74
+intent-filter#action:name:android.hardware.usb.action.USB_DEVICE_ATTACHED
+ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:22:13-24:29
+action#android.hardware.usb.action.USB_DEVICE_ATTACHED
+ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:23:17-90
+	android:name
+		ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:23:25-87
+meta-data#android.hardware.usb.action.USB_DEVICE_ATTACHED
+ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:26:13-28:57
+	android:resource
+		ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:28:17-54
+	android:name
+		ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:27:17-79
+intent-filter#action:name:android.hardware.usb.action.USB_DEVICE_DETACHED
+ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:30:13-32:29
+action#android.hardware.usb.action.USB_DEVICE_DETACHED
+ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:31:17-90
+	android:name
+		ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:31:25-87
+service#cilab.utdallas.edu.ccimobile.InitializationService
+ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:35:9-37:40
+	android:exported
+		ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:37:13-37
+	android:name
+		ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:36:13-50
+activity#cilab.utdallas.edu.ccimobile.SettingsActivity
+ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:39:9-54
+	android:name
+		ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:39:19-51
+activity#cilab.utdallas.edu.ccimobile.EnvironmentsActivity
+ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:40:9-67
+	android:name
+		ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml:40:19-55
+uses-sdk
+INJECTED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml
+INJECTED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml
+MERGED from [com.android.support:design:23.4.0] C:\Users\asb180001\.gradle\caches\transforms-1\files-1.1\design-23.4.0.aar\ee9e6cbac2ef8778a764769cc69b00c2\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:design:23.4.0] C:\Users\asb180001\.gradle\caches\transforms-1\files-1.1\design-23.4.0.aar\ee9e6cbac2ef8778a764769cc69b00c2\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:appcompat-v7:23.4.0] C:\Users\asb180001\.gradle\caches\transforms-1\files-1.1\appcompat-v7-23.4.0.aar\6d0230433dec9d6159fde103cf124eb4\AndroidManifest.xml:21:5-23:78
+MERGED from [com.android.support:appcompat-v7:23.4.0] C:\Users\asb180001\.gradle\caches\transforms-1\files-1.1\appcompat-v7-23.4.0.aar\6d0230433dec9d6159fde103cf124eb4\AndroidManifest.xml:21:5-23:78
+MERGED from [com.github.jorgecastilloprz:fillableloaders:1.03] C:\Users\asb180001\.gradle\caches\transforms-1\files-1.1\fillableloaders-1.03.aar\3d5de2d1f0e13e086f40c8022fbd2ddf\AndroidManifest.xml:5:5-7:41
+MERGED from [com.github.jorgecastilloprz:fillableloaders:1.03] C:\Users\asb180001\.gradle\caches\transforms-1\files-1.1\fillableloaders-1.03.aar\3d5de2d1f0e13e086f40c8022fbd2ddf\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:recyclerview-v7:23.4.0] C:\Users\asb180001\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-23.4.0.aar\ca2f733e96963856053fcead3f69a764\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:recyclerview-v7:23.4.0] C:\Users\asb180001\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-23.4.0.aar\ca2f733e96963856053fcead3f69a764\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:animated-vector-drawable:23.4.0] C:\Users\asb180001\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-23.4.0.aar\a775dbd53179c69d1d1373b8d984e86b\AndroidManifest.xml:5:5-44
+MERGED from [com.android.support:animated-vector-drawable:23.4.0] C:\Users\asb180001\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-23.4.0.aar\a775dbd53179c69d1d1373b8d984e86b\AndroidManifest.xml:5:5-44
+MERGED from [com.android.support:support-vector-drawable:23.4.0] C:\Users\asb180001\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-23.4.0.aar\78c0d4dec70cc8814aef9683a6655981\AndroidManifest.xml:5:5-43
+MERGED from [com.android.support:support-vector-drawable:23.4.0] C:\Users\asb180001\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-23.4.0.aar\78c0d4dec70cc8814aef9683a6655981\AndroidManifest.xml:5:5-43
+MERGED from [com.android.support:support-v4:23.4.0] C:\Users\asb180001\.gradle\caches\transforms-1\files-1.1\support-v4-23.4.0.aar\965137127e5add8456b29e39893ca71a\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.4.0] C:\Users\asb180001\.gradle\caches\transforms-1\files-1.1\support-v4-23.4.0.aar\965137127e5add8456b29e39893ca71a\AndroidManifest.xml:20:5-43
+INJECTED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml
+INJECTED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml
+	tools:overrideLibrary
+		ADDED from [com.android.support:appcompat-v7:23.4.0] C:\Users\asb180001\.gradle\caches\transforms-1\files-1.1\appcompat-v7-23.4.0.aar\6d0230433dec9d6159fde103cf124eb4\AndroidManifest.xml:23:9-75
+	android:targetSdkVersion
+		INJECTED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml
+		ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml
+		ADDED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\asb180001\Desktop\CCi-MOBILE\CCi-MOBILE\Android\CCiMOBILE\app\src\main\AndroidManifest.xml
