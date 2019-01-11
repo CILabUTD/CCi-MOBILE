@@ -1,8 +1,5 @@
 package cilab.utdallas.edu.ccimobile;
 
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,8 +53,7 @@ class MAP {
     double[] gains,
             lowerCutOffFrequencies, higherCutOffFrequencies;
 
-    String getLeftMapData(String FILE_NAME) {
-        String mapStatus;
+    void getLeftMapData(String FILE_NAME) {
 
         BufferedReader reader;
         try {
@@ -153,14 +149,10 @@ class MAP {
                     nbands = electrodes.length;
 
                     checkStimulationParameters();
-                    mapStatus = "Left MAP read successfully";
-                    return mapStatus;
 
 
                 } else {
                     dataMissing = true;
-                    mapStatus = "Left MAP could not be opened";
-                    return mapStatus;
                 }
 
             }
@@ -169,11 +161,9 @@ class MAP {
             e.printStackTrace();
         }
 
-        return "";
     }
 
-    String getRightMapData(String FILE_NAME) {
-        String mapStatus;
+    void getRightMapData(String FILE_NAME) {
 
         BufferedReader reader;
         try {
@@ -271,18 +261,13 @@ class MAP {
                     }
                     nbands = electrodes.length;
                     checkStimulationParameters();
-                    mapStatus = "Right MAP read successfully";
-                    return mapStatus;
                 } else {
                     dataMissing = true;
-                    mapStatus = "Right MAP could not be oepened";
-                    return mapStatus;
                 }
             }
         } catch (JSONException | IOException e) {
             e.printStackTrace();
         }
-        return "";
     }
 
     private void checkStimulationParameters() {

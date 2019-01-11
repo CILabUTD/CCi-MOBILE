@@ -81,15 +81,15 @@ public class InitializationService extends IntentService{
         /* Update UI: Download Service is Running */
         receiver.send(STATUS_RUNNING, Bundle.EMPTY);
 
-        String output = new String();
+        String output = "";
         int responseStep0 = 0; int responseStep1 = 0; int responseStep2 = 0; int responseStep3 = 0;
         try {
 
             responseStep0 = initializeConnection();
             if (responseStep0==1) { output = "Step 0 completed"; };
-            if (responseStep0==0) { output = "Step 0 unSucessful"; };
+            if (responseStep0==0) { output = "Step 0 unsuccessful"; };
                 /* Sending result back to activity */
-            if (null != output) {
+            if (!output.isEmpty()) { // null != output
                 bundle.putString("result", Integer.toString(responseStep0));
                 receiver.send(STATUS_STEP0_FINISHED, bundle);            }
         } catch (Exception e) {
@@ -107,7 +107,7 @@ public class InitializationService extends IntentService{
                 }
                 ;
                 //Sending result back to activity //
-                if (null != output) {
+                if (!output.isEmpty()) {
                     bundle.putStringArray("result", new String[]{output});
                     receiver.send(STATUS_STEP1_FINISHED, bundle);
                 }
@@ -127,7 +127,7 @@ public class InitializationService extends IntentService{
                 }
 
                 //Sending result back to activity //
-                if (null != output) {
+                if (!output.isEmpty()) {
                     bundle.putStringArray("result", new String[]{output});
                     receiver.send(STATUS_STEP2_FINISHED, bundle);
                 }
@@ -147,7 +147,7 @@ public class InitializationService extends IntentService{
                 }
 
                 //Sending result back to activity //
-                if (null != output) {
+                if (!output.isEmpty()) {
                     bundle.putStringArray("result", new String[]{output});
                     //bundle.put
                     receiver.send(STATUS_STEP3_FINISHED, bundle);
@@ -182,8 +182,7 @@ public class InitializationService extends IntentService{
         initializeStimuli();
 
         try { Thread.sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); }
-        int resultInitializeConnection = initializeDevice();
-        return resultInitializeConnection;
+        return initializeDevice();
     }
 
     private int initializeDevice() {
@@ -236,8 +235,6 @@ public class InitializationService extends IntentService{
             ftDev.resetDevice();
             ftDev.clrRts();
             setConfig(baudRate, dataBit, stopBit, parity, flowControl);
-        } else {
-
         }
 
         try{
@@ -245,7 +242,6 @@ public class InitializationService extends IntentService{
             s =new D2xxManager.DriverParameters();
             s.setBufferNumber(16);
             s.setReadTimeout(0);
-            t = true;
         }
         catch (D2xxManager.D2xxException e) {
             Log.e("FTDI_HT", "getInstance fail!!");
@@ -312,7 +308,7 @@ public class InitializationService extends IntentService{
 
         if(ftDev != null)
         {
-            if( true == ftDev.isOpen())
+            if(ftDev.isOpen())
             {
                 ftDev.close();
 
@@ -328,7 +324,7 @@ public class InitializationService extends IntentService{
             portIndex = 0;
         }
 
-        if( currentPortIndex == portIndex && ftDev != null && true == ftDev.isOpen() ){
+        if( currentPortIndex == portIndex && ftDev != null && ftDev.isOpen()){
             stringport.append(String.valueOf(portIndex));
             return;
         }
@@ -348,7 +344,7 @@ public class InitializationService extends IntentService{
             return;
         }
 
-        if (true == ftDev.isOpen())
+        if (ftDev.isOpen())
         {
             currentPortIndex = portIndex;
             ftDev.purge(D2xxManager.FT_PURGE_RX);
@@ -513,7 +509,6 @@ public class InitializationService extends IntentService{
             step1Result = 1;
         } catch (InterruptedException e) {
             e.printStackTrace();
-            step1Result = 0;
         }
         return step1Result;
     }
@@ -526,7 +521,6 @@ public class InitializationService extends IntentService{
             step2Result = 1;
         } catch (InterruptedException e) {
             e.printStackTrace();
-            step2Result = 0;
         }
         return step2Result;
     }
@@ -541,7 +535,6 @@ public class InitializationService extends IntentService{
             step3Result = 1;
         } catch (InterruptedException e) {
             e.printStackTrace();
-            step3Result = 0;
         }
         disconnectFunction();
         return step3Result;

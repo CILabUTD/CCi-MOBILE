@@ -391,12 +391,12 @@ public class SettingsActivity extends AppCompatActivity {
             leftMAPstimulationMode = preferences.getString("Left.stimulationMode", "");
             leftMAPstimulationRate = preferences.getInt("Left.stimulationRate", 0);
             leftMAPpulseWidth = preferences.getInt("Left.pulseWidth", 0);
-            leftMAPsensitivity = getDouble(preferences, "Left.sensitivity", 0);
-            leftMAPgain = getDouble(preferences, "Left.gain", 0);
+            leftMAPsensitivity = getDouble(preferences, "Left.sensitivity");
+            leftMAPgain = getDouble(preferences, "Left.gain");
             leftMAPvolume = preferences.getInt("Left.volume", 0);
-            leftMAPQfactor = getDouble(preferences, "Left.Qfactor", 0);
-            leftMAPbaseLevel = getDouble(preferences, "Left.baseLevel", 0);
-            leftMAPsaturationLevel = getDouble(preferences, "Left.saturationLevel", 0);
+            leftMAPQfactor = getDouble(preferences, "Left.Qfactor");
+            leftMAPbaseLevel = getDouble(preferences, "Left.baseLevel");
+            leftMAPsaturationLevel = getDouble(preferences, "Left.saturationLevel");
             leftMAPstimulationOrder = preferences.getString("Left.stimulationOrder", "");
             leftMAPwindow = preferences.getString("Left.window", "");
 
@@ -408,7 +408,7 @@ public class SettingsActivity extends AppCompatActivity {
             for (int i = 0; i < leftMAPnbands; i++) {
                 leftMAPTHR[i] = preferences.getInt("leftTHR" + i, 0);
                 leftMAPMCL[i] = preferences.getInt("leftMCL" + i, 0);
-                leftMAPgains[i] = getDouble(preferences, "leftgain" + i, 0);
+                leftMAPgains[i] = getDouble(preferences, "leftgain" + i);
                 leftMAPelectrodes[i] = preferences.getInt("leftelectrodes" + i, 0);
             }
 
@@ -428,12 +428,12 @@ public class SettingsActivity extends AppCompatActivity {
             rightMAPstimulationMode = preferences.getString("Right.stimulationMode", "");
             rightMAPstimulationRate = preferences.getInt("Right.stimulationRate", 0);
             rightMAPpulseWidth = preferences.getInt("Right.pulseWidth", 0);
-            rightMAPsensitivity = getDouble(preferences, "Right.sensitivity", 0);
-            rightMAPgain = getDouble(preferences, "Right.gain", 0);
+            rightMAPsensitivity = getDouble(preferences, "Right.sensitivity");
+            rightMAPgain = getDouble(preferences, "Right.gain");
             rightMAPvolume = preferences.getInt("Right.volume", 0);
-            rightMAPQfactor = getDouble(preferences, "Right.Qfactor", 0);
-            rightMAPbaseLevel = getDouble(preferences, "Right.baseLevel", 0);
-            rightMAPsaturationLevel = getDouble(preferences, "Right.saturationLevel", 0);
+            rightMAPQfactor = getDouble(preferences, "Right.Qfactor");
+            rightMAPbaseLevel = getDouble(preferences, "Right.baseLevel");
+            rightMAPsaturationLevel = getDouble(preferences, "Right.saturationLevel");
             rightMAPstimulationOrder = preferences.getString("Right.stimulationOrder", "");
             rightMAPwindow = preferences.getString("Right.window", "");
 
@@ -445,7 +445,7 @@ public class SettingsActivity extends AppCompatActivity {
             for (int i = 0; i < rightMAPnbands; i++) {
                 rightMAPTHR[i] = preferences.getInt("rightTHR" + i, 0);
                 rightMAPMCL[i] = preferences.getInt("rightMCL" + i, 0);
-                rightMAPgains[i] = getDouble(preferences, "rightgain" + i, 0);
+                rightMAPgains[i] = getDouble(preferences, "rightgain" + i);
                 rightMAPelectrodes[i] = preferences.getInt("rightelectrodes" + i, 0);
             }
 
@@ -1210,12 +1210,12 @@ public class SettingsActivity extends AppCompatActivity {
         return index;
     }
 
-    SharedPreferences.Editor putDouble(final SharedPreferences.Editor edit, final String key, final double value) {
-        return edit.putLong(key, Double.doubleToRawLongBits(value));
+    void putDouble(final SharedPreferences.Editor edit, final String key, final double value) {
+        edit.putLong(key, Double.doubleToRawLongBits(value));
     }
 
-    double getDouble(final SharedPreferences prefs, final String key, final double defaultValue) {
-        return Double.longBitsToDouble(prefs.getLong(key, Double.doubleToLongBits(defaultValue)));
+    double getDouble(final SharedPreferences prefs, final String key) {
+        return Double.longBitsToDouble(prefs.getLong(key, Double.doubleToLongBits((double) 0)));
     }
 
     boolean isIntInRange(int number, int upperbound, int lowerbound) {

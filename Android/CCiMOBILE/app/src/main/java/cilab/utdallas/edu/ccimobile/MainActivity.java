@@ -37,7 +37,6 @@ import com.ftdi.j2xx.D2xxManager;
 import com.ftdi.j2xx.FT_Device;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
@@ -61,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
     Queue<Integer> availQ;
     readThread readThread1;
 
-    byte[] writeBuffer, nullwriteBuffer, sineBuffer;
+    byte[] writeBuffer, nullWriteBuffer, sineBuffer;
 
     int baudRate = 5000000; // baud rate /// //460800; 921600; //5000000
     byte stopBit = (byte)2; // 1:1stop bits, 2:2 stop bits //
@@ -320,11 +319,11 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
             leftMAP.stimulationRate = preferences.getInt("Left.stimulationRate", 0);
             leftMAP.pulseWidth = preferences.getInt("Left.pulseWidth", 0);
-            leftMAP.sensitivity = getDouble(preferences, "Left.sensitivity", 0);
-            leftMAP.gain = getDouble(preferences, "Left.gain", 0);
-            leftMAP.Qfactor = getDouble(preferences, "Left.Qfactor", 0);
-            leftMAP.baseLevel = getDouble(preferences, "Left.baseLevel", 0);
-            leftMAP.saturationLevel = getDouble(preferences, "Left.saturationLevel", 0);
+            leftMAP.sensitivity = getDouble(preferences, "Left.sensitivity");
+            leftMAP.gain = getDouble(preferences, "Left.gain");
+            leftMAP.Qfactor = getDouble(preferences, "Left.Qfactor");
+            leftMAP.baseLevel = getDouble(preferences, "Left.baseLevel");
+            leftMAP.saturationLevel = getDouble(preferences, "Left.saturationLevel");
             leftMAP.nMaxima = preferences.getInt("Left.nMaxima", 0);
             leftMAP.volume = preferences.getInt("Left.volume", 0);
             leftMAP.stimulationOrder = preferences.getString("Left.stimulationOrder", "");
@@ -363,11 +362,11 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
             rightMAP.stimulationRate = preferences.getInt("Right.stimulationRate", 0);
             rightMAP.pulseWidth = preferences.getInt("Right.pulseWidth", 0);
-            rightMAP.sensitivity = getDouble(preferences, "Right.sensitivity", 0);
-            rightMAP.gain = getDouble(preferences, "Right.gain", 0);
-            rightMAP.Qfactor = getDouble(preferences, "Right.Qfactor", 0);
-            rightMAP.baseLevel = getDouble(preferences, "Right.baseLevel", 0);
-            rightMAP.saturationLevel = getDouble(preferences, "Right.saturationLevel", 0);
+            rightMAP.sensitivity = getDouble(preferences, "Right.sensitivity");
+            rightMAP.gain = getDouble(preferences, "Right.gain");
+            rightMAP.Qfactor = getDouble(preferences, "Right.Qfactor");
+            rightMAP.baseLevel = getDouble(preferences, "Right.baseLevel");
+            rightMAP.saturationLevel = getDouble(preferences, "Right.saturationLevel");
             rightMAP.nMaxima = preferences.getInt("Right.nMaxima", 0);
             rightMAP.volume = preferences.getInt("Right.volume", 0);
             rightMAP.stimulationOrder = preferences.getString("Right.stimulationOrder", "");
@@ -519,11 +518,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
                 setProgressBarIndeterminateVisibility(false);
                 results = resultData.getString("result");
                 connectionStatus.setText(R.string.Connecting1);
-                try {
-                    textOut(results);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                textOut(results);
                 break;
 
             case InitializationService.STATUS_STEP1_FINISHED:
@@ -702,21 +697,19 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
      * @param edit edit
      * @param key key
      * @param value value
-     * @return double
      */
-    SharedPreferences.Editor putDouble(final SharedPreferences.Editor edit, final String key, final double value) {
-        return edit.putLong(key, Double.doubleToRawLongBits(value));
+    void putDouble(final SharedPreferences.Editor edit, final String key, final double value) {
+        edit.putLong(key, Double.doubleToRawLongBits(value));
     }
 
     /**
      * Returns double
      * @param prefs prefs
      * @param key key
-     * @param defaultValue default
      * @return double
      */
-    double getDouble(final SharedPreferences prefs, final String key, final double defaultValue) {
-        return Double.longBitsToDouble(prefs.getLong(key, Double.doubleToLongBits(defaultValue)));
+    double getDouble(final SharedPreferences prefs, final String key) {
+        return Double.longBitsToDouble(prefs.getLong(key, Double.doubleToLongBits((double) 0)));
     }
 
     /**
@@ -898,7 +891,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
      */
     private void initializeStimuli() {
         writeBuffer = new byte[516];
-        nullwriteBuffer = new byte[516];
+        nullWriteBuffer = new byte[516];
         sineBuffer = new byte[516];
         stimuli = new Stimuli();
         sine_stim = new short[8];
@@ -916,17 +909,14 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
 
     /**
      * Initializes the connection
-     * @return int
      */
-    private int initializeConnection() {
-        boolean t = false;
+    private void initializeConnection() {
         availQ = new LinkedList<>();
         try{
             ftD2xx = D2xxManager.getInstance(this);
             s =new D2xxManager.DriverParameters();
             s.setBufferNumber(16);
             s.setReadTimeout(0);
-            t = true;
         }
         catch (D2xxManager.D2xxException e) {
             Log.e("FTDI_HT", "getInstance fail!!");
@@ -937,12 +927,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         catch (InterruptedException e) {
             e.printStackTrace(); }
         int resultInitializeConnection = initializeDevice();
-        try {
-            textOut(Integer.toString(resultInitializeConnection));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return resultInitializeConnection;
+        textOut(Integer.toString(resultInitializeConnection));
     }
 
     /**
@@ -988,12 +973,10 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             ftDev.clrRts();
             setConfig(baudRate, dataBit, stopBit, parity, flowControl);
             //midToast("config:", Toast.LENGTH_SHORT);
-            try { textOut("config: ");}
-            catch (IOException e) { e.printStackTrace(); }
+            textOut("config: ");
         } else {
             //midToast("DevCount<0", Toast.LENGTH_SHORT);
-            try { textOut("DevCount<0");}
-            catch (IOException e) { e.printStackTrace(); }
+            textOut("DevCount<0");
         }
 
         try{
@@ -1001,7 +984,6 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             s =new D2xxManager.DriverParameters();
             s.setBufferNumber(16);
             s.setReadTimeout(0);
-            t = true;
         }
         catch (D2xxManager.D2xxException e) {
             Log.e("FTDI_HT", "getInstance fail!!");
@@ -1082,8 +1064,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
 
         if (currentPortIndex == portIndex && ftDev != null && ftDev.isOpen()) {
             stringport.append(String.valueOf(portIndex));
-            try { textOut(stringport.toString());}
-            catch (IOException e) { e.printStackTrace(); }
+            textOut(stringport.toString());
             return;
         }
 
@@ -1099,11 +1080,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         if(ftDev == null)
         {
             stringport.append(String.valueOf(portIndex));
-            try {
-                textOut(stringport.toString());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            textOut(stringport.toString());
             return;
         }
 
@@ -1115,10 +1092,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         else
         {
             stringport.append(String.valueOf(portIndex));
-            try {
-                textOut(stringport.toString());
-            } catch (IOException e) {
-                e.printStackTrace(); }
+            textOut(stringport.toString());
         }
     }
 
@@ -1228,9 +1202,8 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
     /**
      * Prints text
      * @param s s
-     * @throws IOException e
      */
-    public void textOut(final String s) throws IOException {
+    public void textOut(final String s) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -1382,7 +1355,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         }
         else {
             status.setText(R.string.textRunning);
-            setOutputBuffer(nullwriteBuffer, null_token); // zero buffer
+            setOutputBuffer(nullWriteBuffer, null_token); // zero buffer
             setOutputBuffer(writeBuffer, leftMAP, rightMAP); // zero buffer
             readThread1 = new readThread();
             readThread1.start();
@@ -1416,8 +1389,8 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             byte[] readBuffer = new byte[512];
 
             ftDev.read(readBuffer, 512, 0); // to get the board started
-            int rc = ftDev.write(nullwriteBuffer, 516, true); // to get the board started
-            rc = ftDev.write(nullwriteBuffer, 516, true);// to get the board started
+            int rc = ftDev.write(nullWriteBuffer, 516, true); // to get the board started
+            rc = ftDev.write(nullWriteBuffer, 516, true);// to get the board started
 
             leftScaleFactor = leftMAP.sensitivity/32768;
             rightScaleFactor = rightMAP.sensitivity/32768;
