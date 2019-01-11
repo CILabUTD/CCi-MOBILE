@@ -1,0 +1,4 @@
+#Fri Jan 11 12:39:01 CST 2019
+base.0=C\:\\Users\\asb180001\\Desktop\\CCi-MOBILE\\CCi-MOBILE\\Android\\CCiMOBILE\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0
+path.0=classes.dex
+renamed.0=classes.dex

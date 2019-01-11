@@ -13,7 +13,7 @@ import java.io.InputStreamReader;
 class MAP {
     private final int frameDuration = 8;             //8 ms frame
     private final int interPhaseGap = 8;            //Interphase Gap is 8us
-    private final int durationSYNC = 6;             //Duration of Sycn Toekn in uS
+    private final int durationSYNC = 6;             //Duration of Sync token in us
     private final int additionalGap = 1;            //additional gap to make interpulse duration 7 uS ref. Fig. 14 in CIC4 specification
     public final int BLOCK_SIZE = 128;             //BLK_SIZE
     boolean exists = false;
