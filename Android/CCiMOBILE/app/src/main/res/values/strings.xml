@@ -108,12 +108,12 @@
     <string name="manage_map_button">SELECT MAP</string>
     <string name="textReady">Ready</string>
     <string name="textConnected">Connected</string>
-    <string name="textLeftSens">Left Sensitivity:\u0020</string>
-    <string name="textLeftGain">Left Gain (dB):\u0020</string>
+    <string name="textLeftSens">Left Sensitivity</string>
+    <string name="textLeftGain">Left Gain (dB)</string>
     <string name="textRunning">Running</string>
     <string name="textStopped">Stopped</string>
-    <string name="textRightSens">Right Sensitivity:\u0020</string>
-    <string name="textRightGain">Right Gain (dB):\u0020</string>
+    <string name="textRightSens">Right Sensitivity</string>
+    <string name="textRightGain">Right Gain (dB)</string>
     <string name="textStep1">Step 1 completed</string>
     <string name="textStep2">Step 2 completed</string>
     <string name="textSaveMap">Save MAP</string>

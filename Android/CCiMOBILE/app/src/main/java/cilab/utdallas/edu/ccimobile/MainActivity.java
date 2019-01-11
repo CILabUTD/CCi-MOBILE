@@ -35,6 +35,7 @@ import android.widget.ToggleButton;
 
 import com.ftdi.j2xx.D2xxManager;
 import com.ftdi.j2xx.FT_Device;
+import com.xw.repo.BubbleSeekBar;
 
 import java.io.File;
 import java.nio.ByteBuffer;
@@ -89,6 +90,8 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
     ToggleButton buttonStartStop;
     SeekBar seekBarLeftSensitivity, seekBarRightSensitivity, seekBarLeftGain, seekBarRightGain;
 
+    BubbleSeekBar bubbleLeftSens, bubbleLeftGain, bubbleRightSens, bubbleRightGain;
+
     private static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 12;
     private static final int READ_REQUEST_CODE = 42;
     private static final int RETURN_FROM_SETTINGS = 3;
@@ -107,15 +110,36 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         textViewMAP = findViewById(R.id.textView215);
 
         // disable sliders
-        seekBarLeftSensitivity = findViewById(R.id.seekBarLeftSensitivity);
-        seekBarLeftGain = findViewById(R.id.seekBarLeftGain);
-        seekBarRightSensitivity = findViewById(R.id.seekBarRightSensitivity);
-        seekBarRightGain = findViewById(R.id.seekBarRightGain);
+        //seekBarLeftSensitivity = findViewById(R.id.seekBarLeftSensitivity);
+        //seekBarLeftGain = findViewById(R.id.seekBarLeftGain);
+        //seekBarRightSensitivity = findViewById(R.id.seekBarRightSensitivity);
+        //seekBarRightGain = findViewById(R.id.seekBarRightGain);
 
-        seekBarLeftSensitivity.setEnabled(false);
-        seekBarLeftGain.setEnabled(false);
-        seekBarRightSensitivity.setEnabled(false);
-        seekBarRightGain.setEnabled(false);
+        //seekBarLeftSensitivity.setEnabled(false);
+        //seekBarLeftGain.setEnabled(false);
+        //seekBarRightSensitivity.setEnabled(false);
+        //seekBarRightGain.setEnabled(false);
+
+        bubbleLeftSens = findViewById(R.id.bubbleSeekBarLeftSensitivity);
+        bubbleLeftGain = findViewById(R.id.bubbleLeftGain);
+        bubbleRightSens = findViewById(R.id.bubbleRightSens);
+        bubbleRightGain = findViewById(R.id.bubbleRightGain);
+
+        bubbleLeftSens.setEnabled(false);
+        bubbleLeftGain.setEnabled(false);
+        bubbleRightSens.setEnabled(false);
+        bubbleRightGain.setEnabled(false);
+
+        leftSensitivity = findViewById(R.id.textViewLeftSensitivity);
+        leftGain = findViewById(R.id.textViewLeftGain);
+        rightSensitivity = findViewById(R.id.textViewRightSensitivity);
+        rightGain = findViewById(R.id.textViewRightGain);
+
+        leftSensitivity.setText(R.string.textLeftSens);
+        leftGain.setText(R.string.textLeftGain);
+        rightSensitivity.setText(R.string.textRightSens);
+        rightGain.setText(R.string.textRightGain);
+
     }
 
     /**
@@ -325,8 +349,11 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             } else if (leftMAP.sensitivity < 0) {
                 leftMAP.sensitivity = 0;
             }
-            leftSensitivity.setText(String.format("%s%s", getString(R.string.textLeftSens), leftMAP.sensitivity));
-            seekBarLeftSensitivity.setProgress((int) leftMAP.sensitivity * 10);
+            //leftSensitivity.setText(String.format("%s%s", getString(R.string.textLeftSens), leftMAP.sensitivity));
+
+            //seekBarLeftSensitivity.setProgress((int) leftMAP.sensitivity * 10);
+            bubbleLeftSens.setProgress((float) leftMAP.sensitivity);
+
 
             leftMAP.gain = data.getDoubleExtra("leftGain", 0);
             if (leftMAP.gain > 50) {
@@ -334,8 +361,9 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             } else if (leftMAP.gain < 0) {
                 leftMAP.gain = 0;
             }
-            leftGain.setText(String.format("%s%s", getString(R.string.textLeftGain), leftMAP.gain));
-            seekBarLeftGain.setProgress((int) leftMAP.gain);
+            //leftGain.setText(String.format("%s%s", getString(R.string.textLeftGain), leftMAP.gain));
+            //seekBarLeftGain.setProgress((int) leftMAP.gain);
+            bubbleLeftGain.setProgress((float) leftMAP.gain);
 
             leftMAP.implantGeneration = data.getStringExtra("leftMAPimplantGeneration");
             leftMAP.stimulationModeCode = data.getIntExtra("leftMAPstimulationModeCode", 0);
@@ -368,8 +396,10 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             } else if (rightMAP.sensitivity < 0) {
                 rightMAP.sensitivity = 0;
             }
-            rightSensitivity.setText(String.format("%s%s", getString(R.string.textRightSens), rightMAP.sensitivity));
-            seekBarRightSensitivity.setProgress((int) rightMAP.sensitivity * 10);
+            //rightSensitivity.setText(String.format("%s%s", getString(R.string.textRightSens), rightMAP.sensitivity));
+            //seekBarRightSensitivity.setProgress((int) rightMAP.sensitivity * 10);
+            bubbleRightSens.setProgress((float) rightMAP.sensitivity);
+
 
             rightMAP.gain = data.getDoubleExtra("rightGain", 0);
             if (rightMAP.gain > 50) {
@@ -377,8 +407,9 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             } else if (rightMAP.gain < 0) {
                 rightMAP.gain = 0;
             }
-            rightGain.setText(String.format("%s%s", getString(R.string.textRightGain), rightMAP.gain));
-            seekBarRightGain.setProgress((int) rightMAP.gain);
+            //rightGain.setText(String.format("%s%s", getString(R.string.textRightGain), rightMAP.gain));
+            //seekBarRightGain.setProgress((int) rightMAP.gain);
+            bubbleRightGain.setProgress((float) rightMAP.gain);
 
             rightMAP.implantGeneration = data.getStringExtra("rightMAPimplantGeneration");
             rightMAP.stimulationModeCode = data.getIntExtra("rightMAPstimulationModeCode", 0);
@@ -756,24 +787,51 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         statusImage = findViewById(R.id.imageStatus);
 
         // left
-        leftSensitivity = findViewById(R.id.textViewLeftSensitivity);
-        leftGain = findViewById(R.id.textViewLeftGain);
 
-        seekBarLeftSensitivity.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+//        seekBarLeftSensitivity.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//            double value;
+//            @Override
+//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+//                value = (double) progress / 10;
+//            }
+//            @Override
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//            }
+//            @Override
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//                leftMAP.sensitivity = value;
+//                leftScaleFactor = value / 32768;
+//                leftACE = new ACE(leftMAP);
+//                leftSensitivity.setText(String.format("%s%s", getString(R.string.textLeftSens), value));
+//                Toast.makeText(getApplicationContext(), "Left Sensitivity value changed to " + value, Toast.LENGTH_SHORT).show();
+//
+//                // Update preferences value
+//                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+//                SharedPreferences.Editor editor = preferences.edit();
+//                putDouble(editor, "Left.sensitivity", leftMAP.sensitivity);
+//                editor.apply();
+//            }
+//        });
+
+
+        bubbleLeftSens.setOnProgressChangedListener(new BubbleSeekBar.OnProgressChangedListenerAdapter() {
             double value;
+
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                value = (double) progress / 10;
+            public void onProgressChanged(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat, boolean fromUser) {
+                //value = (double) progress / 10;
+                value = (double) progressFloat;
+                value = (double) Math.round(value * 10d) / 10d;
+
             }
+
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
+            public void getProgressOnActionUp(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat) {
                 leftMAP.sensitivity = value;
                 leftScaleFactor = value / 32768;
                 leftACE = new ACE(leftMAP);
-                leftSensitivity.setText(String.format("%s%s", getString(R.string.textLeftSens), value));
+                //leftSensitivity.setText(String.format("%s%s", getString(R.string.textLeftSens), value));
                 Toast.makeText(getApplicationContext(), "Left Sensitivity value changed to " + value, Toast.LENGTH_SHORT).show();
 
                 // Update preferences value
@@ -781,23 +839,65 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
                 SharedPreferences.Editor editor = preferences.edit();
                 putDouble(editor, "Left.sensitivity", leftMAP.sensitivity);
                 editor.apply();
+
+            }
+
+            @Override
+            public void getProgressOnFinally(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat, boolean fromUser) {
+//                leftMAP.sensitivity = value;
+//                leftScaleFactor = value / 32768;
+//                leftACE = new ACE(leftMAP);
+//                leftSensitivity.setText(String.format("%s%s", getString(R.string.textLeftSens), value));
+//                Toast.makeText(getApplicationContext(), "Left Sensitivity value changed to " + value, Toast.LENGTH_SHORT).show();
+//
+//                // Update preferences value
+//                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+//                SharedPreferences.Editor editor = preferences.edit();
+//                putDouble(editor, "Left.sensitivity", leftMAP.sensitivity);
+//                editor.apply();
             }
         });
 
-        seekBarLeftGain.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//        seekBarLeftGain.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//            double value;
+//            @Override
+//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+//                value = (double) progress;
+//            }
+//            @Override
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//            }
+//            @Override
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//                leftMAP.gain = value;
+//                leftACE = new ACE(leftMAP);
+//                leftGain.setText(String.format("%s%s", getString(R.string.textLeftGain), value));
+//                Toast.makeText(getApplicationContext(), "Left Gain value changed to " + value + " dB", Toast.LENGTH_SHORT).show();
+//
+//                // Update preferences value
+//                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+//                SharedPreferences.Editor editor = preferences.edit();
+//                putDouble(editor, "Left.gain", leftMAP.gain);
+//                editor.apply();
+//            }
+//        });
+
+        bubbleLeftGain.setOnProgressChangedListener(new BubbleSeekBar.OnProgressChangedListenerAdapter() {
             double value;
+
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                value = (double) progress;
+            public void onProgressChanged(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat, boolean fromUser) {
+                //value = (double) progress / 10;
+                value = (double) progressFloat;
+                value = (double) Math.round(value * 10d) / 10d;
+
             }
+
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
+            public void getProgressOnActionUp(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat) {
                 leftMAP.gain = value;
                 leftACE = new ACE(leftMAP);
-                leftGain.setText(String.format("%s%s", getString(R.string.textLeftGain), value));
+                //leftGain.setText(String.format("%s%s", getString(R.string.textLeftGain), value));
                 Toast.makeText(getApplicationContext(), "Left Gain value changed to " + value + " dB", Toast.LENGTH_SHORT).show();
 
                 // Update preferences value
@@ -806,29 +906,61 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
                 putDouble(editor, "Left.gain", leftMAP.gain);
                 editor.apply();
             }
+
+            @Override
+            public void getProgressOnFinally(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat, boolean fromUser) {
+            }
         });
+
 
         updateGUILeft();
 
         // right
-        rightSensitivity = findViewById(R.id.textViewRightSensitivity);
-        rightGain = findViewById(R.id.textViewRightGain);
+        //rightSensitivity = findViewById(R.id.textViewRightSensitivity);
+        //rightGain = findViewById(R.id.textViewRightGain);
 
-        seekBarRightSensitivity.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//        seekBarRightSensitivity.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//            double value;
+//
+//            @Override
+//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+//                value = (double) progress / 10;
+//            }
+//            @Override
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//            }
+//            @Override
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//                rightMAP.sensitivity = value;
+//                rightScaleFactor = value / 32768;
+//                rightSensitivity.setText(String.format("%s%s", getString(R.string.textRightSens), value));
+//                rightACE = new ACE(rightMAP);
+//                Toast.makeText(getApplicationContext(), "Right Sensitivity value changed to " + value, Toast.LENGTH_SHORT).show();
+//
+//                // Update preferences value
+//                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+//                SharedPreferences.Editor editor = preferences.edit();
+//                putDouble(editor, "Right.sensitivity", rightMAP.sensitivity);
+//                editor.apply();
+//            }
+//        });
+
+        bubbleRightSens.setOnProgressChangedListener(new BubbleSeekBar.OnProgressChangedListenerAdapter() {
             double value;
 
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                value = (double) progress / 10;
+            public void onProgressChanged(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat, boolean fromUser) {
+                //value = (double) progress / 10;
+                value = (double) progressFloat;
+                value = (double) Math.round(value * 10d) / 10d;
+
             }
+
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
+            public void getProgressOnActionUp(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat) {
                 rightMAP.sensitivity = value;
                 rightScaleFactor = value / 32768;
-                rightSensitivity.setText(String.format("%s%s", getString(R.string.textRightSens), value));
+                //rightSensitivity.setText(String.format("%s%s", getString(R.string.textRightSens), value));
                 rightACE = new ACE(rightMAP);
                 Toast.makeText(getApplicationContext(), "Right Sensitivity value changed to " + value, Toast.LENGTH_SHORT).show();
 
@@ -838,22 +970,54 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
                 putDouble(editor, "Right.sensitivity", rightMAP.sensitivity);
                 editor.apply();
             }
+
+            @Override
+            public void getProgressOnFinally(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat, boolean fromUser) {
+
+            }
         });
 
-        seekBarRightGain.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+//        seekBarRightGain.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//            double value;
+//            @Override
+//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+//                value = (double) progress;
+//            }
+//            @Override
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//            }
+//            @Override
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//                rightMAP.gain = value;
+//                rightACE = new ACE(rightMAP);
+//                rightGain.setText(String.format("%s%s", getString(R.string.textRightGain), value));
+//                Toast.makeText(getApplicationContext(), "Right Gain value changed to " + value + " dB", Toast.LENGTH_SHORT).show();
+//
+//                // Update preferences value
+//                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+//                SharedPreferences.Editor editor = preferences.edit();
+//                putDouble(editor, "Right.gain", rightMAP.gain);
+//                editor.apply();
+//            }
+//        });
+
+        bubbleRightGain.setOnProgressChangedListener(new BubbleSeekBar.OnProgressChangedListenerAdapter() {
             double value;
+
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                value = (double) progress;
+            public void onProgressChanged(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat, boolean fromUser) {
+                //value = (double) progress / 10;
+                value = (double) progressFloat;
+                value = (double) Math.round(value * 10d) / 10d;
+
             }
+
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
+            public void getProgressOnActionUp(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat) {
                 rightMAP.gain = value;
                 rightACE = new ACE(rightMAP);
-                rightGain.setText(String.format("%s%s", getString(R.string.textRightGain), value));
+                //rightGain.setText(String.format("%s%s", getString(R.string.textRightGain), value));
                 Toast.makeText(getApplicationContext(), "Right Gain value changed to " + value + " dB", Toast.LENGTH_SHORT).show();
 
                 // Update preferences value
@@ -861,6 +1025,10 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
                 SharedPreferences.Editor editor = preferences.edit();
                 putDouble(editor, "Right.gain", rightMAP.gain);
                 editor.apply();
+            }
+
+            @Override
+            public void getProgressOnFinally(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat, boolean fromUser) {
             }
         });
 
@@ -872,18 +1040,31 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
      */
     private void updateGUILeft() {
         if (leftMAP.exists) {
-            leftSensitivity.setText(String.format("%s%s", getString(R.string.textLeftSens), leftMAP.sensitivity));
-            seekBarLeftSensitivity.setEnabled(true);
-            seekBarLeftSensitivity.setProgress((int) leftMAP.sensitivity * 10);
-            leftGain.setText(String.format("%s%s", getString(R.string.textLeftGain), leftMAP.gain));
-            seekBarLeftGain.setEnabled(true);
-            seekBarLeftGain.setProgress((int) leftMAP.gain);
+            //leftSensitivity.setText(String.format("%s%s", getString(R.string.textLeftSens), leftMAP.sensitivity));
+
+            //seekBarLeftSensitivity.setEnabled(true);
+            //seekBarLeftSensitivity.setProgress((int) leftMAP.sensitivity * 10);
+            bubbleLeftSens.setEnabled(true);
+            bubbleLeftSens.setProgress((float) leftMAP.sensitivity);
+
+            //leftGain.setText(String.format("%s%s", getString(R.string.textLeftGain), leftMAP.gain));
+            //seekBarLeftGain.setEnabled(true);
+            //seekBarLeftGain.setProgress((int) leftMAP.gain);
+            bubbleLeftGain.setEnabled(true);
+            bubbleLeftGain.setProgress((float) leftMAP.gain);
+
+            leftSensitivity.setText(R.string.textLeftSens);
+            leftGain.setText(R.string.textLeftGain);
 
             leftACE = new ACE(leftMAP);
 
         } else {
-            seekBarLeftSensitivity.setEnabled(false);
-            seekBarLeftGain.setEnabled(false);
+            //seekBarLeftSensitivity.setEnabled(false);
+            bubbleLeftSens.setEnabled(false);
+
+            //seekBarLeftGain.setEnabled(false);
+            bubbleLeftGain.setEnabled(false);
+
             leftSensitivity.setText("");
             leftGain.setText("");
         }
@@ -894,18 +1075,32 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
      */
     private void updateGUIRight() {
         if (rightMAP.exists) {
-            rightGain.setText(String.format("%s%s", getString(R.string.textRightGain), rightMAP.gain));
-            seekBarRightGain.setEnabled(true);
-            seekBarRightGain.setProgress((int) rightMAP.gain);
-            rightSensitivity.setText(String.format("%s%s", getString(R.string.textRightSens), rightMAP.sensitivity));
-            seekBarRightSensitivity.setEnabled(true);
-            seekBarRightSensitivity.setProgress((int) rightMAP.sensitivity * 10);
+            //rightGain.setText(String.format("%s%s", getString(R.string.textRightGain), rightMAP.gain));
+            //seekBarRightGain.setEnabled(true);
+            //seekBarRightGain.setProgress((int) rightMAP.gain);
+
+            bubbleRightGain.setEnabled(true);
+            bubbleRightGain.setProgress((float) rightMAP.gain);
+
+            //rightSensitivity.setText(String.format("%s%s", getString(R.string.textRightSens), rightMAP.sensitivity));
+            //seekBarRightSensitivity.setEnabled(true);
+            //seekBarRightSensitivity.setProgress((int) rightMAP.sensitivity * 10);
+
+            bubbleRightSens.setEnabled(true);
+            bubbleRightSens.setProgress((float) rightMAP.sensitivity);
 
             rightACE = new ACE(rightMAP);
 
+            rightSensitivity.setText(R.string.textRightSens);
+            rightGain.setText(R.string.textRightGain);
+
         } else {
-            seekBarRightSensitivity.setEnabled(false);
-            seekBarRightGain.setEnabled(false);
+            //seekBarRightSensitivity.setEnabled(false);
+            //seekBarRightGain.setEnabled(false);
+
+            bubbleRightSens.setEnabled(false);
+            bubbleRightGain.setEnabled(false);
+
             rightSensitivity.setText("");
             rightGain.setText("");
         }

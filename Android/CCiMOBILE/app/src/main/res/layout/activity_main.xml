@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -73,6 +74,7 @@
             android:layout_marginBottom="10dp"
             android:layout_gravity="center_horizontal" />
 
+        <!--
         <SeekBar
             android:id="@+id/seekBarLeftSensitivity"
             android:layout_width="match_parent"
@@ -80,6 +82,22 @@
             android:layout_marginBottom="30dp"
             android:max="100"
             android:progress="0" />
+            -->
+
+        <com.xw.repo.BubbleSeekBar
+            android:id="@+id/bubbleSeekBarLeftSensitivity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            app:bsb_max="10"
+            android:progress="0"
+            app:bsb_show_section_mark="true"
+            app:bsb_show_section_text="true"
+            app:bsb_show_progress_in_float="true"
+            app:bsb_show_thumb_text="true"
+            app:bsb_section_text_position="bottom_sides"
+            />
+
 
         <TextView
             android:layout_width="wrap_content"
@@ -89,13 +107,29 @@
             android:layout_marginBottom="10dp"
             android:layout_gravity="center_horizontal" />
 
-        <SeekBar
+        <!--<SeekBar
             android:id="@+id/seekBarLeftGain"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="30dp"
             android:max="50"
-            android:progress="0" />
+            android:progress="0" /> -->
+
+        <com.xw.repo.BubbleSeekBar
+            android:id="@+id/bubbleLeftGain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            app:bsb_max="50"
+            android:progress="0"
+            app:bsb_show_section_mark="true"
+            app:bsb_show_section_text="true"
+            app:bsb_show_progress_in_float="true"
+            app:bsb_show_thumb_text="true"
+            app:bsb_section_text_position="bottom_sides"
+            />
+
+
 
     </LinearLayout>
 
@@ -115,6 +149,7 @@
             android:layout_marginBottom="10dp"
             android:layout_gravity="center_horizontal" />
 
+        <!--
         <SeekBar
             android:id="@+id/seekBarRightSensitivity"
             android:layout_width="match_parent"
@@ -122,6 +157,22 @@
             android:layout_marginBottom="30dp"
             android:max="100"
             android:progress="0" />
+            -->
+
+        <com.xw.repo.BubbleSeekBar
+            android:id="@+id/bubbleRightSens"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            app:bsb_max="10"
+            android:progress="0"
+            app:bsb_show_section_mark="true"
+            app:bsb_show_section_text="true"
+            app:bsb_show_progress_in_float="true"
+            app:bsb_show_thumb_text="true"
+            app:bsb_section_text_position="bottom_sides"
+            />
+
 
         <TextView
             android:layout_width="wrap_content"
@@ -131,6 +182,7 @@
             android:layout_marginBottom="10dp"
             android:layout_gravity="center_horizontal" />
 
+        <!--
         <SeekBar
             android:id="@+id/seekBarRightGain"
             android:layout_width="match_parent"
@@ -138,6 +190,21 @@
             android:layout_marginBottom="30dp"
             android:max="50"
             android:progress="0" />
+            -->
+
+        <com.xw.repo.BubbleSeekBar
+            android:id="@+id/bubbleRightGain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            app:bsb_max="50"
+            android:progress="0"
+            app:bsb_show_section_mark="true"
+            app:bsb_show_section_text="true"
+            app:bsb_show_progress_in_float="true"
+            app:bsb_show_thumb_text="true"
+            app:bsb_section_text_position="bottom_sides"
+            />
 
 
     </LinearLayout>
