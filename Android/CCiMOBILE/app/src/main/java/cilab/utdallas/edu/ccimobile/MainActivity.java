@@ -50,7 +50,7 @@ import java.util.Queue;
 public class MainActivity extends AppCompatActivity implements InitializationResultReceiver.Receiver {
 
     boolean settingsMono, settingsLeft, settingsRight, settingsStereo, folderExists;
-    boolean first = true; // First time MAP is selected
+    boolean noMAP = true; // No MAP selected yet
 
     public static D2xxManager ftD2xx = null;
     FT_Device ft_device_0, ft_device_1, ftDev;
@@ -101,10 +101,21 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         global_context = this;
         status = findViewById(R.id.textStatus);
         textViewMAP = findViewById(R.id.textView215);
 
+        // disable sliders
+        seekBarLeftSensitivity = findViewById(R.id.seekBarLeftSensitivity);
+        seekBarLeftGain = findViewById(R.id.seekBarLeftGain);
+        seekBarRightSensitivity = findViewById(R.id.seekBarRightSensitivity);
+        seekBarRightGain = findViewById(R.id.seekBarRightGain);
+
+        seekBarLeftSensitivity.setEnabled(false);
+        seekBarLeftGain.setEnabled(false);
+        seekBarRightSensitivity.setEnabled(false);
+        seekBarRightGain.setEnabled(false);
     }
 
     /**
@@ -171,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
      * Main functions
      */
     void startMainFunctions() {
-        if (first) {
+        if (noMAP) {
             initialize();
             callInitializationService();
         }
@@ -245,6 +256,24 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_activity, menu);
+        return true;
+    }
+
+    /**
+     * Removes menu options for Settings and Environments if no MAP has been selected yet.
+     * @param menu m
+     * @return true
+     */
+    @Override
+    public boolean onPrepareOptionsMenu (Menu menu) {
+        if (noMAP) {
+            menu.findItem(R.id.menuSettings).setEnabled(false);
+            menu.findItem(R.id.menuEnvironments).setEnabled(false);
+        }
+        else {
+            menu.findItem(R.id.menuSettings).setEnabled(true);
+            menu.findItem(R.id.menuEnvironments).setEnabled(true);
+        }
         return true;
     }
 
@@ -435,7 +464,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             editor.apply();
 
             startMainFunctions();
-            first = false;
+            noMAP = false;
         }
     }
 
@@ -727,8 +756,6 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         statusImage = findViewById(R.id.imageStatus);
 
         // left
-        seekBarLeftSensitivity = findViewById(R.id.seekBarLeftSensitivity);
-        seekBarLeftGain = findViewById(R.id.seekBarLeftGain);
         leftSensitivity = findViewById(R.id.textViewLeftSensitivity);
         leftGain = findViewById(R.id.textViewLeftGain);
 
@@ -784,8 +811,6 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         updateGUILeft();
 
         // right
-        seekBarRightSensitivity = findViewById(R.id.seekBarRightSensitivity);
-        seekBarRightGain = findViewById(R.id.seekBarRightGain);
         rightSensitivity = findViewById(R.id.textViewRightSensitivity);
         rightGain = findViewById(R.id.textViewRightGain);
 

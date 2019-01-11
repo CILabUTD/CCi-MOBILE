@@ -72,13 +72,14 @@
             android:id="@+id/textViewLeftSensitivity"
             android:layout_marginBottom="10dp"
             android:layout_gravity="center_horizontal" />
+
         <SeekBar
+            android:id="@+id/seekBarLeftSensitivity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/seekBarLeftSensitivity"
+            android:layout_marginBottom="30dp"
             android:max="100"
-            android:progress="23"
-            android:layout_marginBottom="30dp" />
+            android:progress="0" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -87,13 +88,14 @@
             android:id="@+id/textViewLeftGain"
             android:layout_marginBottom="10dp"
             android:layout_gravity="center_horizontal" />
+
         <SeekBar
+            android:id="@+id/seekBarLeftGain"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/seekBarLeftGain"
+            android:layout_marginBottom="30dp"
             android:max="50"
-            android:progress="25"
-            android:layout_marginBottom="30dp" />
+            android:progress="0" />
 
     </LinearLayout>
 
@@ -112,13 +114,14 @@
             android:id="@+id/textViewRightSensitivity"
             android:layout_marginBottom="10dp"
             android:layout_gravity="center_horizontal" />
+
         <SeekBar
+            android:id="@+id/seekBarRightSensitivity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/seekBarRightSensitivity"
+            android:layout_marginBottom="30dp"
             android:max="100"
-            android:progress="23"
-            android:layout_marginBottom="30dp" />
+            android:progress="0" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -127,13 +130,14 @@
             android:id="@+id/textViewRightGain"
             android:layout_marginBottom="10dp"
             android:layout_gravity="center_horizontal" />
+
         <SeekBar
+            android:id="@+id/seekBarRightGain"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/seekBarRightGain"
+            android:layout_marginBottom="30dp"
             android:max="50"
-            android:progress="25"
-            android:layout_marginBottom="30dp" />
+            android:progress="0" />
 
 
     </LinearLayout>
