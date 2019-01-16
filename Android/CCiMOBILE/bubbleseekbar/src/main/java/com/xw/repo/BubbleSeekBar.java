@@ -80,7 +80,7 @@ public class BubbleSeekBar extends View {
     private int mSectionTextSize; // text size of section-text
     private int mSectionTextColor; // text color of section-text
     @TextPosition
-    private int mSectionTextPosition = NONE; // text position of section-text relative to track
+    private int mSectionTextPosition; // text position of section-text relative to track
     private int mSectionTextInterval; // the interval of two section-text
     private boolean isShowThumbText; // show real time progress-text under thumb or not
     private int mThumbTextSize; // text size of progress-text
@@ -468,7 +468,7 @@ public class BubbleSeekBar extends View {
         getLocationOnScreen(mPoint);
 
         ViewParent parent = getParent();
-        if (parent != null && parent instanceof View && ((View) parent).getMeasuredWidth() > 0) {
+        if (parent instanceof View && ((View) parent).getMeasuredWidth() > 0) {
             mPoint[0] %= ((View) parent).getMeasuredWidth();
         }
 

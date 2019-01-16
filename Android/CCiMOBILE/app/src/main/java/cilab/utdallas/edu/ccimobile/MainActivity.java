@@ -1,6 +1,7 @@
 package cilab.utdallas.edu.ccimobile;
 
 import android.Manifest;
+import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -28,6 +29,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -93,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
     TextView status, connectionStatus, leftSensitivity, rightSensitivity, leftGain, rightGain, textViewMAP;
     ImageView statusImage;
     ToggleButton buttonStartStop;
+    Button buttonSaveMAP;
 
     BubbleSeekBar bubbleLeftSens, bubbleLeftGain, bubbleRightSens, bubbleRightGain;
 
@@ -112,12 +115,13 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         global_context = this;
         status = findViewById(R.id.textStatus);
         textViewMAP = findViewById(R.id.textView215);
-
+        buttonSaveMAP = findViewById(R.id.buttonSaveMAP);
         bubbleLeftSens = findViewById(R.id.bubbleSeekBarLeftSensitivity);
         bubbleLeftGain = findViewById(R.id.bubbleLeftGain);
         bubbleRightSens = findViewById(R.id.bubbleRightSens);
         bubbleRightGain = findViewById(R.id.bubbleRightGain);
 
+        buttonSaveMAP.setEnabled(false);
         bubbleLeftSens.setEnabled(false);
         bubbleLeftGain.setEnabled(false);
         bubbleRightSens.setEnabled(false);
@@ -267,12 +271,28 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
     /**
      * Saves the current MAP parameters to a JSON text file on the phone
      */
-    public void saveMAP(View view) throws IOException {
-        String MAPfilename = "AnExampleSave";
-        File file = new File(Environment.getExternalStorageDirectory() + "/" + MAPfilename + ".txt");
-        FileOutputStream fOut = new FileOutputStream(file);
-        writeJsonStream(fOut);
-        fOut.close();
+    public void saveMAP(View view) {
+        String MAPfilename = "AnExampleSave.txt";
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), MAPfilename);
+
+        try {
+            // Write and save the file
+            FileOutputStream fOut = new FileOutputStream(file);
+            writeJsonStream(fOut);
+            fOut.close();
+
+            // Download the file to make it appear in the Downloads folder
+            File dir = new File("//sdcard//Download//");
+            File MAPfile = new File(dir, MAPfilename);
+            DownloadManager downloadManager = (DownloadManager) global_context.getSystemService(DOWNLOAD_SERVICE);
+            if (downloadManager != null) {
+                downloadManager.addCompletedDownload(MAPfile.getName(), MAPfile.getName(), true, "text/plain", MAPfile.getAbsolutePath(), file.length(), true);
+            }
+
+            Log.e("MainActivity.java", "File saved successfully.");
+        } catch (IOException e) {
+            Log.e("MainActivity.java", "Error saving file. " + e.getMessage());
+        }
     }
 
     /**
@@ -284,7 +304,6 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         JsonWriter writer = new JsonWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
         writer.setIndent("  ");
 
-        writer.beginObject(); // begin the file
         writer.beginObject(); // first {
 
         writeJSONGeneral(writer);
@@ -295,7 +314,6 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             writeJSONMAP(writer, rightMAP, "Right");
 
         writer.endObject(); // last }
-        writer.endObject(); // end the file
         writer.close();
     }
 
@@ -414,7 +432,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
      */
     void verifyFolderExists() {
         File folder = new File(Environment.getExternalStorageDirectory() +
-                File.separator + "CCiMOBILE_files");
+                File.separator + "CCiMOBILE MAPs");
         boolean success = true;
         if (!folder.exists()) {
             success = folder.mkdirs();
@@ -878,14 +896,18 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
      */
     private void initializeGUI() {
         connectionStatus = findViewById(R.id.textConnectionStatus);
-        connectionStatus.setText(R.string.Connecting3);
+        statusImage = findViewById(R.id.imageStatus);
         buttonStartStop = findViewById(R.id.toggleButtonStartStop);
+
+        connectionStatus.setText(R.string.Connecting3);
         buttonStartStop.setText(null);
         buttonStartStop.setTextOn(null);
         buttonStartStop.setTextOff(null);
+
         buttonStartStop.setButtonDrawable(R.drawable.start0);
+
         buttonStartStop.setEnabled(false);
-        statusImage = findViewById(R.id.imageStatus);
+        buttonSaveMAP.setEnabled(true);
 
         // left
         bubbleLeftSens.setOnProgressChangedListener(new BubbleSeekBar.OnProgressChangedListenerAdapter() {
