@@ -126,6 +126,7 @@
     <string name="textStatusTextOut" />
     <string name="textDeviceNull">DEVICE IS NULL</string>
     <string name="textCurrentMAP">Current MAP:</string>
+    <string name="textFilename">Example: my_map </string>
 
 
 </resources>
