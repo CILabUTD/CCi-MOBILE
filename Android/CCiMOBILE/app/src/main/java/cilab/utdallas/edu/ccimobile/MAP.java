@@ -74,7 +74,7 @@ class MAP {
             String finalJson = buffer.toString();
             JSONObject parentObject = new JSONObject(finalJson);
 
-            JSONArray generalArray = parentObject.getJSONArray("general");
+            JSONArray generalArray = parentObject.getJSONArray("General");
             JSONObject generalObject = generalArray.getJSONObject(0);
 
 /*              String subjectName = generalObject.getString("subjectName");
@@ -87,7 +87,7 @@ class MAP {
 
             if (ear.equalsIgnoreCase("both") || ear.equalsIgnoreCase("left")) {
 
-                JSONArray leftArray = parentObject.getJSONArray("left");
+                JSONArray leftArray = parentObject.getJSONArray("Left");
                 JSONObject leftObject = leftArray.getJSONObject(0);
 
                 ear = "Left";
@@ -184,7 +184,7 @@ class MAP {
             JSONObject parentObject = new JSONObject(finalJson);
 
             // get the first array (doesn't matter left/right)
-            JSONArray generalArray = parentObject.getJSONArray("general");
+            JSONArray generalArray = parentObject.getJSONArray("General");
             JSONObject generalObject = generalArray.getJSONObject(0);
 
 /*              String subjectName = generalObject.getString("subjectName");
@@ -197,7 +197,7 @@ class MAP {
 
             if (ear.equalsIgnoreCase("both") || ear.equalsIgnoreCase("right")) {
 
-                JSONArray rightArray = parentObject.getJSONArray("right");
+                JSONArray rightArray = parentObject.getJSONArray("Right");
                 JSONObject rightObject = rightArray.getJSONObject(0);
 
                 ear = "Right";

@@ -27,4 +27,6 @@ dependencies {
     implementation files('libs/JTransforms-3.1-with-dependencies.jar')
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.github.jorgecastilloprz:fillableloaders:1.03@aar'
+    implementation project(':bubbleseekbar')
+
 }
