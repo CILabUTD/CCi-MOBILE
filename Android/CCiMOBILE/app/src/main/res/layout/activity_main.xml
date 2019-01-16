@@ -18,6 +18,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="35dp"
+        android:onClick="saveMAP"
         android:text="@string/textSaveMap" />
 
     <LinearLayout
