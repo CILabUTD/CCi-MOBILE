@@ -125,6 +125,7 @@
     <string name="textBoardReadyNow">BOARD IS READY NOW</string>
     <string name="textStatusTextOut" />
     <string name="textDeviceNull">DEVICE IS NULL</string>
+    <string name="textCurrentMAP">Current MAP:</string>
 
 
 </resources>
