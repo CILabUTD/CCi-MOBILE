@@ -127,6 +127,14 @@
     <string name="textDeviceNull">DEVICE IS NULL</string>
     <string name="textCurrentMAP">Current MAP:</string>
     <string name="textFilename">Example: my_map </string>
+    <string name="textSelectAE">Select an acoustic environment</string>
+    <string name="classroom_image">Classroom image</string>
+    <string name="classroom">Classroom</string>
+    <string name="conversation">Conversation</string>
+    <string name="leisure">Leisure</string>
+    <string name="market">Market</string>
+    <string name="tv">TV</string>
+    <string name="driving">Driving</string>
 
 
 </resources>

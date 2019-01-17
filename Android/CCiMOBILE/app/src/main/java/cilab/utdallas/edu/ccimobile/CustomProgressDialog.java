@@ -24,7 +24,7 @@ public class CustomProgressDialog extends ProgressDialog{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_custom_progress_dialog);
 
-        fillableLoader = (FillableLoader) findViewById(R.id.fillableLoader);
+        fillableLoader = findViewById(R.id.fillableLoader);
         String COCHLEA = "M 402.08,306.00\n"
                 + "C 397.79,300.87 387.11,289.29 382.00,285.63\n"
                 + "378.27,282.96 358.24,274.28 353.00,272.20\n"

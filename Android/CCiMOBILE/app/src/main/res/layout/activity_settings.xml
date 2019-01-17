@@ -62,14 +62,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView22"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
         </TableRow>
 
         <TableRow
@@ -92,14 +92,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView23"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
         </TableRow>
 
         <TableRow
@@ -122,14 +122,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView24"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
         </TableRow>
 
         <TableRow
@@ -152,14 +152,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView25"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
         </TableRow>
 
         <TableRow
@@ -268,8 +268,9 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="numberDecimal"
-                android:text="@string/stuff"
-                android:textSize="14sp" />
+                android:hint="@string/stuff"
+                android:textSize="14sp"
+                android:importantForAutofill="no" />
 
             <EditText
                 android:id="@+id/editText17"
@@ -278,8 +279,9 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="numberDecimal"
-                android:text="@string/stuff"
-                android:textSize="14sp" />
+                android:hint="@string/stuff"
+                android:textSize="14sp"
+                android:importantForAutofill="no" />
         </TableRow>
 
         <TableRow
@@ -304,8 +306,9 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="numberDecimal"
-                android:text="@string/stuff"
-                android:textSize="14sp" />
+                android:hint="@string/stuff"
+                android:textSize="14sp"
+                android:importantForAutofill="no" />
 
             <EditText
                 android:id="@+id/editText18"
@@ -314,8 +317,9 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="numberDecimal"
-                android:text="@string/stuff"
-                android:textSize="14sp" />
+                android:hint="@string/stuff"
+                android:textSize="14sp"
+                android:importantForAutofill="no" />
         </TableRow>
 
         <TableRow
@@ -340,8 +344,9 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="numberDecimal"
-                android:text="@string/stuff"
-                android:textSize="14sp" />
+                android:hint="@string/stuff"
+                android:textSize="14sp"
+                android:importantForAutofill="no" />
 
             <EditText
                 android:id="@+id/editText19"
@@ -350,8 +355,9 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="numberDecimal"
-                android:text="@string/stuff"
-                android:textSize="14sp" />
+                android:hint="@string/stuff"
+                android:textSize="14sp"
+                android:importantForAutofill="no" />
         </TableRow>
 
         <TableRow
@@ -376,8 +382,9 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="numberDecimal"
-                android:text="@string/stuff"
-                android:textSize="14sp" />
+                android:hint="@string/stuff"
+                android:textSize="14sp"
+                android:importantForAutofill="no" />
 
             <EditText
                 android:id="@+id/editText20"
@@ -386,8 +393,9 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="numberDecimal"
-                android:text="@string/stuff"
-                android:textSize="14sp" />
+                android:hint="@string/stuff"
+                android:textSize="14sp"
+                android:importantForAutofill="no" />
         </TableRow>
 
         <TableRow
@@ -440,8 +448,9 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="numberDecimal"
-                android:text="@string/stuff"
-                android:textSize="14sp" />
+                android:hint="@string/stuff"
+                android:textSize="14sp"
+                android:importantForAutofill="no" />
 
             <EditText
                 android:id="@+id/editText22"
@@ -450,8 +459,9 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="numberDecimal"
-                android:text="@string/stuff"
-                android:textSize="14sp" />
+                android:hint="@string/stuff"
+                android:textSize="14sp"
+                android:importantForAutofill="no" />
         </TableRow>
 
         <TableRow
@@ -476,8 +486,9 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="numberDecimal"
-                android:text="@string/stuff"
-                android:textSize="14sp" />
+                android:hint="@string/stuff"
+                android:textSize="14sp"
+                android:importantForAutofill="no" />
 
             <EditText
                 android:id="@+id/editText23"
@@ -486,8 +497,9 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="numberDecimal"
-                android:text="@string/stuff"
-                android:textSize="14sp" />
+                android:hint="@string/stuff"
+                android:textSize="14sp"
+                android:importantForAutofill="no" />
         </TableRow>
 
         <TableRow
@@ -512,8 +524,9 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="numberDecimal"
-                android:text="@string/stuff"
-                android:textSize="14sp" />
+                android:hint="@string/stuff"
+                android:textSize="14sp"
+                android:importantForAutofill="no" />
 
             <EditText
                 android:id="@+id/editText24"
@@ -522,8 +535,9 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="numberDecimal"
-                android:text="@string/stuff"
-                android:textSize="14sp" />
+                android:hint="@string/stuff"
+                android:textSize="14sp"
+                android:importantForAutofill="no" />
         </TableRow>
 
         <TableRow
@@ -714,42 +728,42 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView39"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView40"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView41"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView42"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView43"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
         </TableRow>
 
         <TableRow
@@ -780,42 +794,42 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView47"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView48"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView49"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView50"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView51"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
         </TableRow>
 
         <TableRow
@@ -846,42 +860,42 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView55"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView56"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView57"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView58"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView59"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
         </TableRow>
 
         <TableRow
@@ -912,42 +926,42 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView63"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView64"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView65"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView66"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView67"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
         </TableRow>
 
         <TableRow
@@ -978,42 +992,42 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView71"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView72"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView73"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView74"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView75"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
         </TableRow>
 
         <TableRow
@@ -1044,42 +1058,42 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView79"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView80"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView81"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView82"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView83"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
         </TableRow>
 
         <TableRow
@@ -1110,42 +1124,42 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView87"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView88"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView89"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView90"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView91"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
         </TableRow>
 
         <TableRow
@@ -1176,42 +1190,42 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView95"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView96"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView97"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView98"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView99"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
         </TableRow>
 
         <TableRow
@@ -1242,42 +1256,42 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView103"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView104"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView105"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView106"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView107"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
         </TableRow>
 
         <TableRow
@@ -1308,42 +1322,42 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView111"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView112"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView113"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView114"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView115"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
         </TableRow>
 
         <TableRow
@@ -1374,42 +1388,42 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView119"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView120"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView121"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView122"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView123"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
         </TableRow>
 
         <TableRow
@@ -1440,42 +1454,42 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView127"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView128"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView129"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView130"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView131"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
         </TableRow>
 
         <TableRow
@@ -1506,42 +1520,42 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView135"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView136"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView137"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView138"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView139"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
         </TableRow>
 
         <TableRow
@@ -1572,42 +1586,42 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView143"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView144"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView145"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView146"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView147"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
         </TableRow>
 
         <TableRow
@@ -1638,42 +1652,42 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView151"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView152"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView153"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView154"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView155"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
         </TableRow>
 
         <TableRow
@@ -1704,42 +1718,42 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView159"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView160"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView161"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView162"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView163"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
         </TableRow>
 
         <TableRow
@@ -1770,42 +1784,42 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView167"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView168"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView169"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView170"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView171"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
         </TableRow>
 
         <TableRow>
@@ -1832,42 +1846,42 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView175"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView176"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView177"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView178"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView179"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
         </TableRow>
 
         <TableRow>
@@ -1894,42 +1908,42 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView183"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView184"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView185"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView186"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView187"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
         </TableRow>
 
         <TableRow>
@@ -1956,42 +1970,42 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView191"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView192"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView193"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView194"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView195"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
         </TableRow>
 
         <TableRow>
@@ -2018,42 +2032,42 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView199"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView200"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView201"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView202"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView203"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
         </TableRow>
 
         <TableRow>
@@ -2080,42 +2094,42 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView207"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView208"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView209"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView210"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
 
             <TextView
                 android:id="@+id/textView211"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/stuff" />
+                android:hint="@string/stuff" />
         </TableRow>
 
         <TableRow

@@ -22,7 +22,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.InputType;
 import android.util.JsonWriter;
 import android.util.Log;
 import android.view.Gravity;
@@ -63,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
 
     boolean settingsMono, settingsLeft, settingsRight, settingsStereo, folderExists;
     boolean noMAP = true; // No MAP selected yet
+    boolean errorMAP = false;
+    int disAlpha = 38; // opacity at 38% when item disabled
 
     public static D2xxManager ftD2xx = null;
     FT_Device ft_device_0, ft_device_1, ftDev;
@@ -118,6 +119,10 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
 
         global_context = this;
         status = findViewById(R.id.textStatus);
+        leftSensitivity = findViewById(R.id.textViewLeftSensitivity);
+        leftGain = findViewById(R.id.textViewLeftGain);
+        rightSensitivity = findViewById(R.id.textViewRightSensitivity);
+        rightGain = findViewById(R.id.textViewRightGain);
         textViewMAP = findViewById(R.id.textView215);
         buttonSaveMAP = findViewById(R.id.buttonSaveMAP);
         bubbleLeftSens = findViewById(R.id.bubbleSeekBarLeftSensitivity);
@@ -125,16 +130,10 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         bubbleRightSens = findViewById(R.id.bubbleRightSens);
         bubbleRightGain = findViewById(R.id.bubbleRightGain);
 
+        // Disable buttons/sliders
         buttonSaveMAP.setEnabled(false);
-        bubbleLeftSens.setEnabled(false);
-        bubbleLeftGain.setEnabled(false);
-        bubbleRightSens.setEnabled(false);
-        bubbleRightGain.setEnabled(false);
 
-        leftSensitivity = findViewById(R.id.textViewLeftSensitivity);
-        leftGain = findViewById(R.id.textViewLeftGain);
-        rightSensitivity = findViewById(R.id.textViewRightSensitivity);
-        rightGain = findViewById(R.id.textViewRightGain);
+        disableSliders("both");
 
         leftSensitivity.setText(R.string.textLeftSens);
         leftGain.setText(R.string.textLeftGain);
@@ -213,8 +212,11 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         }
         else {
             initializeMAP();
-            updateGUILeft();
-            updateGUIRight();
+            if (!leftMAP.dataMissing && !rightMAP.dataMissing) {
+                updateGUILeft();
+                updateGUIRight();
+            }
+
 
         }
         //verifyFolderExists();
@@ -449,7 +451,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
      */
     @Override
     public boolean onPrepareOptionsMenu (Menu menu) {
-        if (noMAP) {
+        if (noMAP || errorMAP) {
             menu.findItem(R.id.menuSettings).setEnabled(false);
             menu.findItem(R.id.menuEnvironments).setEnabled(false);
         }
@@ -772,8 +774,10 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
      */
     private void initialize() {
         initializeMAP();
-        initializeStimuli();
-        initializeGUI();
+        if (!leftMAP.dataMissing && !rightMAP.dataMissing) {
+            initializeStimuli();
+            initializeGUI();
+        }
     }
 
     /**
@@ -790,20 +794,27 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         // Check if filename string is empty
         if (!MAP_filename.isEmpty()) {
             leftMAP.getLeftMapData(MAP_filename);
-            if (leftMAP.dataMissing) {
-                Toast.makeText(getApplicationContext(), "Left MAP could not be opened due to missing data.", Toast.LENGTH_LONG).show();
-            }
             rightMAP.getRightMapData(MAP_filename);
-            if (rightMAP.dataMissing) {
-                Toast.makeText(getApplicationContext(), "Right MAP could not be opened due to missing data.", Toast.LENGTH_LONG).show();
-            }
 
-            if (leftMAP.exists || rightMAP.exists) {
-                writeMAPToPreferences();
+            if (leftMAP.dataMissing && rightMAP.dataMissing)
+                Toast.makeText(getApplicationContext(), "Error: MAP could not be opened due to missing data from both left and right ear. Please select a different MAP.", Toast.LENGTH_LONG).show();
+            else if (leftMAP.dataMissing)
+                Toast.makeText(getApplicationContext(), "Error: MAP could not be opened due to missing data from left ear. Please select a different MAP.", Toast.LENGTH_LONG).show();
+            else if (rightMAP.dataMissing)
+                Toast.makeText(getApplicationContext(), "Error: MAP could not be opened due to missing data from right ear. Please select a different MAP.", Toast.LENGTH_LONG).show();
+
+            if (leftMAP.dataMissing || rightMAP.dataMissing) {
+                errorMAP = true;
+                disableSliders("both");
+            }
+            else {
+                errorMAP = false;
+                if (leftMAP.exists || rightMAP.exists)
+                    writeMAPToPreferences();
             }
         }
         else {
-            Toast.makeText(getApplicationContext(), "Please select a MAP.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Please select a valid MAP.", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -922,6 +933,76 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
      */
     double getDouble(final SharedPreferences prefs, final String key) {
         return Double.longBitsToDouble(prefs.getLong(key, Double.doubleToLongBits((double) 0)));
+    }
+
+    /**
+     * Enables the bubble sliders
+     * @param side left or right
+     */
+    private void enableSliders(String side) {
+        if (side.equals("left") || side.equals("both")) {
+            bubbleLeftSens.setEnabled(true);
+            bubbleLeftSens.setTrackColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
+            bubbleLeftSens.setSecondTrackColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
+            bubbleLeftSens.setBubbleColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
+            bubbleLeftSens.setThumbColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
+
+            bubbleLeftGain.setEnabled(true);
+            bubbleLeftGain.setTrackColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
+            bubbleLeftGain.setSecondTrackColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
+            bubbleLeftGain.setBubbleColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
+            bubbleLeftGain.setThumbColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
+        }
+        if (side.equals("right") || side.equals("both")) {
+            bubbleRightSens.setEnabled(true);
+            bubbleRightSens.setTrackColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
+            bubbleRightSens.setSecondTrackColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
+            bubbleRightSens.setBubbleColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
+            bubbleRightSens.setThumbColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
+
+            bubbleRightGain.setEnabled(true);
+            bubbleRightGain.setTrackColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
+            bubbleRightGain.setSecondTrackColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
+            bubbleRightGain.setBubbleColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
+            bubbleRightGain.setThumbColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
+        }
+    }
+
+    /**
+     * Disables the bubble sliders
+     * @param side left or right
+     */
+    private void disableSliders(String side) {
+        if (side.equals("left") || side.equals("both")) {
+            bubbleLeftSens.setEnabled(false);
+            bubbleLeftSens.setTrackColor(Color.argb(disAlpha,0,0,0));
+            bubbleLeftSens.setSecondTrackColor(Color.argb(disAlpha,0,0,0));
+            bubbleLeftSens.setBubbleColor(Color.argb(disAlpha,0,0,0));
+            bubbleLeftSens.setThumbColor(Color.argb(disAlpha,0,0,0));
+            bubbleLeftSens.setProgress(0);
+
+            bubbleLeftGain.setEnabled(false);
+            bubbleLeftGain.setTrackColor(Color.argb(disAlpha,0,0,0));
+            bubbleLeftGain.setSecondTrackColor(Color.argb(disAlpha,0,0,0));
+            bubbleLeftGain.setBubbleColor(Color.argb(disAlpha,0,0,0));
+            bubbleLeftGain.setThumbColor(Color.argb(disAlpha,0,0,0));
+            bubbleLeftGain.setProgress(0);
+        }
+        if (side.equals("right") || side.equals("both")) {
+            bubbleRightSens.setEnabled(false);
+            bubbleRightSens.setTrackColor(Color.argb(disAlpha,0,0,0));
+            bubbleRightSens.setSecondTrackColor(Color.argb(disAlpha,0,0,0));
+            bubbleRightSens.setBubbleColor(Color.argb(disAlpha,0,0,0));
+            bubbleRightSens.setThumbColor(Color.argb(disAlpha,0,0,0));
+            bubbleRightSens.setProgress(0);
+
+            bubbleRightGain.setEnabled(false);
+            bubbleRightGain.setTrackColor(Color.argb(disAlpha,0,0,0));
+            bubbleRightGain.setSecondTrackColor(Color.argb(disAlpha,0,0,0));
+            bubbleRightGain.setBubbleColor(Color.argb(disAlpha,0,0,0));
+            bubbleRightGain.setThumbColor(Color.argb(disAlpha,0,0,0));
+            bubbleRightGain.setProgress(0);
+        }
     }
 
     /**
@@ -1070,9 +1151,8 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
      * Updates the left ear GUI components
      */
     private void updateGUILeft() {
-        if (leftMAP.exists) {
-            bubbleLeftSens.setEnabled(true);
-            bubbleLeftGain.setEnabled(true);
+        if (leftMAP.exists && !leftMAP.dataMissing) {
+            enableSliders("left");
 
             bubbleLeftSens.setProgress((float) leftMAP.sensitivity);
             bubbleLeftGain.setProgress((float) leftMAP.gain);
@@ -1083,8 +1163,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             leftGain.setText(R.string.textLeftGain);
 
         } else {
-            bubbleLeftSens.setEnabled(false);
-            bubbleLeftGain.setEnabled(false);
+            disableSliders("left");
 
             leftSensitivity.setText("");
             leftGain.setText("");
@@ -1095,9 +1174,8 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
      * Updates the right ear GUI components
      */
     private void updateGUIRight() {
-        if (rightMAP.exists) {
-            bubbleRightGain.setEnabled(true);
-            bubbleRightSens.setEnabled(true);
+        if (rightMAP.exists && !rightMAP.dataMissing) {
+            enableSliders("right");
 
             bubbleRightGain.setProgress((float) rightMAP.gain);
             bubbleRightSens.setProgress((float) rightMAP.sensitivity);
@@ -1108,8 +1186,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             rightGain.setText(R.string.textRightGain);
 
         } else {
-            bubbleRightSens.setEnabled(false);
-            bubbleRightGain.setEnabled(false);
+            disableSliders("right");
 
             rightSensitivity.setText("");
             rightGain.setText("");

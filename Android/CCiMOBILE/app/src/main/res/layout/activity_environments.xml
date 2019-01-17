@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Select an acoustic environment"
+        android:text="@string/textSelectAE"
         android:id="@+id/textViewEnvironmentsTitle"
         android:layout_gravity="center_horizontal"
         android:layout_alignParentTop="true"
@@ -34,15 +34,16 @@
                 android:layout_height="100dp"
                 android:id="@+id/imageButton1"
                 android:src="@drawable/classroom100"
-                android:layout_gravity="left"
+                android:layout_gravity="start"
                 android:background="@null"
-                android:onClick="classroom"/>
+                android:onClick="classroom"
+                android:contentDescription="@string/classroom_image" />
             <ImageButton
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:id="@+id/imageButton2"
                 android:src="@drawable/conversation100"
-                android:layout_gravity="right"
+                android:layout_gravity="end"
                 android:background="@null"
                 android:onClick="conversation"/>
         </TableRow>
@@ -50,17 +51,17 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Classroom"
+                android:text="@string/classroom"
                 android:id="@+id/textViewClassroom"
-                android:paddingLeft="20dp"
-                android:layout_gravity="left"/>
+                android:paddingStart="20dp"
+                android:layout_gravity="end"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Conversation"
+                android:text="@string/conversation"
                 android:id="@+id/textViewConversation"
-                android:paddingRight="20dp"
-                android:layout_gravity="right"/>
+                android:paddingEnd="20dp"
+                android:layout_gravity="end"/>
         </TableRow>
 
         <TableRow>
@@ -69,7 +70,7 @@
                 android:layout_height="10dp"
                 android:text=""
                 android:id="@+id/blank1"
-                android:paddingLeft="20dp"
+                android:paddingStart="20dp"
                 android:layout_gravity="center_horizontal"/>
         </TableRow>
         <TableRow>
@@ -78,7 +79,7 @@
                 android:layout_height="100dp"
                 android:id="@+id/imageButton3"
                 android:src="@drawable/leisure100"
-                android:layout_gravity="left"
+                android:layout_gravity="start"
                 android:background="@null"
                 android:onClick="leisure"/>
             <ImageButton
@@ -86,7 +87,7 @@
                 android:layout_height="100dp"
                 android:id="@+id/imageButton4"
                 android:src="@drawable/market100"
-                android:layout_gravity="right"
+                android:layout_gravity="end"
                 android:background="@null"
                 android:onClick="market"/>
         </TableRow>
@@ -94,17 +95,17 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Leisure"
+                android:text="@string/leisure"
                 android:id="@+id/textViewClassroom2"
-                android:paddingLeft="30dp"
-                android:layout_gravity="left"/>
+                android:paddingStart="30dp"
+                android:layout_gravity="start"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Market"
+                android:text="@string/market"
                 android:id="@+id/textViewConversation2"
-                android:paddingRight="30dp"
-                android:layout_gravity="right"/>
+                android:paddingEnd="30dp"
+                android:layout_gravity="end"/>
         </TableRow>
 
 
@@ -114,7 +115,7 @@
                 android:layout_height="10dp"
                 android:text=""
                 android:id="@+id/blank2"
-                android:paddingLeft="20dp"
+                android:paddingStart="20dp"
                 android:layout_gravity="center_horizontal"/>
         </TableRow>
         <TableRow>
@@ -123,7 +124,7 @@
                 android:layout_height="100dp"
                 android:id="@+id/imageButton5"
                 android:src="@drawable/tv100"
-                android:layout_gravity="left"
+                android:layout_gravity="start"
                 android:background="@null"
                 android:onClick="tv"/>
             <ImageButton
@@ -131,7 +132,7 @@
                 android:layout_height="100dp"
                 android:id="@+id/imageButton6"
                 android:src="@drawable/driving100"
-                android:layout_gravity="right"
+                android:layout_gravity="end"
                 android:background="@null"
                 android:onClick="driving"/>
         </TableRow>
@@ -139,17 +140,17 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TV"
+                android:text="@string/tv"
                 android:id="@+id/textViewClassroom3"
-                android:paddingLeft="40dp"
-                android:layout_gravity="left"/>
+                android:paddingStart="40dp"
+                android:layout_gravity="start"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Driving"
+                android:text="@string/driving"
                 android:id="@+id/textViewConversation3"
-                android:paddingRight="30dp"
-                android:layout_gravity="right"/>
+                android:paddingEnd="30dp"
+                android:layout_gravity="end"/>
         </TableRow>
     </TableLayout>
 

@@ -14,8 +14,6 @@ public class InitializationResultReceiver extends ResultReceiver {
      * Create a new ResultReceive to receive results.  Your
      * {@link #onReceiveResult} method will be called from the thread running
      * <var>handler</var> if given, or from an arbitrary thread if null.
-     *
-     * @param handler
      */
     private Receiver mReceiver;
     public InitializationResultReceiver(Handler handler) {  super(handler); }
