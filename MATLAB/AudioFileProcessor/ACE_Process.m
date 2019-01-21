@@ -6,6 +6,7 @@
 
 function stimulus = ACE_Process(x, p)
 global fs; fs = p.SamplingFrequency; % 16000 Hz
+% testing
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Front-end scaling and pre-emphasis
