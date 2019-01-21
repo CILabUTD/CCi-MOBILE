@@ -213,8 +213,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         else {
             initializeMAP();
             if (!leftMAP.dataMissing && !rightMAP.dataMissing) {
-                updateGUILeft();
-                updateGUIRight();
+                updateGUI("both");
             }
 
 
@@ -1023,6 +1022,8 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         buttonStartStop.setEnabled(false);
         buttonSaveMAP.setEnabled(true);
 
+        updateGUI("both");
+
         // left
         bubbleLeftSens.setOnProgressChangedListener(new BubbleSeekBar.OnProgressChangedListenerAdapter() {
             double value;
@@ -1083,9 +1084,6 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             }
         });
 
-
-        updateGUILeft();
-
         bubbleRightSens.setOnProgressChangedListener(new BubbleSeekBar.OnProgressChangedListenerAdapter() {
             double value;
 
@@ -1144,52 +1142,40 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             }
         });
 
-        updateGUIRight();
     }
 
     /**
-     * Updates the left ear GUI components
+     * Updates the GUI
+     * @param side s
      */
-    private void updateGUILeft() {
-        if (leftMAP.exists && !leftMAP.dataMissing) {
-            enableSliders("left");
-
-            bubbleLeftSens.setProgress((float) leftMAP.sensitivity);
-            bubbleLeftGain.setProgress((float) leftMAP.gain);
-
-            leftACE = new ACE(leftMAP);
-
-            leftSensitivity.setText(R.string.textLeftSens);
-            leftGain.setText(R.string.textLeftGain);
-
-        } else {
-            disableSliders("left");
-
-            leftSensitivity.setText("");
-            leftGain.setText("");
+    private void updateGUI(String side) {
+        if (side.equals("left") || side.equals("both")) {
+            if (leftMAP.exists && !leftMAP.dataMissing) {
+                enableSliders("left");
+                bubbleLeftSens.setProgress((float) leftMAP.sensitivity);
+                bubbleLeftGain.setProgress((float) leftMAP.gain);
+                leftACE = new ACE(leftMAP);
+                leftSensitivity.setText(R.string.textLeftSens);
+                leftGain.setText(R.string.textLeftGain);
+            } else {
+                disableSliders("left");
+                leftSensitivity.setText("");
+                leftGain.setText("");
+            }
         }
-    }
-
-    /**
-     * Updates the right ear GUI components
-     */
-    private void updateGUIRight() {
-        if (rightMAP.exists && !rightMAP.dataMissing) {
-            enableSliders("right");
-
-            bubbleRightGain.setProgress((float) rightMAP.gain);
-            bubbleRightSens.setProgress((float) rightMAP.sensitivity);
-
-            rightACE = new ACE(rightMAP);
-
-            rightSensitivity.setText(R.string.textRightSens);
-            rightGain.setText(R.string.textRightGain);
-
-        } else {
-            disableSliders("right");
-
-            rightSensitivity.setText("");
-            rightGain.setText("");
+        if (side.equals("right") || side.equals("both")) {
+            if (rightMAP.exists && !rightMAP.dataMissing) {
+                enableSliders("right");
+                bubbleRightGain.setProgress((float) rightMAP.gain);
+                bubbleRightSens.setProgress((float) rightMAP.sensitivity);
+                rightACE = new ACE(rightMAP);
+                rightSensitivity.setText(R.string.textRightSens);
+                rightGain.setText(R.string.textRightGain);
+            } else {
+                disableSliders("right");
+                rightSensitivity.setText("");
+                rightGain.setText("");
+            }
         }
     }
 
