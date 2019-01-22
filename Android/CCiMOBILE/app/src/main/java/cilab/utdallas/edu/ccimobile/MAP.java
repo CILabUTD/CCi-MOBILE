@@ -53,7 +53,17 @@ class MAP {
     double[] gains,
             lowerCutOffFrequencies, higherCutOffFrequencies;
 
+    /**
+     * Updates the MAP data
+     * @param FILE_NAME MAP filename
+     * @param side left or right
+     */
     void getMAPData(String FILE_NAME, String side) {
+
+        if (side.equalsIgnoreCase("left"))
+            side = "Left";
+        else if (side.equalsIgnoreCase("right"))
+            side = "Right";
 
         BufferedReader reader;
         try {
@@ -87,63 +97,69 @@ class MAP {
 
             if (ear.equalsIgnoreCase("both") || ear.equalsIgnoreCase(side)) {
 
-                JSONArray leftArray = parentObject.getJSONArray(side);
-                JSONObject leftObject = leftArray.getJSONObject(0);
+                JSONArray sideArray = parentObject.getJSONArray(side);
+                JSONObject sideObject = sideArray.getJSONObject(0);
 
-                ear = "Left";
+                ear = side;
 
-                if (leftObject.has("Left.implantType") && leftObject.has("Left.samplingFrequency")
-                        && leftObject.has("Left.numberOfChannels")
-                        && leftObject.has("Left.soundProcessingStrategy")
-                        && leftObject.has("Left.nMaxima") && leftObject.has("Left.stimulationMode")
-                        && leftObject.has("Left.stimulationRate")
-                        && leftObject.has("Left.pulseWidth") && leftObject.has("Left.sensitivity")
-                        && leftObject.has("Left.gain") && leftObject.has("Left.volume")
-                        && leftObject.has("Left.Qfactor") && leftObject.has("Left.baseLevel")
-                        && leftObject.has("Left.saturationLevel")
-                        && leftObject.has("Left.stimulationOrder")
-                        && leftObject.has("Left.frequencyTable") && leftObject.has("Left.window")
-                        && leftObject.has("Left.El_CF1_CF2_THR_MCL_Gain")) {
+                if (sideObject.has(side + ".implantType")
+                        && sideObject.has(side + ".samplingFrequency")
+                        && sideObject.has(side + ".numberOfChannels")
+                        && sideObject.has(side + ".soundProcessingStrategy")
+                        && sideObject.has(side + ".nMaxima")
+                        && sideObject.has(side + ".stimulationMode")
+                        && sideObject.has(side + ".stimulationRate")
+                        && sideObject.has(side + ".pulseWidth")
+                        && sideObject.has(side + ".sensitivity")
+                        && sideObject.has(side + ".gain")
+                        && sideObject.has(side + ".volume")
+                        && sideObject.has(side + ".Qfactor")
+                        && sideObject.has(side + ".baseLevel")
+                        && sideObject.has(side + ".saturationLevel")
+                        && sideObject.has(side + ".stimulationOrder")
+                        && sideObject.has(side + ".frequencyTable")
+                        && sideObject.has(side + ".window")
+                        && sideObject.has(side + ".El_CF1_CF2_THR_MCL_Gain")) {
 
                     exists = true;
 
-                    implantType = leftObject.getString("Left.implantType");
-                    samplingFrequency = leftObject.getInt("Left.samplingFrequency");
-                    numberOfChannels = leftObject.getInt("Left.numberOfChannels");
-                    soundProcessingStrategy = leftObject.getString("Left.soundProcessingStrategy");
-                    nMaxima = leftObject.getInt("Left.nMaxima");
-                    stimulationMode = leftObject.getString("Left.stimulationMode");
-                    stimulationRate = leftObject.getInt("Left.stimulationRate");
-                    pulseWidth = leftObject.getInt("Left.pulseWidth");
-                    sensitivity = leftObject.getDouble("Left.sensitivity");
-                    gain = leftObject.getDouble("Left.gain");
-                    volume = leftObject.getInt("Left.volume");
-                    Qfactor = leftObject.getDouble("Left.Qfactor");
-                    baseLevel = leftObject.getDouble("Left.baseLevel");
-                    saturationLevel = leftObject.getDouble("Left.saturationLevel");
-                    stimulationOrder = leftObject.getString("Left.stimulationOrder");
-                    frequencyTable = leftObject.getString("Left.frequencyTable");
-                    window = leftObject.getString("Left.window");
+                    implantType = sideObject.getString(side + ".implantType");
+                    samplingFrequency = sideObject.getInt(side + ".samplingFrequency");
+                    numberOfChannels = sideObject.getInt(side + ".numberOfChannels");
+                    soundProcessingStrategy = sideObject.getString(side + ".soundProcessingStrategy");
+                    nMaxima = sideObject.getInt(side + ".nMaxima");
+                    stimulationMode = sideObject.getString(side + ".stimulationMode");
+                    stimulationRate = sideObject.getInt(side + ".stimulationRate");
+                    pulseWidth = sideObject.getInt(side + ".pulseWidth");
+                    sensitivity = sideObject.getDouble(side + ".sensitivity");
+                    gain = sideObject.getDouble(side + ".gain");
+                    volume = sideObject.getInt(side + ".volume");
+                    Qfactor = sideObject.getDouble(side + ".Qfactor");
+                    baseLevel = sideObject.getDouble(side + ".baseLevel");
+                    saturationLevel = sideObject.getDouble(side + ".saturationLevel");
+                    stimulationOrder = sideObject.getString(side + ".stimulationOrder");
+                    frequencyTable = sideObject.getString(side + ".frequencyTable");
+                    window = sideObject.getString(side + ".window");
 
-                    JSONArray leftElectrodeArray = leftObject.getJSONArray("Left.El_CF1_CF2_THR_MCL_Gain");
-                    int leftInnerArrayLength = leftElectrodeArray.length();
+                    JSONArray sideElectrodeArray = sideObject.getJSONArray(side + ".El_CF1_CF2_THR_MCL_Gain");
+                    int sideInnerArrayLength = sideElectrodeArray.length();
 
-                    electrodes = new int[leftInnerArrayLength];
-                    THR = new int[leftInnerArrayLength];
-                    MCL = new int[leftInnerArrayLength];
+                    electrodes = new int[sideInnerArrayLength];
+                    THR = new int[sideInnerArrayLength];
+                    MCL = new int[sideInnerArrayLength];
 
-                    lowerCutOffFrequencies = new double[leftInnerArrayLength];
-                    higherCutOffFrequencies = new double[leftInnerArrayLength];
-                    gains = new double[leftInnerArrayLength];
+                    lowerCutOffFrequencies = new double[sideInnerArrayLength];
+                    higherCutOffFrequencies = new double[sideInnerArrayLength];
+                    gains = new double[sideInnerArrayLength];
 
-                    for (int i = 0; i < leftInnerArrayLength; i++) {
-                        JSONObject leftElectrodeArrayObj = leftElectrodeArray.getJSONObject(i);
-                        electrodes[i] = leftElectrodeArrayObj.getInt("electrodes");
-                        THR[i] = leftElectrodeArrayObj.getInt("THR");
-                        MCL[i] = leftElectrodeArrayObj.getInt("MCL");
-                        lowerCutOffFrequencies[i] = leftElectrodeArrayObj.getInt("lowerCutOffFrequencies");
-                        higherCutOffFrequencies[i] = leftElectrodeArrayObj.getInt("higherCutOffFrequencies");
-                        gains[i] = leftElectrodeArrayObj.getInt("gains");
+                    for (int i = 0; i < sideInnerArrayLength; i++) {
+                        JSONObject sideElectrodeArrayObj = sideElectrodeArray.getJSONObject(i);
+                        electrodes[i] = sideElectrodeArrayObj.getInt("electrodes");
+                        THR[i] = sideElectrodeArrayObj.getInt("THR");
+                        MCL[i] = sideElectrodeArrayObj.getInt("MCL");
+                        lowerCutOffFrequencies[i] = sideElectrodeArrayObj.getInt("lowerCutOffFrequencies");
+                        higherCutOffFrequencies[i] = sideElectrodeArrayObj.getInt("higherCutOffFrequencies");
+                        gains[i] = sideElectrodeArrayObj.getInt("gains");
                     }
 
                     nbands = electrodes.length;
@@ -161,223 +177,6 @@ class MAP {
             e.printStackTrace();
         }
 
-    }
-
-    void getLeftMapData(String FILE_NAME) {
-
-        BufferedReader reader;
-        try {
-
-            String data = FileOperations.getInstance().readExternalFile(FILE_NAME);
-
-            // convert String to InputStreamReader
-            InputStream stream = new ByteArrayInputStream(data.getBytes());
-
-            reader = new BufferedReader(new InputStreamReader(stream));
-            StringBuilder buffer = new StringBuilder();
-            String line;
-
-            while ((line = reader.readLine()) != null) {
-                buffer.append(line);
-            }
-
-            String finalJson = buffer.toString();
-            JSONObject parentObject = new JSONObject(finalJson);
-
-            JSONArray generalArray = parentObject.getJSONArray("General");
-            JSONObject generalObject = generalArray.getJSONObject(0);
-
-/*              String subjectName = generalObject.getString("subjectName");
-                String subjectID = generalObject.getString("subjectID");
-                String mapTitle = generalObject.getString("mapTitle");
-                int numberOfImplants = generalObject.getInt("numberOfImplants");
-                String implantedEar = generalObject.getString("implantedEar");*/
-
-            ear = generalObject.getString("ear");
-
-            if (ear.equalsIgnoreCase("both") || ear.equalsIgnoreCase("left")) {
-
-                JSONArray leftArray = parentObject.getJSONArray("Left");
-                JSONObject leftObject = leftArray.getJSONObject(0);
-
-                ear = "Left";
-
-                if (leftObject.has("Left.implantType") && leftObject.has("Left.samplingFrequency")
-                        && leftObject.has("Left.numberOfChannels")
-                        && leftObject.has("Left.soundProcessingStrategy")
-                        && leftObject.has("Left.nMaxima") && leftObject.has("Left.stimulationMode")
-                        && leftObject.has("Left.stimulationRate")
-                        && leftObject.has("Left.pulseWidth") && leftObject.has("Left.sensitivity")
-                        && leftObject.has("Left.gain") && leftObject.has("Left.volume")
-                        && leftObject.has("Left.Qfactor") && leftObject.has("Left.baseLevel")
-                        && leftObject.has("Left.saturationLevel")
-                        && leftObject.has("Left.stimulationOrder")
-                        && leftObject.has("Left.frequencyTable") && leftObject.has("Left.window")
-                        && leftObject.has("Left.El_CF1_CF2_THR_MCL_Gain")) {
-
-                    exists = true;
-
-                    implantType = leftObject.getString("Left.implantType");
-                    samplingFrequency = leftObject.getInt("Left.samplingFrequency");
-                    numberOfChannels = leftObject.getInt("Left.numberOfChannels");
-                    soundProcessingStrategy = leftObject.getString("Left.soundProcessingStrategy");
-                    nMaxima = leftObject.getInt("Left.nMaxima");
-                    stimulationMode = leftObject.getString("Left.stimulationMode");
-                    stimulationRate = leftObject.getInt("Left.stimulationRate");
-                    pulseWidth = leftObject.getInt("Left.pulseWidth");
-                    sensitivity = leftObject.getDouble("Left.sensitivity");
-                    gain = leftObject.getDouble("Left.gain");
-                    volume = leftObject.getInt("Left.volume");
-                    Qfactor = leftObject.getDouble("Left.Qfactor");
-                    baseLevel = leftObject.getDouble("Left.baseLevel");
-                    saturationLevel = leftObject.getDouble("Left.saturationLevel");
-                    stimulationOrder = leftObject.getString("Left.stimulationOrder");
-                    frequencyTable = leftObject.getString("Left.frequencyTable");
-                    window = leftObject.getString("Left.window");
-
-                    JSONArray leftElectrodeArray = leftObject.getJSONArray("Left.El_CF1_CF2_THR_MCL_Gain");
-                    int leftInnerArrayLength = leftElectrodeArray.length();
-
-                    electrodes = new int[leftInnerArrayLength];
-                    THR = new int[leftInnerArrayLength];
-                    MCL = new int[leftInnerArrayLength];
-
-                    lowerCutOffFrequencies = new double[leftInnerArrayLength];
-                    higherCutOffFrequencies = new double[leftInnerArrayLength];
-                    gains = new double[leftInnerArrayLength];
-
-                    for (int i = 0; i < leftInnerArrayLength; i++) {
-                        JSONObject leftElectrodeArrayObj = leftElectrodeArray.getJSONObject(i);
-                        electrodes[i] = leftElectrodeArrayObj.getInt("electrodes");
-                        THR[i] = leftElectrodeArrayObj.getInt("THR");
-                        MCL[i] = leftElectrodeArrayObj.getInt("MCL");
-                        lowerCutOffFrequencies[i] = leftElectrodeArrayObj.getInt("lowerCutOffFrequencies");
-                        higherCutOffFrequencies[i] = leftElectrodeArrayObj.getInt("higherCutOffFrequencies");
-                        gains[i] = leftElectrodeArrayObj.getInt("gains");
-                    }
-
-                    nbands = electrodes.length;
-
-                    checkStimulationParameters();
-
-
-                } else {
-                    dataMissing = true;
-                }
-
-            }
-
-        } catch (IOException | JSONException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    void getRightMapData(String FILE_NAME) {
-
-        BufferedReader reader;
-        try {
-            String data = FileOperations.getInstance().readExternalFile(FILE_NAME);
-
-            // convert String to InputStreamReader
-            InputStream stream = new ByteArrayInputStream(data.getBytes());
-
-            reader = new BufferedReader(new InputStreamReader(stream));
-            StringBuilder buffer = new StringBuilder();
-            String line;
-
-            while ((line = reader.readLine()) != null) {
-                buffer.append(line);
-            }
-
-            String finalJson = buffer.toString();
-            JSONObject parentObject = new JSONObject(finalJson);
-
-            // get the first array (doesn't matter left/right)
-            JSONArray generalArray = parentObject.getJSONArray("General");
-            JSONObject generalObject = generalArray.getJSONObject(0);
-
-/*              String subjectName = generalObject.getString("subjectName");
-                String subjectID = generalObject.getString("subjectID");
-                String mapTitle = generalObject.getString("mapTitle");
-                int numberOfImplants = generalObject.getInt("numberOfImplants");
-                String implantedEar = generalObject.getString("implantedEar");*/
-
-            ear = generalObject.getString("ear");
-
-            if (ear.equalsIgnoreCase("both") || ear.equalsIgnoreCase("right")) {
-
-                JSONArray rightArray = parentObject.getJSONArray("Right");
-                JSONObject rightObject = rightArray.getJSONObject(0);
-
-                ear = "Right";
-
-                if (rightObject.has("Right.implantType")
-                        && rightObject.has("Right.samplingFrequency")
-                        && rightObject.has("Right.numberOfChannels")
-                        && rightObject.has("Right.soundProcessingStrategy")
-                        && rightObject.has("Right.nMaxima")
-                        && rightObject.has("Right.stimulationMode")
-                        && rightObject.has("Right.stimulationRate")
-                        && rightObject.has("Right.pulseWidth")
-                        && rightObject.has("Right.sensitivity")
-                        && rightObject.has("Right.gain") && rightObject.has("Right.volume")
-                        && rightObject.has("Right.Qfactor") && rightObject.has("Right.baseLevel")
-                        && rightObject.has("Right.saturationLevel")
-                        && rightObject.has("Right.stimulationOrder")
-                        && rightObject.has("Right.frequencyTable")
-                        && rightObject.has("Right.window")
-                        && rightObject.has("Right.El_CF1_CF2_THR_MCL_Gain")) {
-
-                    exists = true;
-
-                    implantType = rightObject.getString("Right.implantType");
-                    samplingFrequency = rightObject.getInt("Right.samplingFrequency");
-                    numberOfChannels = rightObject.getInt("Right.numberOfChannels");
-                    soundProcessingStrategy = rightObject.getString("Right.soundProcessingStrategy");
-                    nMaxima = rightObject.getInt("Right.nMaxima");
-                    stimulationMode = rightObject.getString("Right.stimulationMode");
-                    stimulationRate = rightObject.getInt("Right.stimulationRate");
-                    pulseWidth = rightObject.getInt("Right.pulseWidth");
-                    sensitivity = rightObject.getDouble("Right.sensitivity");
-                    gain = rightObject.getDouble("Right.gain");
-                    volume = rightObject.getInt("Right.volume");
-                    Qfactor = rightObject.getDouble("Right.Qfactor");
-                    baseLevel = rightObject.getDouble("Right.baseLevel");
-                    saturationLevel = rightObject.getDouble("Right.saturationLevel");
-                    stimulationOrder = rightObject.getString("Right.stimulationOrder");
-                    window = rightObject.getString("Right.window");
-                    frequencyTable = rightObject.getString("Right.frequencyTable");
-
-                    JSONArray rightElectrodeArray = rightObject.getJSONArray("Right.El_CF1_CF2_THR_MCL_Gain");
-                    int rightInnerArrayLength = rightElectrodeArray.length();
-
-                    electrodes = new int[rightInnerArrayLength];
-                    THR = new int[rightInnerArrayLength];
-                    MCL = new int[rightInnerArrayLength];
-
-                    lowerCutOffFrequencies = new double[rightInnerArrayLength];
-                    higherCutOffFrequencies = new double[rightInnerArrayLength];
-                    gains = new double[rightInnerArrayLength];
-
-                    for (int i = 0; i < rightInnerArrayLength; i++) {
-                        JSONObject rightElectrodeArrayObj = rightElectrodeArray.getJSONObject(i);
-                        electrodes[i] = rightElectrodeArrayObj.getInt("electrodes");
-                        THR[i] = rightElectrodeArrayObj.getInt("THR");
-                        MCL[i] = rightElectrodeArrayObj.getInt("MCL");
-                        lowerCutOffFrequencies[i] = rightElectrodeArrayObj.getInt("lowerCutOffFrequencies");
-                        higherCutOffFrequencies[i] = rightElectrodeArrayObj.getInt("higherCutOffFrequencies");
-                        gains[i] = rightElectrodeArrayObj.getInt("gains");
-                    }
-                    nbands = electrodes.length;
-                    checkStimulationParameters();
-                } else {
-                    dataMissing = true;
-                }
-            }
-        } catch (JSONException | IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private void checkStimulationParameters() {

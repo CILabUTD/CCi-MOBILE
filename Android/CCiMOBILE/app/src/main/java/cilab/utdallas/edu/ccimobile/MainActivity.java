@@ -792,8 +792,8 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
 
         // Check if filename string is empty
         if (!MAP_filename.isEmpty()) {
-            leftMAP.getLeftMapData(MAP_filename);
-            rightMAP.getRightMapData(MAP_filename);
+            leftMAP.getMAPData(MAP_filename, "left");
+            rightMAP.getMAPData(MAP_filename, "right");
 
             if (leftMAP.dataMissing && rightMAP.dataMissing)
                 Toast.makeText(getApplicationContext(), "Error: MAP could not be opened due to missing data from both left and right ear. Please select a different MAP.", Toast.LENGTH_LONG).show();

@@ -4,6 +4,7 @@ import org.jtransforms.fft.DoubleFFT_1D;
 
 
 /**
+ * This class manages the ACE processing strategy.
  * Created by hxa098020 on 6/14/2017.
  */
 public class ACE {
@@ -27,6 +28,10 @@ public class ACE {
 
     private MAP map;
 
+    /**
+     * This function creates a new MAP.
+     * @param map m
+     */
     ACE (MAP map) {
         this.map = map;
         blockShift = (int)(Math.ceil((double)map.samplingFrequency/map.stimulationRate));
@@ -53,6 +58,9 @@ public class ACE {
     }
 
 
+    /**
+     * This function calls the initialization functions.
+     */
     private void initialize() {
         createWindow(map.window);
         fftBandBins();
@@ -66,6 +74,11 @@ public class ACE {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    /**
+     * Creates the stimuli.
+     * @param inputData i
+     * @return s
+     */
     public Stimuli processAudio(double [] inputData)
     {
         Stimuli stimuli = new Stimuli();
@@ -78,11 +91,11 @@ public class ACE {
         //startTimeFrame = System.currentTimeMillis();
         //inputData = audioFile.readFrames();
 
-        for (int i=sizeOfBufferHistory; i<BLOCK_SIZE+sizeOfBufferHistory;i++) {
+        for (int i = sizeOfBufferHistory; i < BLOCK_SIZE + sizeOfBufferHistory; i++) {
             inputBuffer[i] = inputData[i-sizeOfBufferHistory];
         }
 
-        for(int subframe = 0; subframe < map.pulsesPerFramePerChannel; subframe++)
+        for (int subframe = 0; subframe < map.pulsesPerFramePerChannel; subframe++)
         {
             workingData = new double[BLOCK_SIZE];
 
@@ -116,7 +129,7 @@ public class ACE {
             offset+= blockShift;
         }
         // Save last NHIST samples of current buffer
-        for (int i=0; i<sizeOfBufferHistory;i++) {
+        for (int i = 0; i < sizeOfBufferHistory; i++) {
             inputBuffer[i] = inputData[BLOCK_SIZE-sizeOfBufferHistory+i]; }
 
         //endTimeFrame = System.currentTimeMillis();
@@ -129,11 +142,17 @@ public class ACE {
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 
+    /**
+     * Applies the window
+     */
     private void applyWindow() {
         for(int i = 0; i < workingData.length; i++) {
             workingData[i] = workingData[i] * window[i]; }
     }
 
+    /**
+     * FFT
+     */
     private void fft() {
         fft_1D.realForward(workingData); //it appears that nfft = size of fftArray
         /* public void realForward(double[] a)
@@ -149,7 +168,9 @@ public class ACE {
         //fftArray[126] = Re[63] , fftArray[127] = Img[63]
     }
 
-    //Compute the squared magnitude of the entries of the frequency response vector
+    /**
+     * Computes the squared magnitude of the entries of the frequency response vector
+     */
     public void magnitudeSquaredSpectrum()
     {
         double [] tempMagSquaredArray = new double[NUMBER_OF_BINS];
@@ -162,7 +183,9 @@ public class ACE {
         workingData = tempMagSquaredArray;    //workingData is now size of 65 holding magnitude squared spectrum
     }
 
-    //Multiplication with weights/triangular filters is done here to get 22 frequency bands
+    /**
+     * Computes multiplication with weights/triangular filtering to get the 22 frequency bands
+     */
     public void weightedSquareSum() {
         double weightedMagTemp; //temporary variable to store the weighted magnitude
         double [] tempChannelMagnitudes = new double[map.nbands];
