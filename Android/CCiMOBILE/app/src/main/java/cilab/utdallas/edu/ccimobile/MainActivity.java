@@ -453,10 +453,12 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         if (noMAP || errorMAP) {
             menu.findItem(R.id.menuSettings).setEnabled(false);
             menu.findItem(R.id.menuEnvironments).setEnabled(false);
+            //menu.findItem(R.id.menuTesting).setEnabled(false);
         }
         else {
             menu.findItem(R.id.menuSettings).setEnabled(true);
             menu.findItem(R.id.menuEnvironments).setEnabled(true);
+            //menu.findItem(R.id.menuTesting).setEnabled(true);
         }
         return true;
     }
@@ -488,6 +490,10 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
                 return true;
             case R.id.menuEnvironments:
                 myIntent = new Intent(MainActivity.this, EnvironmentsActivity.class);
+                MainActivity.this.startActivityForResult(myIntent, 1);
+                return true;
+            case R.id.menuTesting:
+                myIntent = new Intent(MainActivity.this, TestingActivity.class);
                 MainActivity.this.startActivityForResult(myIntent, 1);
                 return true;
             default:

@@ -6,4 +6,7 @@
     <item
         android:id="@+id/menuEnvironments"
         android:title="@string/environments" />
+    <item
+        android:id="@+id/menuTesting"
+        android:title="Testing" />
 </menu>

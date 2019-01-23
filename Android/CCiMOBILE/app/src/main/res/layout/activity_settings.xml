@@ -383,7 +383,8 @@
                 android:ems="10"
                 android:inputType="numberDecimal"
                 android:hint="@string/stuff"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:importantForAutofill="no" />
 
             <EditText
                 android:id="@+id/editText20"
