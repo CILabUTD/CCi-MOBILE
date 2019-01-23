@@ -1,157 +1,716 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:layout_editor_absoluteX="8dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
-        android:id="@+id/textView218"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/left"
-        android:textAllCaps="true"
-        android:textStyle="bold"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="@+id/textView223"
-        app:layout_constraintTop_toTopOf="parent" />
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/textView219"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/right"
-        android:textAllCaps="true"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/textView224"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/textViewLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/left"
+            android:textAllCaps="true"
+            android:textStyle="bold"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="@+id/textViewITL"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView220"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/implantTypeText"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/textView223"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline3" />
+        <TextView
+            android:id="@+id/textViewRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/right"
+            android:textAllCaps="true"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/textViewITR"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView221"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/samplingFreqText"
-        android:textStyle="bold"
-        app:layout_constrainedWidth="true"
-        app:layout_constraintEnd_toStartOf="@+id/textView"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView220" />
+        <TextView
+            android:id="@+id/textViewImplantType"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/implantTypeText"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/textViewITL"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
-    <TextView
-        android:id="@+id/textView222"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/numChannelsText"
-        android:textStyle="bold"
-        app:layout_constrainedWidth="true"
-        app:layout_constraintEnd_toStartOf="@+id/textView213"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView221" />
+        <TextView
+            android:id="@+id/textViewITL"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/stuff"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewImplantType"
+            app:layout_constraintEnd_toStartOf="@+id/textViewITR"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/textViewImplantType"
+            app:layout_constraintTop_toTopOf="@+id/textViewImplantType" />
 
-    <TextView
-        android:id="@+id/textView223"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toStartOf="@+id/textView224"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toEndOf="@+id/textView220"
-        app:layout_constraintTop_toTopOf="@+id/guideline3" />
+        <TextView
+            android:id="@+id/textViewITR"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/stuff"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewITL"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/textViewITL"
+            app:layout_constraintTop_toTopOf="@+id/textViewITL" />
 
-    <TextView
-        android:id="@+id/textView224"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toEndOf="@+id/textView223"
-        app:layout_constraintTop_toTopOf="@+id/guideline3" />
+        <TextView
+            android:id="@+id/textViewSamplingFreq"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/samplingFreqText"
+            android:textStyle="bold"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toStartOf="@+id/textViewSFL"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewImplantType" />
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="35dp" />
+        <TextView
+            android:id="@+id/textViewSFL"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/stuff"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewSamplingFreq"
+            app:layout_constraintEnd_toStartOf="@+id/textViewSFR"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/textViewSamplingFreq"
+            app:layout_constraintTop_toTopOf="@+id/textViewSamplingFreq" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toStartOf="@+id/textView212"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toEndOf="@+id/textView221"
-        app:layout_constraintTop_toBottomOf="@+id/textView223" />
+        <TextView
+            android:id="@+id/textViewSFR"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/stuff"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewSFL"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/textViewSFL"
+            app:layout_constraintTop_toTopOf="@+id/textViewSFL" />
 
-    <TextView
-        android:id="@+id/textView212"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toEndOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView224" />
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="35dp" />
 
-    <TextView
-        android:id="@+id/textView213"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toStartOf="@+id/textView216"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toEndOf="@+id/textView222"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        <TextView
+            android:id="@+id/textViewNumChan"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/numChannelsText"
+            android:textStyle="bold"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toStartOf="@+id/textViewNCL"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewSamplingFreq" />
 
-    <TextView
-        android:id="@+id/textView216"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toEndOf="@+id/textView213"
-        app:layout_constraintTop_toBottomOf="@+id/textView212" />
+        <TextView
+            android:id="@+id/textViewNCL"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/stuff"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewNumChan"
+            app:layout_constraintEnd_toStartOf="@+id/textViewNCR"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/textViewNumChan"
+            app:layout_constraintTop_toTopOf="@+id/textViewNumChan" />
 
+        <TextView
+            android:id="@+id/textViewNCR"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/stuff"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewNCL"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/textViewNCL"
+            app:layout_constraintTop_toTopOf="@+id/textViewNCL" />
 
+        <TextView
+            android:id="@+id/textViewFreqTable"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/freqTableText"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/textViewFTL"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewNumChan" />
 
-</android.support.constraint.ConstraintLayout>
+        <TextView
+            android:id="@+id/textViewFTL"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/stuff"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewFreqTable"
+            app:layout_constraintEnd_toStartOf="@+id/textViewFTR"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/textViewFreqTable"
+            app:layout_constraintTop_toTopOf="@+id/textViewFreqTable" />
+
+        <TextView
+            android:id="@+id/textViewFTR"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/stuff"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewFTL"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/textViewFTL"
+            app:layout_constraintTop_toTopOf="@+id/textViewFTL" />
+
+        <TextView
+            android:id="@+id/textViewSoundPStrat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/soundProcessingText"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/spinnerSPSL"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewFreqTable" />
+
+        <Spinner
+            android:id="@+id/spinnerSPSL"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewSoundPStrat"
+            app:layout_constraintEnd_toStartOf="@+id/spinnerSPSR"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/textViewSoundPStrat"
+            app:layout_constraintTop_toTopOf="@+id/textViewSoundPStrat" />
+
+        <Spinner
+            android:id="@+id/spinnerSPSR"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/spinnerSPSL"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/spinnerSPSL"
+            app:layout_constraintTop_toTopOf="@+id/spinnerSPSL"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/textViewNMax"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/nMaximaText"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/spinnerNML"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewSoundPStrat" />
+
+        <Spinner
+            android:id="@+id/spinnerNML"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewNMax"
+            app:layout_constraintEnd_toStartOf="@+id/spinnerNMR"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/textViewNMax"
+            app:layout_constraintTop_toTopOf="@+id/textViewNMax" />
+
+        <Spinner
+            android:id="@+id/spinnerNMR"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/spinnerNML"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/spinnerNML"
+            app:layout_constraintTop_toTopOf="@+id/spinnerNML"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/textViewStimMode"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/stimulationModeText"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/spinnerSML"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewNMax" />
+
+        <Spinner
+            android:id="@+id/spinnerSML"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewStimMode"
+            app:layout_constraintEnd_toStartOf="@+id/spinnerSMR"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/textViewStimMode"
+            app:layout_constraintTop_toTopOf="@+id/textViewStimMode" />
+
+        <Spinner
+            android:id="@+id/spinnerSMR"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/spinnerSML"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/spinnerSML"
+            app:layout_constraintTop_toTopOf="@+id/spinnerSML"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/textViewStimRate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/stimulationRateText"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/editTextSRL"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewStimMode" />
+
+        <EditText
+            android:id="@+id/editTextSRL"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewStimRate"
+            app:layout_constraintEnd_toStartOf="@+id/editTextSRR"
+            app:layout_constraintHorizontal_weight="1"
+            android:inputType="numberDecimal"
+            android:hint="@string/stuff"
+            app:layout_constraintStart_toEndOf="@+id/textViewStimRate"
+            app:layout_constraintTop_toTopOf="@+id/textViewStimRate"
+            android:importantForAutofill="no"
+            tools:targetApi="o" />
+
+        <EditText
+            android:id="@+id/editTextSRR"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextSRL"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            android:inputType="numberDecimal"
+            android:hint="@string/stuff"
+            app:layout_constraintStart_toEndOf="@+id/editTextSRL"
+            app:layout_constraintTop_toTopOf="@+id/editTextSRL"
+            app:layout_constraintVertical_bias="0.0"
+            android:importantForAutofill="no"
+            tools:targetApi="o" />
+
+        <TextView
+            android:id="@+id/textViewPulseWidth"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/pulseWidthText"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/editTextPWL"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewStimRate" />
+
+        <EditText
+            android:id="@+id/editTextPWL"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewPulseWidth"
+            app:layout_constraintEnd_toStartOf="@+id/editTextPWR"
+            app:layout_constraintHorizontal_weight="1"
+            android:inputType="numberDecimal"
+            android:hint="@string/stuff"
+            app:layout_constraintStart_toEndOf="@+id/textViewPulseWidth"
+            app:layout_constraintTop_toTopOf="@+id/textViewPulseWidth"
+            android:importantForAutofill="no"
+            tools:targetApi="o" />
+
+        <EditText
+            android:id="@+id/editTextPWR"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextPWL"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            android:inputType="numberDecimal"
+            android:hint="@string/stuff"
+            app:layout_constraintStart_toEndOf="@+id/editTextPWL"
+            app:layout_constraintTop_toTopOf="@+id/editTextPWL"
+            app:layout_constraintVertical_bias="0.0"
+            android:importantForAutofill="no"
+            tools:targetApi="o" />
+
+        <TextView
+            android:id="@+id/textViewSensitivity"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/sensitivityText"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/editTextSL"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewPulseWidth" />
+
+        <EditText
+            android:id="@+id/editTextSL"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewSensitivity"
+            app:layout_constraintEnd_toStartOf="@+id/editTextSR"
+            app:layout_constraintHorizontal_weight="1"
+            android:inputType="numberDecimal"
+            android:hint="@string/stuff"
+            app:layout_constraintStart_toEndOf="@+id/textViewSensitivity"
+            app:layout_constraintTop_toTopOf="@+id/textViewSensitivity"
+            android:importantForAutofill="no"
+            tools:targetApi="o" />
+
+        <EditText
+            android:id="@+id/editTextSR"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextSL"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            android:inputType="numberDecimal"
+            android:hint="@string/stuff"
+            app:layout_constraintStart_toEndOf="@+id/editTextSL"
+            app:layout_constraintTop_toTopOf="@+id/editTextSL"
+            app:layout_constraintVertical_bias="0.0"
+            android:importantForAutofill="no"
+            tools:targetApi="o" />
+
+        <TextView
+            android:id="@+id/textViewGain"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/gainText"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/editTextGL"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewSensitivity" />
+
+        <EditText
+            android:id="@+id/editTextGL"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewGain"
+            app:layout_constraintEnd_toStartOf="@+id/editTextGR"
+            app:layout_constraintHorizontal_weight="1"
+            android:inputType="numberDecimal"
+            android:hint="@string/stuff"
+            app:layout_constraintStart_toEndOf="@+id/textViewGain"
+            app:layout_constraintTop_toTopOf="@+id/textViewGain"
+            android:importantForAutofill="no"
+            tools:targetApi="o" />
+
+        <EditText
+            android:id="@+id/editTextGR"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextGL"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            android:inputType="numberDecimal"
+            android:hint="@string/stuff"
+            app:layout_constraintStart_toEndOf="@+id/editTextGL"
+            app:layout_constraintTop_toTopOf="@+id/editTextGL"
+            app:layout_constraintVertical_bias="0.0"
+            android:importantForAutofill="no"
+            tools:targetApi="o" />
+
+        <TextView
+            android:id="@+id/textViewVolume"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/volumeText"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/spinnerVL"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewGain" />
+
+        <Spinner
+            android:id="@+id/spinnerVL"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewVolume"
+            app:layout_constraintEnd_toStartOf="@+id/spinnerVR"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/textViewVolume"
+            app:layout_constraintTop_toTopOf="@+id/textViewVolume" />
+
+        <Spinner
+            android:id="@+id/spinnerVR"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/spinnerVL"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/spinnerVL"
+            app:layout_constraintTop_toTopOf="@+id/spinnerVL"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/textViewQFactor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/qFactorText"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/editTextQFL"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewVolume" />
+
+        <EditText
+            android:id="@+id/editTextQFL"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewQFactor"
+            app:layout_constraintEnd_toStartOf="@+id/editTextQFR"
+            app:layout_constraintHorizontal_weight="1"
+            android:inputType="numberDecimal"
+            android:hint="@string/stuff"
+            app:layout_constraintStart_toEndOf="@+id/textViewQFactor"
+            app:layout_constraintTop_toTopOf="@+id/textViewQFactor"
+            android:importantForAutofill="no"
+            tools:targetApi="o" />
+
+        <EditText
+            android:id="@+id/editTextQFR"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextQFL"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            android:inputType="numberDecimal"
+            android:hint="@string/stuff"
+            app:layout_constraintStart_toEndOf="@+id/editTextQFL"
+            app:layout_constraintTop_toTopOf="@+id/editTextQFL"
+            app:layout_constraintVertical_bias="0.0"
+            android:importantForAutofill="no"
+            tools:targetApi="o" />
+
+        <TextView
+            android:id="@+id/textViewBaseLevel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/baseLevelText"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/editTextBLL"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewQFactor" />
+
+        <EditText
+            android:id="@+id/editTextBLL"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewBaseLevel"
+            app:layout_constraintEnd_toStartOf="@+id/editTextBLR"
+            app:layout_constraintHorizontal_weight="1"
+            android:inputType="numberDecimal"
+            android:hint="@string/stuff"
+            app:layout_constraintStart_toEndOf="@+id/textViewBaseLevel"
+            app:layout_constraintTop_toTopOf="@+id/textViewBaseLevel"
+            android:importantForAutofill="no"
+            tools:targetApi="o" />
+
+        <EditText
+            android:id="@+id/editTextBLR"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextBLL"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            android:inputType="numberDecimal"
+            android:hint="@string/stuff"
+            app:layout_constraintStart_toEndOf="@+id/editTextBLL"
+            app:layout_constraintTop_toTopOf="@+id/editTextBLL"
+            app:layout_constraintVertical_bias="0.0"
+            android:importantForAutofill="no"
+            tools:targetApi="o" />
+
+        <TextView
+            android:id="@+id/textViewSaturationLevel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/saturationLevelText"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/editTextSLL"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewBaseLevel" />
+
+        <EditText
+            android:id="@+id/editTextSLL"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewSaturationLevel"
+            app:layout_constraintEnd_toStartOf="@+id/editTextSLR"
+            app:layout_constraintHorizontal_weight="1"
+            android:inputType="numberDecimal"
+            android:hint="@string/stuff"
+            app:layout_constraintStart_toEndOf="@+id/textViewSaturationLevel"
+            app:layout_constraintTop_toTopOf="@+id/textViewSaturationLevel"
+            android:importantForAutofill="no"
+            tools:targetApi="o" />
+
+        <EditText
+            android:id="@+id/editTextSLR"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextSLL"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            android:inputType="numberDecimal"
+            android:hint="@string/stuff"
+            app:layout_constraintStart_toEndOf="@+id/editTextSLL"
+            app:layout_constraintTop_toTopOf="@+id/editTextSLL"
+            app:layout_constraintVertical_bias="0.0"
+            android:importantForAutofill="no"
+            tools:targetApi="o" />
+
+        <TextView
+            android:id="@+id/textViewStimulationOrder"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/stimulationOrderText"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/spinnerSOL"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewSaturationLevel" />
+
+        <Spinner
+            android:id="@+id/spinnerSOL"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewStimulationOrder"
+            app:layout_constraintEnd_toStartOf="@+id/spinnerSOR"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/textViewStimulationOrder"
+            app:layout_constraintTop_toTopOf="@+id/textViewStimulationOrder" />
+
+        <Spinner
+            android:id="@+id/spinnerSOR"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/spinnerSOL"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/spinnerSOL"
+            app:layout_constraintTop_toTopOf="@+id/spinnerSOL"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/textViewWindow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/windowText"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/spinnerWL"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewStimulationOrder" />
+
+        <Spinner
+            android:id="@+id/spinnerWL"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewWindow"
+            app:layout_constraintEnd_toStartOf="@+id/spinnerWR"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/textViewWindow"
+            app:layout_constraintTop_toTopOf="@+id/textViewWindow" />
+
+        <Spinner
+            android:id="@+id/spinnerWR"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/spinnerWL"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/spinnerWL"
+            app:layout_constraintTop_toTopOf="@+id/spinnerWL"
+            app:layout_constraintVertical_bias="0.0" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</ScrollView>
