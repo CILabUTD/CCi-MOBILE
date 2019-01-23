@@ -493,7 +493,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
                 MainActivity.this.startActivityForResult(myIntent, 1);
                 return true;
             case R.id.menuTesting:
-                myIntent = new Intent(MainActivity.this, TestingActivity.class);
+                myIntent = new Intent(MainActivity.this, SettingsActivityTabbed.class);
                 MainActivity.this.startActivityForResult(myIntent, 1);
                 return true;
             default:
