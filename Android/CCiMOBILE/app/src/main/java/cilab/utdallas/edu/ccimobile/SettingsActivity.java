@@ -7,7 +7,8 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -1429,8 +1430,9 @@ public class SettingsActivity extends AppCompatActivity {
 
         setResult(RESULT_OK, intent);
         if (!userProblems) {
-            Toast.makeText(getApplicationContext(), "MAP updated successfully.", Toast.LENGTH_SHORT).show(); // Set your toast message
-            finish(); // close activity after hitting Update button if there are no errors
+            //Toast.makeText(getApplicationContext(), "MAP updated successfully.", Toast.LENGTH_SHORT).show(); // Set your toast message
+            Snackbar.make(findViewById(R.id.rootSettings), "MAP updated successfully.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            //finish(); // close activity after hitting Update button if there are no errors
         }
     }
 
