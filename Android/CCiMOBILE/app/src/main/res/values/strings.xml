@@ -117,7 +117,7 @@
     <string name="textStep1">Step 1 completed</string>
     <string name="textStep2">Step 2 completed</string>
     <string name="textSaveMap">Save MAP</string>
-    <string name="textMAPSelect">Please select a MAP</string>
+    <string name="textMAPSelect">Please select a MAP.</string>
     <string name="textMAPfilename">Map filename:</string>
     <string name="imageDesc">Connection status symbol</string>
     <string name="textftDevnull">ftDev is null</string>

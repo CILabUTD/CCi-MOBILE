@@ -20,6 +20,7 @@ import android.provider.OpenableColumns;
 import androidx.annotation.NonNull;
 
 import com.google.android.material.color.MaterialColors;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.widget.Toolbar;
@@ -314,29 +315,51 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
      * Prompts the user for the MAP filename
      */
     public void promptMAPfilename(View view) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Save MAP");
-
+        MaterialAlertDialogBuilder saveAlert = new MaterialAlertDialogBuilder(this);
+        saveAlert.setTitle("Save MAP");
         View viewInflated = LayoutInflater.from(this).inflate(R.layout.text_input_filename, (ViewGroup) findViewById(android.R.id.content), false);
         final EditText input = viewInflated.findViewById(R.id.input);
-        builder.setView(viewInflated);
+        saveAlert.setView(viewInflated);
 
-        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+        saveAlert.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
                 String saveFilename = input.getText().toString();
                 saveMAP(saveFilename);
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        saveAlert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.cancel();
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
             }
         });
+        saveAlert.show();
 
-        builder.show();
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setTitle("Save MAP");
+//
+//        View viewInflated = LayoutInflater.from(this).inflate(R.layout.text_input_filename, (ViewGroup) findViewById(android.R.id.content), false);
+//        final EditText input = viewInflated.findViewById(R.id.input);
+//        builder.setView(viewInflated);
+//
+//        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                dialogInterface.dismiss();
+//                String saveFilename = input.getText().toString();
+//                saveMAP(saveFilename);
+//            }
+//        });
+//        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                dialogInterface.cancel();
+//            }
+//        });
+//
+//        builder.show();
 
     }
 
@@ -781,7 +804,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
                 buttonOnOff.setChecked(false);
 
                 connectionStatus.setText(R.string.textConnected);
-                statusImage.setImageResource(R.drawable.connected);
+                statusImage.setImageResource(R.drawable.ic_done_black_24dp);
                 break;
 
             case InitializationService.STATUS_ERROR:
@@ -1271,7 +1294,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         }
         else  {
             //status.append("ftDev is set");
-            status.setText(R.string.textftDevset);
+            //status.setText(R.string.textftDevset);
             return 1; }
     }
 
@@ -1533,7 +1556,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             @Override
             public void run() {
                 //status.append("\n" + s);
-                status.setText(String.format("%s%s", getString(R.string.textStatusTextOut), s));
+                //status.setText(String.format("%s%s", getString(R.string.textStatusTextOut), s));
             }
         });
     }
