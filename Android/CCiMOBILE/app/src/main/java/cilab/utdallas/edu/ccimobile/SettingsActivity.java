@@ -1,5 +1,6 @@
 package cilab.utdallas.edu.ccimobile;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -27,13 +28,13 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity implements ParametersFrag.OnParametersSelectedListener {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
-
 
     int max_stimulation_rate = 14400;
     int min_stimulation_rate = 125;
@@ -123,7 +124,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     int disabledAlpha = 38;
 
-     //Define TextViews
+    //Define TextViews
     private TextView textViewITL, textViewSFL, textViewNCL, textViewFTL, textViewITR, textViewSFR,
             textViewNCR, textViewFTR, textView38, textView39, textView40, textView41, textView42,
             textView43, textView46, textView47, textView48, textView49, textView50, textView51,
@@ -158,13 +159,27 @@ public class SettingsActivity extends AppCompatActivity {
             spinnerWL, spinnerWR, spinnerNML, spinnerNMR;
 
     @Override
+    public void onAttachFragment(Fragment fragment) {
+        if (fragment instanceof ParametersFrag) {
+            ParametersFrag paramFragment = (ParametersFrag) fragment;
+            paramFragment.setOnParametersSelectedListener(this);
+        }
+    }
+
+    public void onArticleSelected(int position) {
+        // The user selected the headline of an article from the HeadlinesFragment
+        // Do something here to display that article
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings_tabbed);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
+
+        // Create the adapter that will return a fragment for each of the two
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
@@ -181,102 +196,73 @@ public class SettingsActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                updateButtonText();
+                //updateButtonText();
+
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.rootSettings, new ParametersFrag())
+                        .commit();
+
+                ParametersFrag articleFrag = (ParametersFrag)
+                        getSupportFragmentManager().findFragmentById(R.id.rootSettings);
+
+                if (articleFrag != null) {
+                    articleFrag.doStuff();
+                }
+
                 Snackbar.make(view, "MAP updated.", Snackbar.LENGTH_SHORT)
                         .setAction("Action", null).show();
             }
         });
 
-        setUpWidgets();
+        //setUpWidgets();
         //getMAPFromPreferences();
-    }
-
-    public static class ParametersFragment extends Fragment {
-        public ParametersFragment() {
-
-        }
-
-        @Nullable
-        @Override
-        public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View settingsView = inflater.inflate(R.layout.settings, container, false);
-            TextView textViewITL = settingsView.findViewById(R.id.textViewITL);
-            TextView textViewSFL = settingsView.findViewById(R.id.textViewSFL);
-            TextView textViewNCL = settingsView.findViewById(R.id.textViewNCL);
-            TextView textViewFTL = settingsView.findViewById(R.id.textViewFTL);
-            TextView textViewITR = settingsView.findViewById(R.id.textViewITR);
-            TextView textViewSFR = settingsView.findViewById(R.id.textViewSFR);
-            TextView textViewNCR = settingsView.findViewById(R.id.textViewNCR);
-            TextView textViewFTR = settingsView.findViewById(R.id.textViewFTR);
-
-            EditText editTextSRL = settingsView.findViewById(R.id.editTextSRL);
-            EditText editTextPWL = settingsView.findViewById(R.id.editTextPWL);
-            EditText editTextSL = settingsView.findViewById(R.id.editTextSL);
-            EditText editTextGL = settingsView.findViewById(R.id.editTextGL);
-            EditText editTextQFL = settingsView.findViewById(R.id.editTextQFL);
-            EditText editTextBLL = settingsView.findViewById(R.id.editTextBLL);
-            EditText editTextSLL = settingsView.findViewById(R.id.editTextSLL);
-            EditText editTextSRR = settingsView.findViewById(R.id.editTextSRR);
-            EditText editTextPWR = settingsView.findViewById(R.id.editTextPWR);
-            EditText editTextSR = settingsView.findViewById(R.id.editTextSR);
-            EditText editTextGR = settingsView.findViewById(R.id.editTextGR);
-            EditText editTextQFR = settingsView.findViewById(R.id.editTextQFR);
-            EditText editTextBLR = settingsView.findViewById(R.id.editTextBLR);
-            EditText editTextSLR = settingsView.findViewById(R.id.editTextSLR);
-
-            Spinner spinnerVL = settingsView.findViewById(R.id.spinnerVL);
-            Spinner spinnerVR = settingsView.findViewById(R.id.spinnerVR);
-            Spinner spinnerSPSL = settingsView.findViewById(R.id.spinnerSPSL);
-            Spinner spinnerSPSR = settingsView.findViewById(R.id.spinnerSPSR);
-            Spinner spinnerSOL = settingsView.findViewById(R.id.spinnerSOL);
-            Spinner spinnerSOR = settingsView.findViewById(R.id.spinnerSOR);
-            Spinner spinnerSML = settingsView.findViewById(R.id.spinnerSML);
-            Spinner spinnerSMR = settingsView.findViewById(R.id.spinnerSMR);
-            Spinner spinnerWL = settingsView.findViewById(R.id.spinnerWL);
-            Spinner spinnerWR = settingsView.findViewById(R.id.spinnerWR);
-            Spinner spinnerNML = settingsView.findViewById(R.id.spinnerNML);
-            Spinner spinnerNMR = settingsView.findViewById(R.id.spinnerNMR);
-
-            spinnerNML.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    Log.v("item", (String) parent.getItemAtPosition(position));
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
-
-            spinnerNMR.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    Log.v("item", (String) parent.getItemAtPosition(position));
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
-
-
-
-//          return inflater.inflate(R.layout.settings, container, false);
-            return settingsView;
-        }
     }
 
     public static class ElectrodesFragment extends Fragment {
         public ElectrodesFragment() {
-
+            // required empty constructor
         }
 
         @Nullable
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             return inflater.inflate(R.layout.activity_electrodes, container, false);
+        }
+    }
+
+    /**
+     * A placeholder fragment containing a simple view.
+     */
+    public static class PlaceholderFragment extends Fragment {
+        /**
+         * The fragment argument representing the section number for this
+         * fragment.
+         */
+        private static final String ARG_SECTION_NUMBER = "section_number";
+
+        public PlaceholderFragment() {
+        }
+
+        /**
+         * Returns a new instance of this fragment for the given section
+         * number.
+         */
+        public static PlaceholderFragment newInstance(int sectionNumber) {
+            PlaceholderFragment fragment = new PlaceholderFragment();
+            Bundle args = new Bundle();
+            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            fragment.setArguments(args);
+            return fragment;
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_settings_activity_tabbed, container, false);
+            TextView textView = rootView.findViewById(R.id.section_label);
+            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+            return rootView;
         }
     }
 
@@ -294,7 +280,7 @@ public class SettingsActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return new ParametersFragment();
+                    return new ParametersFrag();
                 default:
                     return new ElectrodesFragment();
             }
@@ -315,7 +301,9 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        getMAPFromPreferences();
+
+        //getMAPFromPreferences();
+
         //update preferences each time the Settings activity is opened
     }
 

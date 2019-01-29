@@ -8,7 +8,6 @@ import static com.xw.repo.BubbleUtils.sp2px;
 
 /**
  * config BubbleSeekBar's attributes
- * <p/>
  * Created by woxingxiao on 2017-03-14.
  */
 public class BubbleConfigBuilder {
