@@ -6,6 +6,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintTop_toTopOf="parent"
+    android:id="@+id/rootSettings"
+    tools:context="cilab.utdallas.edu.ccimobile.SettingsActivity"
     tools:layout_editor_absoluteX="8dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">

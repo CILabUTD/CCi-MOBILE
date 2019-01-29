@@ -69,29 +69,6 @@ public class SettingsActivityTabbed extends AppCompatActivity {
 
     }
 
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_settings_activity_tabbed, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
-
     public static class ParametersFragment extends Fragment {
         public ParametersFragment() {
 
@@ -101,7 +78,6 @@ public class SettingsActivityTabbed extends AppCompatActivity {
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             return inflater.inflate(R.layout.settings, container, false);
-            // return super.onCreateView(inflater, container, savedInstanceState);
         }
     }
 
@@ -114,7 +90,6 @@ public class SettingsActivityTabbed extends AppCompatActivity {
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             return inflater.inflate(R.layout.activity_electrodes, container, false);
-            // return super.onCreateView(inflater, container, savedInstanceState);
         }
     }
 
