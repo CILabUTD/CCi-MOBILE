@@ -198,16 +198,18 @@ public class SettingsActivity extends AppCompatActivity implements ParametersFra
             public void onClick(View view) {
                 //updateButtonText();
 
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .add(R.id.rootSettings, new ParametersFrag())
-                        .commit();
+//                getSupportFragmentManager()
+//                        .beginTransaction()
+//                        .add(R.id.fragment_holder, new ParametersFrag())
+//                        .commit();
+//
+//                ParametersFrag articleFrag = (ParametersFrag)
+//                        getSupportFragmentManager().findFragmentById(R.id.pager);
 
-                ParametersFrag articleFrag = (ParametersFrag)
-                        getSupportFragmentManager().findFragmentById(R.id.rootSettings);
+                ParametersFrag fragmentObj = (ParametersFrag) mSectionsPagerAdapter.instantiateItem(mViewPager, 0);
 
-                if (articleFrag != null) {
-                    articleFrag.doStuff();
+                if (fragmentObj != null) {
+                    fragmentObj.doStuff();
                 }
 
                 Snackbar.make(view, "MAP updated.", Snackbar.LENGTH_SHORT)
@@ -280,7 +282,9 @@ public class SettingsActivity extends AppCompatActivity implements ParametersFra
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return new ParametersFrag();
+                    return ParametersFrag.newInstance(position + 1);
+                case 1:
+                    return PlaceholderFragment.newInstance(position + 1);
                 default:
                     return new ElectrodesFragment();
             }
