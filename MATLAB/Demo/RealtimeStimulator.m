@@ -1,28 +1,26 @@
 function varargout = RealtimeStimulator(varargin)
-% REALTIMESTIMULATOR MATLAB code for RealtimeStimulator.fig
-%      REALTIMESTIMULATOR, by itself, creates a new REALTIMESTIMULATOR or raises the existing
-%      singleton*.
+%% Function: RealtimeStimulator.m
+% [varargout] = RealtimeStimulator(varargin)
 %
-%      H = REALTIMESTIMULATOR returns the handle to a new REALTIMESTIMULATOR or the handle to
-%      the existing singleton*.
+% This function performs this function using these x, y, z general steps
+% and will also generate corresponding a, b, c things. Here are some other
+% general details such as N-point FFT, etc.
+%           CCi-MOBILE Version: 2.2c
+%           Created by: Hussnain Ali, 2016
+%           Copyright Cochlear Ltd - derived from Nucleus MATLAB Toolbox v2*
 %
-%      REALTIMESTIMULATOR('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in REALTIMESTIMULATOR.M with the given input arguments.
+% This function calls:
+% 1. [sandwich] = nameOfOtherProgram(bread,cheese,...)
+% 2. [salad] = nameofOtherOtherProgram(lettuce)
 %
-%      REALTIMESTIMULATOR('Property','Value',...) creates a new REALTIMESTIMULATOR or raises the
-%      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before RealtimeStimulator_OpeningFcn gets called.  An
-%      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to RealtimeStimulator_OpeningFcn via varargin.
+% INPUT:
+% varargin      = This is an example of a description of this variable
+% 
+% OUTPUT:
+% varargout     = Use similar notation to describe the outputs
 %
-%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
-%      instance to run (singleton)".
-%
-% See also: GUIDE, GUIDATA, GUIHANDLES
-
-% Edit the above text to modify the response to help RealtimeStimulator
-
-% Last Modified by GUIDE v2.5 06-Oct-2016 22:51:51
+% See 'README.txt' for more information
+%% Beginning of function 
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;

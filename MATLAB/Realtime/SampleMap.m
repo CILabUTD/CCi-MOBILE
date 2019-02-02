@@ -1,10 +1,30 @@
+%% Function: nameOfFunction.m
+% [smoothie] = nameOfFunction(strawberry,blackberry,...)
+%
 % MAP file structure for CCI Platform
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Copyright: CRSS-CILab, UT-Dallas
-%   Authors: Hussnain Ali
-%      Date: 2015/09/28
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% This function performs this function using these x, y, z general steps
+% and will also generate corresponding a, b, c things. Here are some other
+% general details such as N-point FFT, etc.
+%           CCi-MOBILE Version: 2.2c
+%           Created by: Hussnain Ali, 2016
+%           Copyright Cochlear Ltd - derived from Nucleus MATLAB Toolbox v2*
+%
+% This function calls:
+% 1. [sandwich] = nameOfOtherProgram(bread,cheese,...)
+% 2. [salad] = nameofOtherOtherProgram(lettuce)
+% *NOTE: This section may not be applicable to all functions
+%
+% INPUT(S):
+% strawberry    = This is an example of a description of this variable
+% blackberry    = This is an example of a description of the variable where
+%                 it takes more than one line to describe the said variable
+% 
+% OUTPUT(s):
+% smoothie      = Use similar notation to describe the outputs
+%
+% See 'README.txt' for more information
+%% Beginning of function 
 
 MAP.General.SubjectName      = 'Subject 01';       % Optional: Subject Name
 MAP.General.SubjectID        = 'S01';              % Optional: Random Subject ID
@@ -33,7 +53,7 @@ MAP.Left.BaseLevel          = 0.0156;       % Base Level
 MAP.Left.SaturationLevel    = 0.5859;       % Saturation Level
 MAP.Left.ChannelOrderType   = 'base-to-apex'; % Channel Stimulation Order type: 'base-to-apex' or 'apex-to-base'
 MAP.Left.FrequencyTable     = 'Default';    % Frequency assignment for each band "Default" or "Custom"
-MAP.Left.Window             = 'Hanning'     % Window type
+MAP.Left.Window             = 'Hanning';     % Window type
 MAP.Left.El_CF1_CF2_THR_MCL_Gain = [
   % El  F_Low   F_High  THR     MCL     Gain
     22  188     313     100     200     0.0
@@ -87,7 +107,7 @@ MAP.Right.BaseLevel         = 0.0156;           % Base Level
 MAP.Right.SaturationLevel   = 0.556;            % Saturation Level
 MAP.Right.ChannelOrderType  = 'base-to-apex';   % Channel Stimulation Order type: 'base-to-apex' or 'apex-to-base'
 MAP.Right.FrequencyTable     = 'Default';        % Frequency assignment for each band "Default" or "Custom"
-MAP.Right.Window            = 'Hanning'         % Window type
+MAP.Right.Window            = 'Hanning';         % Window type
 MAP.Right.El_CF1_CF2_THR_MCL_Gain = [
   % El  F_Low   F_High  THR     MCL     Gain
     22  188     313     100     200     0.0
