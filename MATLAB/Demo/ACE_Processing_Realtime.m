@@ -2,22 +2,20 @@ function [stimulus] = ACE_Processing_Realtime(audio, bufferHistory, p)
 %% Function: ACE_Processing_Realtime.m
 % [stimulus] = ACE_Processing_Realtime(audio, bufferHistory, p)
 %
-% This function performs this function using these x, y, z general steps
-% and will also generate corresponding a, b, c things. Here are some other
-% general details such as N-point FFT, etc.
+% This function performs ACE processing on the input audio signal. The
+% resulting electrode activation profile can be viewed via the
+% RealtimeSimulator.m GUI.
 %
 % This function calls:
-% 1. [sandwich] = nameOfOtherProgram(bread,cheese,...)
-% 2. [salad] = nameofOtherOtherProgram(lettuce)
+% 1. [v, ~, ~] = logarithmic_compression(p, v);
 %
 % INPUTS:
-% audio         = This is an example of a description of this variable
-% bufferHistory = This is an example of a description of the variable where
-%                 it takes more than one line to describe the said variable
-% p             =
+% audio         = The left or right audio signal
+% bufferHistory = An array initialized with zeros
+% p             = The handle parameters
 %
 % OUTPUT:
-% stimulus      = Use similar notation to describe the outputs
+% stimulus      = Current levels and electrode information for streaming
 %
 % See 'README.txt' for more information
 %% Beginning of function
@@ -43,7 +41,7 @@ end
 cseq.channels = repmat(p.channel_order, num_time_slots, 1);
 
 reord_env = v(p.channel_order,:);			% Re-order the channels (rows).
-%reord_env = v((num_bands:-1:1)',:);		% Re-order the channels (rows).
+% reord_env = v((num_bands:-1:1)',:);		% Re-order the channels (rows).
 cseq.magnitudes = reord_env(:);				% Concatenate columns.
 
 skip = isnan(cseq.magnitudes);
@@ -85,8 +83,8 @@ q.periods			= 125;			% Copy periods.
 
 %% Modification pertinent to Streaming
 
-stimulus.current_levels=q.current_levels;
-stimulus.electrodes= q.electrodes;
+stimulus.current_levels = q.current_levels;
+stimulus.electrodes = q.electrodes;
 
 end
 

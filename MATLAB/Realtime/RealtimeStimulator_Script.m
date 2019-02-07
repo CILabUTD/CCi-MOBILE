@@ -1,33 +1,14 @@
 %% Function: nameOfFunction.m
-% [smoothie] = nameOfFunction(strawberry,blackberry,...)
 %
-% RealtimeStimulator_Script
-% Equivalent RealtimeStimulator GUI in a script form
-% It processes audio from the BTE in realtime for nframes and sends stimuli
-% to the coil via USB/UART
-
-% This function performs this function using these x, y, z general steps
-% and will also generate corresponding a, b, c things. Here are some other
-% general details such as N-point FFT, etc.
+% This script manages a GUI for the following tasks: selecting/opening a
+% MAP file, starting and stopping processing/streaming, sliders to adjust
+% microphone sensitivity, gain, and volume.
 %           CCi-MOBILE Version: 2.2c
 %           Created by: Hussnain Ali, 2016
 %           Copyright Cochlear Ltd - derived from Nucleus MATLAB Toolbox v2*
 %
-% This function calls:
-% 1. [sandwich] = nameOfOtherProgram(bread,cheese,...)
-% 2. [salad] = nameofOtherOtherProgram(lettuce)
-% *NOTE: This section may not be applicable to all functions
-%
-% INPUT(S):
-% strawberry    = This is an example of a description of this variable
-% blackberry    = This is an example of a description of the variable where
-%                 it takes more than one line to describe the said variable
-% 
-% OUTPUT(s):
-% smoothie      = Use similar notation to describe the outputs
-%
 % See 'README.txt' for more information
-%% Beginning of function 
+%% Beginning of function
 
 clc;
 clear all;
@@ -45,7 +26,8 @@ electrodogram_plot = 1; % = 1 will plot the electrodogram.
 % For large time durations, set electrodogram_plot = 0;
 
 % add common functions path to the current directory
-currentFolder = pwd; CCIMobileFolder = fileparts(currentFolder); %currentFolder(1:end-8);
+currentFolder = pwd;
+CCIMobileFolder = fileparts(currentFolder); % currentFolder(1:end-8);
 CommonFunctionsFolder = [CCIMobileFolder '\CommonFunctions\'];
 addpath(CommonFunctionsFolder);
 
@@ -55,7 +37,8 @@ s = initializeBoard(p);
 outputBuffer = create_output_buffer(p);
 
 cl=[];el=[];
-p.General.LeftOn = 0; p.General.RightOn = 0;
+p.General.LeftOn = 0;
+p.General.RightOn = 0;
 if (isfield(p,'Left') ==1)
     sine_token_l=uint8(abs(150.*sin(2.*pi.*(0:1:p.Left.pulses_per_frame).*0.5/p.Left.pulses_per_frame))); %figure; plot(sine_token);
     %sine_token_l=uint8(150.*sin(2.*pi.*(0:1:p.Left.pulses_per_frame).*0.01)); %figure; plot(sine_token);
@@ -87,12 +70,14 @@ while frame_no<nframes % use while else timing won't be right
             pulses_per_frame_left = numel(stimuli.left.electrodes);
             a=7;
             for i=1:pulses_per_frame_left
-                outputBuffer(a) = uint8(stimuli.left.electrodes(i)); a=a+1; %left electrodes
+                outputBuffer(a) = uint8(stimuli.left.electrodes(i));
+                a=a+1; %left electrodes
             end
             
             a= 133;
             for i=1:pulses_per_frame_left
-                outputBuffer(a) = uint8(stimuli.left.current_levels(i)); a=a+1; %left amplitudes
+                outputBuffer(a) = uint8(stimuli.left.current_levels(i));
+                a=a+1; %left amplitudes
             end
             bufferHistory_left = audio_left(p.Left.block_size-p.Left.NHIST+1:end);
         else
@@ -108,11 +93,13 @@ while frame_no<nframes % use while else timing won't be right
             
             a=265;
             for i=1:numel(stimuli.right.electrodes)
-                outputBuffer(a) =uint8(stimuli.right.electrodes(i)); a=a+1; %right electrodes
+                outputBuffer(a) =uint8(stimuli.right.electrodes(i));
+                a=a+1; %right electrodes
             end
             a=391;
             for i=1:numel(stimuli.right.electrodes)
-                outputBuffer(a) = uint8(stimuli.right.current_levels(i)); a=a+1; %right amplitudes
+                outputBuffer(a) = uint8(stimuli.right.current_levels(i));
+                a=a+1; %right amplitudes
             end
             bufferHistory_right = audio_right(p.Right.block_size-p.Right.NHIST+1:end);
         else

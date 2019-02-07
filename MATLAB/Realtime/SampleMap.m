@@ -1,27 +1,4 @@
-%% Function: nameOfFunction.m
-% [smoothie] = nameOfFunction(strawberry,blackberry,...)
-%
-% MAP file structure for CCI Platform
-%
-% This function performs this function using these x, y, z general steps
-% and will also generate corresponding a, b, c things. Here are some other
-% general details such as N-point FFT, etc.
-%           CCi-MOBILE Version: 2.2c
-%           Created by: Hussnain Ali, 2016
-%           Copyright Cochlear Ltd - derived from Nucleus MATLAB Toolbox v2*
-%
-% This function calls:
-% 1. [sandwich] = nameOfOtherProgram(bread,cheese,...)
-% 2. [salad] = nameofOtherOtherProgram(lettuce)
-% *NOTE: This section may not be applicable to all functions
-%
-% INPUT(S):
-% strawberry    = This is an example of a description of this variable
-% blackberry    = This is an example of a description of the variable where
-%                 it takes more than one line to describe the said variable
-% 
-% OUTPUT(s):
-% smoothie      = Use similar notation to describe the outputs
+% This file represents a sample MAP file.
 %
 % See 'README.txt' for more information
 %% Beginning of function 

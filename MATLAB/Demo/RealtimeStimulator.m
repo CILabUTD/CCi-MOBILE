@@ -2,25 +2,26 @@ function varargout = RealtimeStimulator(varargin)
 %% Function: RealtimeStimulator.m
 % [varargout] = RealtimeStimulator(varargin)
 %
-% This function performs this function using these x, y, z general steps
-% and will also generate corresponding a, b, c things. Here are some other
-% general details such as N-point FFT, etc.
+% This function displays the incoming acoustic signal and resulting
+% electrode activation profile via a GUI. This function is not recommended
+% for human testing.
 %           CCi-MOBILE Version: 2.2c
 %           Created by: Hussnain Ali, 2016
 %           Copyright Cochlear Ltd - derived from Nucleus MATLAB Toolbox v2*
 %
 % This function calls:
-% 1. [sandwich] = nameOfOtherProgram(bread,cheese,...)
-% 2. [salad] = nameofOtherOtherProgram(lettuce)
+% 1. p = initialize_ACE_integer_ppf;
+% 2. s = initializeBoard(p);
+% 3. dummy_output_buffer = UART_start_buffer;
 %
 % INPUT:
-% varargin      = This is an example of a description of this variable
-% 
+% varargin      = A variable-length input argument list
+%
 % OUTPUT:
-% varargout     = Use similar notation to describe the outputs
+% varargout     = A variable-length output argument list
 %
 % See 'README.txt' for more information
-%% Beginning of function 
+%% Beginning of function
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -52,11 +53,12 @@ function RealtimeStimulator_OpeningFcn(hObject, eventdata, handles, varargin)
 
 % Choose default command line output for RealtimeStimulator
 handles.output = hObject;
-
-global fs; fs = 16000;
+global fs;
+fs = 16000;
 
 % add common functions path to the current directory
-currentFolder = pwd; CCIMobileFolder = fileparts(currentFolder); %currentFolder(1:end-4);
+currentFolder = pwd;
+CCIMobileFolder = fileparts(currentFolder); % currentFolder(1:end-4);
 CommonFunctionsFolder = [CCIMobileFolder '\CommonFunctions\'];
 addpath(CommonFunctionsFolder);
 
@@ -135,8 +137,10 @@ function checkbox_left_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 new_value = get(hObject,'Value');
-drawnow;     handles = guidata(hObject);
-handles.parameters.General.LeftOn = new_value; guidata(hObject, handles);
+drawnow;
+handles = guidata(hObject);
+handles.parameters.General.LeftOn = new_value;
+guidata(hObject, handles);
 if new_value==0
     set(handles.slider_sensitivity_left,'Enable','off' );
     set(handles.slider_gain_left,'Enable','off');
@@ -334,7 +338,8 @@ function slider_volume_right_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 new_value = get(hObject,'Value');
-drawnow;     handles = guidata(hObject);
+drawnow;
+handles = guidata(hObject);
 handles.parameters.Right.Volume = new_value;
 handles.parameters.Right.volume_level = handles.parameters.Right.Volume/10;guidata(hObject, handles);
 set(handles.text_vol_right, 'String', ['Volume = ' num2str(handles.parameters.Right.Volume)]);
@@ -385,51 +390,53 @@ function button_start_Callback(hObject, eventdata, handles)
 p = handles.parameters;
 s = initializeBoard(p);
 
-if (isfield(p,'Left') ==1)
-left_comments = sprintf('Implant type = Nucleus CI24RE\nStimulation Rate = %spps\nPulse Width = %sus',num2str(p.Left.StimulationRate),num2str(p.Left.PulseWidth));
-set(handles.text_left, 'String', left_comments);
-end
-if (isfield(p,'Right') ==1)
-right_comments = sprintf('Implant type = Nucleus CI24RE\nStimulation Rate = %spps\nPulse Width = %sus',num2str(p.Right.StimulationRate),num2str(p.Right.PulseWidth));
-set(handles.text_right, 'String', right_comments);
+if (isfield(p,'Left') == 1)
+    left_comments = sprintf('Implant type = Nucleus CI24RE\nStimulation Rate = %spps\nPulse Width = %sus',num2str(p.Left.StimulationRate),num2str(p.Left.PulseWidth));
+    set(handles.text_left, 'String', left_comments);
 end
 
-
+if (isfield(p,'Right') == 1)
+    right_comments = sprintf('Implant type = Nucleus CI24RE\nStimulation Rate = %spps\nPulse Width = %sus',num2str(p.Right.StimulationRate),num2str(p.Right.PulseWidth));
+    set(handles.text_right, 'String', right_comments);
+end
 
 dummy_output_buffer = UART_start_buffer;
 
-if (isfield(p,'Left') ==1)
+if (isfield(p,'Left') == 1)
     bufferHistory_left = (zeros(1, p.Left.block_size - p.Left.block_shift));
 end
 
-if (isfield(p,'Right') ==1)
+if (isfield(p,'Right') == 1)
     bufferHistory_right = (zeros(1, p.Right.block_size - p.Right.block_shift));
 end
 
-handles.stop = 0; guidata(hObject, handles);
+handles.stop = 0;
+guidata(hObject, handles);
 hAx = handles.axes2;
-maxA = 255;  minA = 0; 
-xlabel('Electrodes'); 
-elecbar = zeros(1,22); 
+maxA = 255;  minA = 0;
+xlabel('Electrodes');
+elecbar = zeros(1,22);
 xlhand = get(hAx,'xlabel'); set(xlhand,'fontsize',5);
 
 hAy = handles.axes3; axes(handles.axes3);
 maxA2 = 0.2;  minA2 = -0.2;
-index = 1; sigplot = zeros(1,16000); nSamples = numel(sigplot); %round(fs*timeBase);
+index = 1; sigplot = zeros(1,16000); nSamples = numel(sigplot); % round(fs*timeBase);
 hLine = plot(hAy,(1:nSamples)/16000,sigplot(:,index:index+nSamples-1));
 xlabel('time');
 ylim([minA2 maxA2]);
 xlim([0 nSamples/16000]);
 
-while handles.stop==0 % use while else timing won't be right
-    drawnow;     handles = guidata(hObject); p = handles.parameters;
+while handles.stop == 0 % use while else timing won't be right
+    drawnow;
+    handles = guidata(hObject);
+    p = handles.parameters;
     if Wait(s)>= 512
         AD_data_bytes = Read(s, 512);
-        AD_data=typecast(int8(AD_data_bytes), 'int16');    
-        %tic;
+        AD_data=typecast(int8(AD_data_bytes), 'int16');
+        % tic;
         if (p.General.LeftOn == 1)
             audio_left = double(AD_data(1:2:end));          % Type cast to double for processing
-            audio_left =  (p.Left.scale_factor).*audio_left; %2.3/32768 at 25 dB gain or 1/32768 at 33dB gain for 1kHz at 65dB SPl to equate to MCL p.sensitivity.
+            audio_left =  (p.Left.scale_factor).*audio_left; % 2.3/32768 at 25 dB gain or 1/32768 at 33dB gain for 1kHz at 65dB SPl to equate to MCL p.sensitivity.
             stimuli.left = ACE_Processing_Realtime(audio_left, bufferHistory_left, p.Left);
         end
         
@@ -441,18 +448,18 @@ while handles.stop==0 % use while else timing won't be right
         
         axes(handles.axes3);
         sigplot(nSamples-127:end) = audio_left;
-        set(hLine,'ydata',sigplot); %(:,index:index+128-1));
-        %drawnow  %updates the display
+        set(hLine,'ydata',sigplot); % (:,index:index+128-1));
+        % drawnow  % updates the display
         sigplot(1:nSamples-128) = sigplot(129:nSamples);
         set(hAy,'Color',[0.1 0 0.1]);
-                
+        
         axes(handles.axes2);
         elecbar = zeros(1,22);
         cc = stimuli.left.current_levels(1:8); ee = stimuli.left.electrodes(1:8);
         elecbar(ee) = cc;
-        bgraph = bar(elecbar(22:-1:1)); 
+        bgraph = bar(elecbar(22:-1:1));
         set(bgraph,'FaceColor', [0.4 0 0.4]);
-        ylim([minA maxA]); xlim([1 22]); 
+        ylim([minA maxA]); xlim([1 22]);
         xlhand = get(hAx,'xlabel'); set(xlhand,'fontsize',1);
         hAx.XTick=1:1:22; hAx.XTickLabel =(22:-1:1);
         set(hAx,'Color',[0.1 0 0.1]);
@@ -461,6 +468,7 @@ while handles.stop==0 % use while else timing won't be right
         Write(s, dummy_output_buffer,516);
         clear AD_data_bytes; clear AD_data;
     end
-    
 end
-delete(s); clear s;
+
+delete(s);
+clear s;

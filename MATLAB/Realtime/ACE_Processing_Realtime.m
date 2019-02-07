@@ -2,22 +2,18 @@ function [stimulus] = ACE_Processing_Realtime(audio, bufferHistory, p)
 %% Function: ACE_Processing_Realtime.m
 % [stimulus] = ACE_Processing_Realtime(audio, bufferHistory, p)
 %
-% This function performs this function using these x, y, z general steps
-% and will also generate corresponding a, b, c things. Here are some other
-% general details such as N-point FFT, etc.
+% This function performs realtime ACE processing on the input audio signal.
 %
 % This function calls:
-% 1. [sandwich] = nameOfOtherProgram(bread,cheese,...)
-% 2. [salad] = nameofOtherOtherProgram(lettuce)
+% 1. [v, ~, ~] = logarithmic_compression(p, v);
 %
 % INPUTS:
-% audio         = This is an example of a description of this variable
-% bufferHistory = This is an example of a description of the variable where
-%                 it takes more than one line to describe the said variable
-% p             =
+% audio         = The left or right audio signal
+% bufferHistory = An array initialized with zeros
+% p             = The handle parameters
 %
 % OUTPUT:
-% stimulus      = Use similar notation to describe the outputs
+% stimulus      = Current levels and electrode information for streaming
 %
 % See 'README.txt' for more information
 %% Beginning of function
