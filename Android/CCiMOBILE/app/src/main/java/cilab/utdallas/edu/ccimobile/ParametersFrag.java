@@ -1,9 +1,7 @@
 package cilab.utdallas.edu.ccimobile;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -17,55 +15,30 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.snackbar.Snackbar;
-
-import java.util.stream.IntStream;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import static android.app.Activity.RESULT_OK;
-
 public class ParametersFrag extends Fragment {
-    TextView textViewITL, textViewITR, textViewSFL, textViewSFR, textViewNCL, textViewNCR, textViewFTL, textViewFTR;
-    EditText editTextSRL, editTextSRR, editTextPWL, editTextPWR, editTextSL, editTextSR, editTextGL, editTextGR, editTextQFL, editTextQFR, editTextBLL, editTextBLR, editTextSLL, editTextSLR;
-    Spinner spinnerSPSL, spinnerSPSR, spinnerNML, spinnerNMR, spinnerSML, spinnerSMR, spinnerVL, spinnerVR, spinnerSOL, spinnerSOR, spinnerWL, spinnerWR;
+    private TextView textViewITL, textViewITR, textViewSFL, textViewSFR, textViewNCL, textViewNCR, textViewFTL, textViewFTR;
+    private EditText editTextSRL, editTextSRR, editTextPWL, editTextPWR, editTextSL, editTextSR, editTextGL, editTextGR, editTextQFL, editTextQFR, editTextBLL, editTextBLR, editTextSLL, editTextSLR;
+    private Spinner spinnerSPSL, spinnerSPSR, spinnerNML, spinnerNMR, spinnerSML, spinnerSMR, spinnerVL, spinnerVR, spinnerSOL, spinnerSOR, spinnerWL, spinnerWR;
 
-    String leftMAPimplantType, leftMAPfrequencyTable, leftMAPsoundProcessingStrategy, leftMAPstimulationMode, leftMAPstimulationOrder, leftMAPwindow, rightMAPimplantType, rightMAPfrequencyTable, rightMAPsoundProcessingStrategy,
+    private String leftMAPimplantType, leftMAPfrequencyTable, leftMAPsoundProcessingStrategy, leftMAPstimulationMode, leftMAPstimulationOrder, leftMAPwindow, rightMAPimplantType, rightMAPfrequencyTable, rightMAPsoundProcessingStrategy,
             rightMAPstimulationMode, rightMAPstimulationOrder, rightMAPwindow, leftImplantGeneration, rightImplantGeneration;
 
-    int leftMAPsamplingFrequency, leftMAPnumberOfChannels, leftMAPnMaxima, leftMAPstimulationRate, leftMAPpulseWidth, leftMAPvolume, leftMAPnbands, rightMAPsamplingFrequency, rightMAPnumberOfChannels, rightMAPnMaxima,
+    private int leftMAPsamplingFrequency, leftMAPnumberOfChannels, leftMAPnMaxima, leftMAPstimulationRate, leftMAPpulseWidth, leftMAPvolume, leftMAPnbands, rightMAPsamplingFrequency, rightMAPnumberOfChannels, rightMAPnMaxima,
             rightMAPstimulationRate, rightMAPpulseWidth, rightMAPvolume, rightMAPnbands, leftStimulationModeCode, rightStimulationModeCode, leftPulsesPerFramePerChannel, rightPulsesPerFramePerChannel, leftPulsesPerFrame,
             rightPulsesPerFrame, leftnRFcycles, rightnRFcycles;
 
-    double leftMAPsensitivity, leftMAPgain, leftMAPQfactor, leftMAPbaseLevel, leftMAPsaturationLevel, rightMAPsensitivity, rightMAPgain, rightMAPQfactor, rightMAPbaseLevel, rightMAPsaturationLevel, leftInterpulseDuration,
+    private double leftMAPsensitivity, leftMAPgain, leftMAPQfactor, leftMAPbaseLevel, leftMAPsaturationLevel, rightMAPsensitivity, rightMAPgain, rightMAPQfactor, rightMAPbaseLevel, rightMAPsaturationLevel, leftInterpulseDuration,
             rightInterpulseDuration;
 
-    int[] leftMAPTHR, rightMAPTHR, leftMAPMCL, rightMAPMCL, leftMAPelectrodes, rightMAPelectrodes;
-    double[] leftMAPgains, rightMAPgains;
-    boolean leftExists, rightExists;
-
-    int max_stimulation_rate = 14400;
-    int min_stimulation_rate = 125;
-
-    int max_pulsewidth = 400;
-    int min_pulsewidth = 25;
-
-    int max_sensitivity = 10;
-    int min_sensitivity = 0;
-
-    int max_gain = 50;
-    int min_gain = 0;
-
-    int max_Qfactor = 100;
-    int min_Qfactor = 0;
-
-    int max_baselevel = 1;
-    int min_baselevel = 0;
-
-    int max_saturationlevel = 1;
-    int min_saturationlevel = 0;
+    private int[] leftMAPTHR, rightMAPTHR, leftMAPMCL, rightMAPMCL, leftMAPelectrodes, rightMAPelectrodes;
+    private double[] leftMAPgains, rightMAPgains;
+    private boolean leftExists, rightExists;
 
     private final int leftInterPhaseGap = 8;            //Interphase Gap is 8us
     private final int rightInterPhaseGap = 8;            //Interphase Gap is 8us
@@ -76,7 +49,7 @@ public class ParametersFrag extends Fragment {
     private final int leftAdditionalGap = 1;            //additional gap to make interpulse duration 7 uS ref. Fig. 14 in CIC4 specification
     private final int rightAdditionalGap = 1;            //additional gap to make interpulse duration 7 uS ref. Fig. 14 in CIC4 specification
 
-    OnParametersSelectedListener mCallback;
+    private OnParametersSelectedListener mCallback;
 
     public void setOnParametersSelectedListener(Activity activity) {
         mCallback = (OnParametersSelectedListener) activity;
@@ -103,13 +76,13 @@ public class ParametersFrag extends Fragment {
         return fragment;
     }
 
-    public void doStuff() {
-        textViewITL.setText("Sup");
-    }
-
-    public void UpdateMAPText(String side) {
+    /**
+     * Updates GUI with MAP data
+     * @param side left or right
+     */
+    private void UpdateMAPText(String side) {
         if (side.equals("left")) {
-            ArrayAdapter<CharSequence> soundProcessAdapterLeft = ArrayAdapter.createFromResource(getContext(),
+            ArrayAdapter<CharSequence> soundProcessAdapterLeft = ArrayAdapter.createFromResource(Objects.requireNonNull(getContext()),
                     R.array.strategySpinnerItems, android.R.layout.simple_spinner_item);
             soundProcessAdapterLeft.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -164,7 +137,7 @@ public class ParametersFrag extends Fragment {
         }
 
         else if (side.equals("right")) {
-            ArrayAdapter<CharSequence> soundProcessAdapterRight = ArrayAdapter.createFromResource(getContext(),
+            ArrayAdapter<CharSequence> soundProcessAdapterRight = ArrayAdapter.createFromResource(Objects.requireNonNull(getContext()),
                     R.array.strategySpinnerItems, android.R.layout.simple_spinner_item);
             soundProcessAdapterRight.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -220,7 +193,11 @@ public class ParametersFrag extends Fragment {
         }
     }
 
-    public void disableMAPtext(String side) {
+    /**
+     * Disables left or right text
+     * @param side left or right
+     */
+    private void disableMAPtext(String side) {
         if (side.equals("left")) {
             textViewITL.setEnabled(false);
             textViewSFL.setEnabled(false);
@@ -267,7 +244,10 @@ public class ParametersFrag extends Fragment {
 
     }
 
-    public void getMAPFromPreferences() {
+    /**
+     * Gets data from the MAP using SharedPreferences
+     */
+    private void getMAPFromPreferences() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
         leftExists = preferences.getBoolean("leftMapExists", false);
@@ -425,8 +405,26 @@ public class ParametersFrag extends Fragment {
         getMAPFromPreferences();
     }
 
-    public boolean updateMAPButton() {
+    /**
+     * Updates the MAP when the update button is hit
+     * @return true if adjustments made
+     */
+    boolean updateMAPButton() {
         boolean userProblems = false;
+        int max_stimulation_rate = 14400;
+        int min_stimulation_rate = 125;
+        int max_pulsewidth = 400;
+        int min_pulsewidth = 25;
+        int max_sensitivity = 10;
+        int min_sensitivity = 0;
+        int max_gain = 50;
+        int min_gain = 0;
+        int max_Qfactor = 100;
+        int min_Qfactor = 0;
+        int max_baselevel = 1;
+        int min_baselevel = 0;
+        int max_saturationlevel = 1;
+        int min_saturationlevel = 0;
         if (leftExists) {
             // Reassign parameter values
             leftMAPsoundProcessingStrategy = spinnerSPSL.getSelectedItem().toString();
@@ -574,7 +572,11 @@ public class ParametersFrag extends Fragment {
         return userProblems;
     }
 
-    void updateMAPPreferences(String side) {
+    /**
+     * Updates the MAP
+     * @param side left or right
+     */
+    private void updateMAPPreferences(String side) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = preferences.edit();
 
@@ -608,7 +610,7 @@ public class ParametersFrag extends Fragment {
         editor.apply();
     }
 
-    void leftMAPcheckStimulationParameters() {
+    private void leftMAPcheckStimulationParameters() {
         // check if valid user entries
         // have to rerun ACE?
 
@@ -622,7 +624,7 @@ public class ParametersFrag extends Fragment {
         checkVolumeLeft();
     }
 
-    void rightMAPcheckStimulationParameters() {
+    private void rightMAPcheckStimulationParameters() {
         // check if valid user entries
         // have to rerun ACE?
 
@@ -636,7 +638,7 @@ public class ParametersFrag extends Fragment {
         checkVolumeRight();
     }
 
-    void checkImplantTypeLeft() {
+    private void checkImplantTypeLeft() {
         switch (leftMAPimplantType) {
             case "CI24RE":
                 leftImplantGeneration = "CIC4";
@@ -653,7 +655,7 @@ public class ParametersFrag extends Fragment {
         }
     }
 
-    void checkImplantTypeRight() {
+    private void checkImplantTypeRight() {
         switch (rightMAPimplantType) {
             case "CI24RE":
                 rightImplantGeneration = "CIC4";
@@ -670,7 +672,7 @@ public class ParametersFrag extends Fragment {
         }
     }
 
-    void generateStimulationModeCodeLeft() {
+    private void generateStimulationModeCodeLeft() {
         if (leftImplantGeneration.equals("CIC4")) {
             switch (leftMAPstimulationMode) {
                 case "MP1+2":
@@ -695,55 +697,55 @@ public class ParametersFrag extends Fragment {
         }
     }
 
-    public String getLeftImplantGeneration() {
+    String getLeftImplantGeneration() {
         return leftImplantGeneration;
     }
 
-    public String getRightImplantGeneration() {
+    String getRightImplantGeneration() {
         return rightImplantGeneration;
     }
 
-    public int getLeftStimulationModeCode() {
+    int getLeftStimulationModeCode() {
         return leftStimulationModeCode;
     }
 
-    public int getRightStimulationModeCode() {
+    int getRightStimulationModeCode() {
         return rightStimulationModeCode;
     }
 
-    public int getLeftPulsesPerFramePerChannel() {
+    int getLeftPulsesPerFramePerChannel() {
         return leftPulsesPerFramePerChannel;
     }
 
-    public int getRightPulsesPerFramePerChannel() {
+    int getRightPulsesPerFramePerChannel() {
         return rightPulsesPerFramePerChannel;
     }
 
-    public int getLeftPulsesPerFrame() {
+    int getLeftPulsesPerFrame() {
         return leftPulsesPerFrame;
     }
 
-    public int getRightPulsesPerFrame() {
+    int getRightPulsesPerFrame() {
         return rightPulsesPerFrame;
     }
 
-    public double getLeftInterpulseDuration() {
+    double getLeftInterpulseDuration() {
         return leftInterpulseDuration;
     }
 
-    public double getRightInterpulseDuration() {
+    double getRightInterpulseDuration() {
         return rightInterpulseDuration;
     }
 
-    public int getLeftnRFcycles() {
+    int getLeftnRFcycles() {
         return leftnRFcycles;
     }
 
-    public int getRightnRFcycles() {
+    int getRightnRFcycles() {
         return rightnRFcycles;
     }
 
-    void generateStimulationModeCodeRight() {
+    private void generateStimulationModeCodeRight() {
         if (rightImplantGeneration.equals("CIC4")) {
             switch (rightMAPstimulationMode) {
                 case "MP1+2":
@@ -768,19 +770,19 @@ public class ParametersFrag extends Fragment {
         }
     }
 
-    void checkPulseWidthLeft() {
+    private void checkPulseWidthLeft() {
         if (leftMAPpulseWidth > 400) {
             leftMAPpulseWidth = 400;
         } // Limit Pulse Width to 400us
     }
 
-    void checkPulseWidthRight() {
+    private void checkPulseWidthRight() {
         if (rightMAPpulseWidth > 400) {
             rightMAPpulseWidth = 400;
         } // Limit Pulse Width to 400us
     }
 
-    void checkStimulationRateLeft() {
+    private void checkStimulationRateLeft() {
         int totalStimulationRate;
         double maxPulseWidth;
 
@@ -788,7 +790,7 @@ public class ParametersFrag extends Fragment {
         if (leftMAPstimulationRate <= 14400) //maximum stimulation rate supported by Freedom implants is 14400 Hz
         {
             if (totalStimulationRate <= 14400) {
-                maxPulseWidth = Math.floor(0.5 * ((1000000 / totalStimulationRate) - (leftInterPhaseGap + 11))); //for MP stimulation modes in CIC3/CIC4
+                maxPulseWidth = Math.floor(0.5 * (((double) 1000000 / totalStimulationRate) - (leftInterPhaseGap + 11))); //for MP stimulation modes in CIC3/CIC4
                 if (leftMAPpulseWidth > maxPulseWidth) {
                     leftMAPpulseWidth = (int) maxPulseWidth; //this means it is the STD protocol, PW is reduced to maxPW
                 }
@@ -807,7 +809,7 @@ public class ParametersFrag extends Fragment {
 
     }
 
-    void checkStimulationRateRight() {
+    private void checkStimulationRateRight() {
         int totalStimulationRate;
         double maxPulseWidth;
 
@@ -815,7 +817,7 @@ public class ParametersFrag extends Fragment {
         if (rightMAPstimulationRate <= 14400) //maximum stimulation rate supported by Freedom implants is 14400 Hz
         {
             if (totalStimulationRate <= 14400) {
-                maxPulseWidth = Math.floor(0.5 * ((1000000 / totalStimulationRate) - (rightInterPhaseGap + 11))); //for MP stimulation modes in CIC3/CIC4
+                maxPulseWidth = Math.floor(0.5 * (((double) 1000000 / totalStimulationRate) - (rightInterPhaseGap + 11))); //for MP stimulation modes in CIC3/CIC4
                 if (rightMAPpulseWidth > maxPulseWidth) {
                     rightMAPpulseWidth = (int) maxPulseWidth; //this means it is the STD protocol, PW is reduced to maxPW
                 }
@@ -834,7 +836,7 @@ public class ParametersFrag extends Fragment {
 
     }
 
-    void checkTimingParametersLeft() {
+    private void checkTimingParametersLeft() {
         leftPulsesPerFramePerChannel = (int) Math.round((8 * (double) leftMAPstimulationRate) / 1000); //8ms //%floor(floor((8.0*rate_set)/1000));
         leftPulsesPerFrame = leftMAPnMaxima * leftPulsesPerFramePerChannel;
         double leftMAPtotalStimulationRate = ((double)leftMAPstimulationRate * (double)leftMAPnMaxima);
@@ -849,19 +851,19 @@ public class ParametersFrag extends Fragment {
             leftMAPpulseWidth = (int) maxPulseWidth;
         } // Limit Pulse Width to 400us
 
-        double pd1 = 8000 / leftPulsesPerFrame;
+        double pd1 = (double) 8000 / leftPulsesPerFrame;
         double pd2 = (leftMAPpulseWidth * 2 + leftInterPhaseGap + leftDurationSYNC + leftAdditionalGap);
         if (pd1 < pd2) {
             while (pd1 < pd2) {
                 leftMAPstimulationRate--;
                 leftPulsesPerFramePerChannel = (int) Math.round((8 * (double) leftMAPstimulationRate) / 1000); //8ms //%floor(floor((8.0*rate_set)/1000));
                 leftPulsesPerFrame = leftMAPnMaxima * leftPulsesPerFramePerChannel;
-                pd1 = 8000 / leftPulsesPerFrame;
+                pd1 = (double) 8000 / leftPulsesPerFrame;
             }
         }
     }
 
-    void checkTimingParametersRight() {
+    private void checkTimingParametersRight() {
         rightPulsesPerFramePerChannel = (int) Math.round((8 * (double) rightMAPstimulationRate) / 1000); //8ms //%floor(floor((8.0*rate_set)/1000));
         rightPulsesPerFrame = rightMAPnMaxima * rightPulsesPerFramePerChannel;
         double rightMAPtotalStimulationRate = ((double)rightMAPstimulationRate * (double)rightMAPnMaxima);
@@ -876,19 +878,19 @@ public class ParametersFrag extends Fragment {
             rightMAPpulseWidth = (int) maxPulseWidth;
         } // Limit Pulse Width to 400us
 
-        double pd1 = 8000 / rightPulsesPerFrame;
+        double pd1 = (double) 8000 / rightPulsesPerFrame;
         double pd2 = (rightMAPpulseWidth * 2 + rightInterPhaseGap + rightDurationSYNC + rightAdditionalGap);
         if (pd1 < pd2) {
             while (pd1 < pd2) {
                 rightMAPstimulationRate--;
                 rightPulsesPerFramePerChannel = (int) Math.round((8 * (double) rightMAPstimulationRate) / 1000); //8ms //%floor(floor((8.0*rate_set)/1000));
                 rightPulsesPerFrame = rightMAPnMaxima * rightPulsesPerFramePerChannel;
-                pd1 = 8000 / rightPulsesPerFrame;
+                pd1 = (double) 8000 / rightPulsesPerFrame;
             }
         }
     }
 
-    void computePulseTimingLeft() {
+    private void computePulseTimingLeft() {
         leftPulsesPerFramePerChannel = (int) Math.round((8 * (double) leftMAPstimulationRate) / 1000); //8ms //%floor(floor((8.0*rate_set)/1000));
         leftPulsesPerFrame = leftMAPnMaxima * leftPulsesPerFramePerChannel;
         leftMAPstimulationRate = 125 * leftPulsesPerFramePerChannel; //125 frames of 8ms in 1s
@@ -898,7 +900,7 @@ public class ParametersFrag extends Fragment {
         leftnRFcycles = (int) Math.round((leftInterpulseDuration / 0.1));
     }
 
-    void computePulseTimingRight() {
+    private void computePulseTimingRight() {
         rightPulsesPerFramePerChannel = (int) Math.round((8 * (double) rightMAPstimulationRate) / 1000); //8ms //%floor(floor((8.0*rate_set)/1000));
         rightPulsesPerFrame = rightMAPnMaxima * rightPulsesPerFramePerChannel;
         rightMAPstimulationRate = 125 * rightPulsesPerFramePerChannel; //125 frames of 8ms in 1s
@@ -908,27 +910,27 @@ public class ParametersFrag extends Fragment {
         rightnRFcycles = (int) Math.round((rightInterpulseDuration / 0.1));
     }
 
-    void checkLevelsLeft() {
+    private void checkLevelsLeft() {
         // do something
     }
 
-    void checkLevelsRight() {
+    private void checkLevelsRight() {
         // do something
     }
 
-    void checkVolumeLeft() {
+    private void checkVolumeLeft() {
         if (leftMAPvolume > 10) {
             leftMAPvolume = 10;
         }
     }
 
-    void checkVolumeRight() {
+    private void checkVolumeRight() {
         if (rightMAPvolume > 10) {
             rightMAPvolume = 10;
         }
     }
 
-    double getDouble(final SharedPreferences prefs, final String key) {
+    private double getDouble(final SharedPreferences prefs, final String key) {
         return Double.longBitsToDouble(prefs.getLong(key, Double.doubleToLongBits((double) 0)));
     }
 
@@ -946,7 +948,7 @@ public class ParametersFrag extends Fragment {
         return index;
     }
 
-    boolean isInteger(String s) {
+    private boolean isInteger(String s) {
         boolean result = isInteger(s, 10);
         if (!result) {
             Toast.makeText(getContext(), "Please enter an integer.", Toast.LENGTH_LONG).show(); // Set your toast message
@@ -954,7 +956,7 @@ public class ParametersFrag extends Fragment {
         return result;
     }
 
-    boolean isInteger(String s, int radix) {
+    private boolean isInteger(String s, int radix) {
         if (s.isEmpty())
             return false;
         for (int i = 0; i < s.length(); i++) {
@@ -967,7 +969,7 @@ public class ParametersFrag extends Fragment {
         return true;
     }
 
-    boolean isIntInRange(int number, int upperbound, int lowerbound) {
+    private boolean isIntInRange(int number, int upperbound, int lowerbound) {
         if ((number >= lowerbound) && (number <= upperbound)) {
             return true;
         } else {
@@ -976,7 +978,7 @@ public class ParametersFrag extends Fragment {
         }
     }
 
-    boolean isDoubleInRange(double number, int upperbound, int lowerbound) {
+    private boolean isDoubleInRange(double number, int upperbound, int lowerbound) {
         if ((number >= lowerbound) && (number <= upperbound)) {
             return true;
         } else {
@@ -985,7 +987,7 @@ public class ParametersFrag extends Fragment {
         }
     }
 
-    void putDouble(final SharedPreferences.Editor edit, final String key, final double value) {
+    private void putDouble(final SharedPreferences.Editor edit, final String key, final double value) {
         edit.putLong(key, Double.doubleToRawLongBits(value));
     }
 }

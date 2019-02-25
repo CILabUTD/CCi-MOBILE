@@ -143,8 +143,10 @@ public class SettingsActivityTabbed extends AppCompatActivity {
             switch (position) {
                 case 0:
                     return new ParametersFragment();
-                default:
+                case 1:
                     return new ElectrodesFragment();
+                default:
+                    return new ParametersFragment();
             }
 
             // getItem is called to instantiate the fragment for the given page.

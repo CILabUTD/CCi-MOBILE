@@ -61,6 +61,6 @@
         android:layout_margin="@dimen/fab_margin"
         android:backgroundTint="@color/colorAccent"
         app:borderWidth="0dp"
-        app:srcCompat="@drawable/ic_refresh_black_24dp" />
+        app:srcCompat="@drawable/ic_autorenew_black_24dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
