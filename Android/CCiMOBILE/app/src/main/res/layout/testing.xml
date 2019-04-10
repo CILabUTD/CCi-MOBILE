@@ -1,17 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--android:layout_width="match_parent"-->
-<!--xmlns:tools="http://schemas.android.com/tools"-->
-<!--tools:context="cilab.utdallas.edu.ccimobile.TestingActivity"-->
-<!--android:layout_height="match_parent">-->
-
-<!--<androidx.recyclerview.widget.RecyclerView-->
-<!--android:id="@+id/rvAnimals"-->
-<!--android:layout_width="match_parent"-->
-<!--android:layout_height="match_parent"-->
-<!--/>-->
-
-<!--</RelativeLayout>-->
 
 <ScrollView
     android:layout_width="match_parent"
@@ -27,8 +14,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="100dp">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/topLeft"
@@ -163,7 +149,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintTop_toBottomOf="@id/electrodeNum"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
             />
 

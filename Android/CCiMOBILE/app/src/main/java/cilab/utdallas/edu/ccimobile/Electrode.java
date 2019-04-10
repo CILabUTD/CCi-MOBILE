@@ -1,12 +1,12 @@
 package cilab.utdallas.edu.ccimobile;
 
-public class Electrode {
+class Electrode {
 
     private int electrodeNum, THR1, THR2, MCL1, MCL2, gain1, gain2;
     private boolean onOrOff;
 
-    public Electrode(int electrodeNum, boolean onOrOff, int THR1, int MCL1, int gain1,
-                     int THR2, int MCL2, int gain2) {
+    Electrode(int electrodeNum, boolean onOrOff, int THR1, int MCL1, int gain1,
+              int THR2, int MCL2, int gain2) {
         this.electrodeNum = electrodeNum;
         this.onOrOff = onOrOff;
         this.THR1 = THR1;
@@ -17,35 +17,35 @@ public class Electrode {
         this.gain2 = gain2;
     }
 
-    public int getElectrodeNum() {
+    int getElectrodeNum() {
         return electrodeNum;
     }
 
-    public int getGain1() {
+    int getGain1() {
         return gain1;
     }
 
-    public int getGain2() {
+    int getGain2() {
         return gain2;
     }
 
-    public int getMCL1() {
+    int getMCL1() {
         return MCL1;
     }
 
-    public int getMCL2() {
+    int getMCL2() {
         return MCL2;
     }
 
-    public int getTHR1() {
+    int getTHR1() {
         return THR1;
     }
 
-    public int getTHR2() {
+    int getTHR2() {
         return THR2;
     }
 
-    public boolean getonOrOff() {
+    boolean getOnOrOff() {
         return onOrOff;
     }
 }
