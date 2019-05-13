@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -19,6 +20,7 @@ import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 public class ParametersFrag extends Fragment {
@@ -333,6 +335,8 @@ public class ParametersFrag extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View settingsView = inflater.inflate(R.layout.settings, container, false);
+        ConstraintLayout settingConstraint = settingsView.findViewById(R.id.settingConstraint);
+        settingConstraint.setFocusable(false);
 
         // Retrieve views
         textViewITL = settingsView.findViewById(R.id.textViewITL);

@@ -16,6 +16,7 @@
         <activity
             android:name=".SettingsActivityTabbed"
             android:label="@string/title_activity_settings_tabbed"
+            android:windowSoftInputMode="stateHidden"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -35,7 +36,9 @@
         <service
             android:name=".InitializationService"
             android:exported="false" />
-        <activity android:name=".SettingsActivity" />
+        <activity android:name=".SettingsActivity"
+            android:windowSoftInputMode="stateHidden">
+        </activity>
         <activity android:name=".EnvironmentsActivity" />
         <activity android:name=".TestingActivity" />
     </application>

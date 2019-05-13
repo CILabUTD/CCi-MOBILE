@@ -145,7 +145,7 @@
             tools:layout_editor_absoluteY="240dp" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvAnimals"
+            android:id="@+id/myRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintTop_toBottomOf="@id/electrodeNum"
