@@ -846,13 +846,10 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             rightMAP.getMAPData(MAP_filename, "right");
 
             if (leftMAP.dataMissing && rightMAP.dataMissing)
-                //Toast.makeText(getApplicationContext(), "Error: MAP could not be opened due to missing data from both left and right ear. Please select a different MAP.", Toast.LENGTH_LONG).show();
                 Snackbar.make(findViewById(R.id.rootMain), "Error: MAP could not be opened due to missing data from both left and right ear. Please select a different MAP.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             else if (leftMAP.dataMissing)
-                //Toast.makeText(getApplicationContext(), "Error: MAP could not be opened due to missing data from left ear. Please select a different MAP.", Toast.LENGTH_LONG).show();
                 Snackbar.make(findViewById(R.id.rootMain), "Error: MAP could not be opened due to missing data from left ear. Please select a different MAP.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             else if (rightMAP.dataMissing)
-                //Toast.makeText(getApplicationContext(), "Error: MAP could not be opened due to missing data from right ear. Please select a different MAP.", Toast.LENGTH_LONG).show();
                 Snackbar.make(findViewById(R.id.rootMain), "Error: MAP could not be opened due to missing data from right ear. Please select a different MAP.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             if (leftMAP.dataMissing || rightMAP.dataMissing) {
                 errorMAP = true;
@@ -865,7 +862,6 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             }
         }
         else {
-            //Toast.makeText(getApplicationContext(), "Please select a valid MAP.", Toast.LENGTH_LONG).show();
             Snackbar.make(findViewById(R.id.rootMain), "Please select a valid MAP.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
         }
     }

@@ -12,10 +12,13 @@ import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
+
+import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,6 +27,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 public class SettingsActivity extends AppCompatActivity implements ParametersFrag.OnParametersSelectedListener {
@@ -205,7 +210,14 @@ public class SettingsActivity extends AppCompatActivity implements ParametersFra
         setResult(RESULT_OK, intent);
     }
 
-    public static class ElectrodesFragment extends Fragment {
+    public static class ElectrodesFragment extends Fragment implements ElectrodeAdapter.ItemClickListener {
+        private int[] leftMAPTHR, rightMAPTHR, leftMAPMCL, rightMAPMCL, leftMAPelectrodes, rightMAPelectrodes;
+        private double[] leftMAPgains, rightMAPgains;
+        private boolean leftExists, rightExists;
+        private int leftMAPnbands, rightMAPnbands;
+        ElectrodeAdapter myAdapter;
+        RecyclerView recyclerView;
+
         public ElectrodesFragment() {
             // required empty constructor
         }
@@ -221,7 +233,110 @@ public class SettingsActivity extends AppCompatActivity implements ParametersFra
         @Nullable
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            return inflater.inflate(R.layout.activity_electrodes, container, false);
+            View electrode_view = inflater.inflate(R.layout.activity_electrodes, container, false);
+
+            recyclerView = electrode_view.findViewById(R.id.myRecyclerView);
+            recyclerView.setFocusable(false);
+
+            return electrode_view;
+        }
+
+        @Override
+        public void onStart() {
+            super.onStart();
+            getElectrodeFromMAP();
+        }
+
+        /**
+         * Gets data from the MAP using SharedPreferences
+         */
+        private void getElectrodeFromMAP() {
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+
+            leftExists = preferences.getBoolean("leftMapExists", false);
+            rightExists = preferences.getBoolean("rightMapExists", false);
+            int maxNum = 22;
+
+            if (leftExists) {
+                leftMAPnbands = preferences.getInt("leftMAPnbands", 0);
+                leftMAPTHR = new int[leftMAPnbands];
+                leftMAPMCL = new int[leftMAPnbands];
+                leftMAPgains = new double[leftMAPnbands];
+                leftMAPelectrodes = new int[leftMAPnbands];
+
+                for (int i = 0; i < leftMAPnbands; i++) {
+                    leftMAPTHR[i] = preferences.getInt("leftTHR" + i, 0);
+                    leftMAPMCL[i] = preferences.getInt("leftMCL" + i, 0);
+                    leftMAPgains[i] = getDouble(preferences, "leftgain" + i);
+                    leftMAPelectrodes[i] = preferences.getInt("leftelectrodes" + i, 0);
+                }
+
+                //UpdateMAPText("left");
+
+            } else {
+                //disableMAPtext("left");
+
+            }
+
+            if (rightExists) {
+                rightMAPnbands = preferences.getInt("rightMAPnbands", 0);
+                rightMAPTHR = new int[rightMAPnbands];
+                rightMAPMCL = new int[rightMAPnbands];
+                rightMAPgains = new double[rightMAPnbands];
+                rightMAPelectrodes = new int[rightMAPnbands];
+
+                for (int i = 0; i < rightMAPnbands; i++) {
+                    rightMAPTHR[i] = preferences.getInt("rightTHR" + i, 0);
+                    rightMAPMCL[i] = preferences.getInt("rightMCL" + i, 0);
+                    rightMAPgains[i] = getDouble(preferences, "rightgain" + i);
+                    rightMAPelectrodes[i] = preferences.getInt("rightelectrodes" + i, 0);
+                }
+
+                //UpdateMAPText("right");
+            } else {
+                //disableMAPtext("right");
+
+            }
+
+            if (leftExists || rightExists) {
+                updateElectrodeLayout();
+            }
+        }
+
+        private void updateElectrodeLayout() {
+            ArrayList<Electrode> eList = new ArrayList<>();
+            int numBands = 22;
+
+            if (leftExists && rightExists) {
+                for (int i = 0; i < numBands; i++) {
+                    eList.add(new Electrode(leftMAPelectrodes[i],true,leftMAPTHR[i],leftMAPMCL[i],leftMAPgains[i],rightMAPTHR[i],rightMAPMCL[i],rightMAPgains[i]));
+                }
+            }
+            else if (leftExists) {
+                for (int i = 0; i < numBands; i++) {
+                    eList.add(new Electrode(leftMAPelectrodes[i],true,leftMAPTHR[i],leftMAPMCL[i],leftMAPgains[i],-1,-1,-1));
+                }
+            }
+            else if (rightExists) {
+                for (int i = 0; i < numBands; i++) {
+                    eList.add(new Electrode(rightMAPelectrodes[i],true,-1,-1,-1,rightMAPTHR[i],rightMAPMCL[i],rightMAPgains[i]));
+                }
+            }
+
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            myAdapter = new ElectrodeAdapter(getContext(), eList);
+            myAdapter.setClickListener(this);
+            recyclerView.setAdapter(myAdapter);
+        }
+
+        @Override
+        public void onItemClick(View view, int position) {
+            Toast.makeText(getContext(),"Sup", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
+        }
+
+        private double getDouble(final SharedPreferences prefs, final String key) {
+            return Double.longBitsToDouble(prefs.getLong(key, Double.doubleToLongBits((double) 0)));
         }
     }
 

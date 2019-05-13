@@ -74,8 +74,8 @@ public class ElectrodeAdapter extends RecyclerView.Adapter<ElectrodeAdapter.View
         int THR2 = currentElectrode.getTHR2();
         int MCL1 = currentElectrode.getMCL1();
         int MCL2 = currentElectrode.getMCL2();
-        int gain1 = currentElectrode.getGain1();
-        int gain2 = currentElectrode.getGain2();
+        double gain1 = currentElectrode.getGain1();
+        double gain2 = currentElectrode.getGain2();
 
         holder.elecNum.setText(String.valueOf(electrode_num));
         holder.onOffBox.setChecked(on_off);

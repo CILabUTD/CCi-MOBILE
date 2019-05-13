@@ -44,7 +44,7 @@ public class TestingActivity extends AppCompatActivity implements ElectrodeAdapt
         eList.add(new Electrode(22,true,100,100,0,100,100,0));
 
 
-        RecyclerView recyclerView = findViewById(R.id.rvAnimals);
+        RecyclerView recyclerView = findViewById(R.id.myRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         myAdapter = new ElectrodeAdapter(this, eList);
         myAdapter.setClickListener(this);
