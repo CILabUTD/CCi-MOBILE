@@ -1,5 +1,5 @@
 {
-	"general":
+	"General":
 	[
 		{
 		"subjectName":"Subject 01",
@@ -11,7 +11,7 @@
 		}
 	],
 		
-	"left":
+	"Left":
 	[
 		{
 		"Left.implantType":"CI24RE",
@@ -215,7 +215,7 @@
 		}
 	],
 		
-	"right":
+	"Right":
 	[
 		{
 		"Right.implantType":"CI24RE",

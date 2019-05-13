@@ -526,10 +526,10 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
                 myIntent = new Intent(MainActivity.this, EnvironmentsActivity.class);
                 MainActivity.this.startActivityForResult(myIntent, 1);
                 return true;
-            case R.id.menuTesting:
-                myIntent = new Intent(MainActivity.this, TestingActivity.class);
-                MainActivity.this.startActivityForResult(myIntent, 1);
-                return true;
+//            case R.id.menuTesting:
+//                myIntent = new Intent(MainActivity.this, TestingActivity.class);
+//                MainActivity.this.startActivityForResult(myIntent, 1);
+//                return true;
             default:
                 // The user's action was not recognized.
                 // Invoke the superclass to handle it.
