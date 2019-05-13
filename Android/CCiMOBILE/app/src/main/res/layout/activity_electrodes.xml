@@ -12,7 +12,8 @@ tools:layout_editor_absoluteX="8dp"
 xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -154,5 +155,4 @@ xmlns:android="http://schemas.android.com/apk/res/android">
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </ScrollView>
