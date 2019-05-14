@@ -79,12 +79,18 @@ public class ElectrodeAdapter extends RecyclerView.Adapter<ElectrodeAdapter.View
 
         holder.elecNum.setText(String.valueOf(electrode_num));
         holder.onOffBox.setChecked(on_off);
-        holder.T1.setText(String.valueOf(THR1));
-        holder.T2.setText(String.valueOf(THR2));
-        holder.M1.setText(String.valueOf(MCL1));
-        holder.M2.setText(String.valueOf(MCL2));
-        holder.G1.setText(String.valueOf(gain1));
-        holder.G2.setText(String.valueOf(gain2));
+
+        if (THR1 != -1) { // only update text if electrode exists
+            holder.T1.setText(String.valueOf(THR1));
+            holder.M1.setText(String.valueOf(MCL1));
+            holder.G1.setText(String.valueOf(gain1));
+        }
+
+        if (THR2 != -1) { // only update text if electrode exists
+            holder.T2.setText(String.valueOf(THR2));
+            holder.M2.setText(String.valueOf(MCL2));
+            holder.G2.setText(String.valueOf(gain2));
+        }
     }
 
     // total number of rows

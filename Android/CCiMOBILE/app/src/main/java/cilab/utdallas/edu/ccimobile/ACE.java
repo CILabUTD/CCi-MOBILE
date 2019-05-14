@@ -71,9 +71,6 @@ public class ACE {
         initializeVolumeSettings();
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     /**
      * Creates the stimuli.
      * @param inputData i
@@ -104,24 +101,16 @@ public class ACE {
                 workingData[j++] = inputBuffer[i]; }
 
             applyWindow(); // Apply Window
-
             fft();
-
             magnitudeSquaredSpectrum();
-
             weightedSquareSum();
-
             applyChannelGains();
-
             sorting();
-
             loudnessGrowthFunction();
-
             applyPatientMap();
-
             stimulationOrder();
 
-            for(int i = 0; i < map.nMaxima; i++) {
+            for (int i = 0; i < map.nMaxima; i++) {
                 stimuli.Amplitudes[indx] = current_levels[i];
                 stimuli.Electrodes[indx] = electrode_numbers[i];
                 indx=indx+1;
