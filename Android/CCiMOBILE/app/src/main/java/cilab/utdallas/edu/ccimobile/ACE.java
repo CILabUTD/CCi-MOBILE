@@ -79,7 +79,9 @@ public class ACE {
     public Stimuli processAudio(double [] inputData)
     {
         Stimuli stimuli = new Stimuli();
-        int j = 0; int indx =0; int offset = 0;
+        int j = 0;
+        int indx = 0;
+        int offset = 0;
 
         stimuli.Amplitudes = new int[map.pulsesPerFrame];
         stimuli.Electrodes = new int[map.pulsesPerFrame];
@@ -364,7 +366,7 @@ public class ACE {
     }
 
     //This is the nMaximaL sorting stuff
-    public void shell_sort(int channelMagnitudes[], int channelIndex[], int number_of_bands)
+    public void shell_sort(int[] channelMagnitudes, int[] channelIndex, int number_of_bands)
     {
         int i,
                 j,
@@ -396,7 +398,7 @@ public class ACE {
     }
 
     //This is the nMaximaL sorting stuff
-    public void shell_sort(double channelMagnitudes[], int channelIndex[], int number_of_bands)
+    public void shell_sort(double[] channelMagnitudes, int[] channelIndex, int number_of_bands)
     {
         int     i,
                 j,

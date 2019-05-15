@@ -67,7 +67,7 @@ public class StimulationParameters {
 
 
         p.pulsesPerFramePerChannel = (int) Math.round((8 * (double)p.stimulationRate) / 1000); //8ms //%floor(floor((8.0*rate_set)/1000));
-        p.pulsesPerFrame = (int) (p.nMaxima * p.pulsesPerFramePerChannel);
+        p.pulsesPerFrame = p.nMaxima * p.pulsesPerFramePerChannel;
         double totalStimulationRate = ((double)p.stimulationRate * (double)p.nMaxima);
 
         //Pulse-Width Centric
@@ -97,8 +97,8 @@ public class StimulationParameters {
         int additionalGap = 1;            //additional gap to make interpulse duration 7 uS ref. Fig. 14 in CIC4 specification
 
         p.pulsesPerFramePerChannel = (int) Math.round((8 * (double)p.stimulationRate) / 1000); //8ms //%floor(floor((8.0*rate_set)/1000));
-        p.pulsesPerFrame = (int) (p.nMaxima * p.pulsesPerFramePerChannel);
-        p.stimulationRate = (int) (125 * p.pulsesPerFramePerChannel); //125 frames of 8ms in 1s
+        p.pulsesPerFrame = p.nMaxima * p.pulsesPerFramePerChannel;
+        p.stimulationRate = 125 * p.pulsesPerFramePerChannel; //125 frames of 8ms in 1s
         //blockShiftL = (BLOCK_SIZE / pulsesPerFramePerChannel); //ceil(fs / p.Left.analysis_rate);
         p.interpulseDuration = (double)frameDuration*1000/((double)p.pulsesPerFrame) - 2*(double)p.pulseWidth - (double)interPhaseGap - (double)durationSYNC - (double)additionalGap;
         p.nRFcycles = (int) Math.round((p.interpulseDuration/0.1));

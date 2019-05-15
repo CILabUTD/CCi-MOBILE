@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -16,12 +15,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Objects;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+
+import java.util.Objects;
 
 public class ParametersFrag extends Fragment {
     private TextView textViewITL, textViewITR, textViewSFL, textViewSFR, textViewNCL, textViewNCR, textViewFTL, textViewFTR;
@@ -678,25 +677,19 @@ public class ParametersFrag extends Fragment {
 
     private void generateStimulationModeCodeLeft() {
         if (leftImplantGeneration.equals("CIC4")) {
-            switch (leftMAPstimulationMode) {
-                case "MP1+2":
-                    leftStimulationModeCode = 28;
-                    break;
+            if ("MP1+2".equals(leftMAPstimulationMode)) {
+                leftStimulationModeCode = 28;
                 //add other codes for other stimulation modes here
-                default:
-                    leftStimulationModeCode = 28;
-                    break;
+            } else {
+                leftStimulationModeCode = 28;
             }
         }
         if (leftImplantGeneration.equals("CIC3")) {
-            switch (leftMAPstimulationMode) {
-                case "MP1+2":
-                    leftStimulationModeCode = 30;
-                    break;
+            if ("MP1+2".equals(leftMAPstimulationMode)) {
+                leftStimulationModeCode = 30;
                 //add other codes for other stimulation modes here
-                default:
-                    leftStimulationModeCode = 30;
-                    break;
+            } else {
+                leftStimulationModeCode = 30;
             }
         }
     }
@@ -751,25 +744,19 @@ public class ParametersFrag extends Fragment {
 
     private void generateStimulationModeCodeRight() {
         if (rightImplantGeneration.equals("CIC4")) {
-            switch (rightMAPstimulationMode) {
-                case "MP1+2":
-                    rightStimulationModeCode = 28;
-                    break;
+            if ("MP1+2".equals(rightMAPstimulationMode)) {
+                rightStimulationModeCode = 28;
                 //add other codes for other stimulation modes here
-                default:
-                    rightStimulationModeCode = 28;
-                    break;
+            } else {
+                rightStimulationModeCode = 28;
             }
         }
         if (rightImplantGeneration.equals("CIC3")) {
-            switch (rightMAPstimulationMode) {
-                case "MP1+2":
-                    rightStimulationModeCode = 30;
-                    break;
+            if ("MP1+2".equals(rightMAPstimulationMode)) {
+                rightStimulationModeCode = 30;
                 //add other codes for other stimulation modes here
-                default:
-                    rightStimulationModeCode = 30;
-                    break;
+            } else {
+                rightStimulationModeCode = 30;
             }
         }
     }

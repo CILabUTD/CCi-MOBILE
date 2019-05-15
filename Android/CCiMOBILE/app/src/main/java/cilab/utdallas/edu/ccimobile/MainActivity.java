@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -18,35 +17,31 @@ import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.OpenableColumns;
-import androidx.annotation.NonNull;
-
-import com.google.android.material.color.MaterialColors;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.JsonWriter;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.ftdi.j2xx.D2xxManager;
 import com.ftdi.j2xx.FT_Device;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 import com.xw.repo.BubbleSeekBar;
 
 import java.io.File;
@@ -94,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
     final byte XOFF = 0x13;    // Pause transmission //
 
     private boolean start = false;
-    short sine_stim[], sin_token[], null_token[], sine_token[];
+    short[] sine_stim, sin_token, null_token, sine_token;
 
     public MAP leftMAP, rightMAP;
     private ACE leftACE, rightACE;
@@ -177,11 +172,9 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
                 builder.setMessage("Permission to access device files is required for this app " +
                         "to load your MAP file(s). Please allow the permission.")
                         .setTitle("Permission required");
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        Log.e("MainActivity.java", "Alert dialogue clicked.");
-                        makeRequest();
-                    }
+                builder.setPositiveButton("OK", (dialog, id) -> {
+                    Log.e("MainActivity.java", "Alert dialogue clicked.");
+                    makeRequest();
                 });
                 AlertDialog dialog = builder.create();
                 dialog.show();
@@ -209,37 +202,10 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
      * Opens the file selector
      */
     public void performFileSearch() {
-        Intent intent = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-            intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
-            intent.setType("text/plain");
-            startActivityForResult(intent, READ_REQUEST_CODE);
-
-        } else {
-            //intent = new Intent(Intent.ACTION_GET_CONTENT );
-
-            Uri uri = Uri.fromFile(new File("/storage/emulated/0/Download/SampleMap.txt"));
-            assert uri != null;
-            Log.e("MainActivity.java", "Uri: " + uri.toString());
-
-            String fileName = getFileName(uri);
-            textViewMAP.setText(fileName);
-
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putString("MAPfilename", fileName);
-            editor.apply();
-
-            startMainFunctions();
-            noMAP = false;
-
-        }
-
-        //intent.addCategory(Intent.CATEGORY_OPENABLE);
-        //intent.setType("text/plain");
-        //startActivityForResult(intent, READ_REQUEST_CODE);
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("text/plain");
+        startActivityForResult(intent, READ_REQUEST_CODE);
     }
 
     /**
@@ -255,8 +221,6 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             if (!leftMAP.dataMissing && !rightMAP.dataMissing) {
                 updateGUI("both");
             }
-
-
         }
         //verifyFolderExists();
         //new VeryLongAsyncTask(this).execute();
@@ -269,21 +233,19 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
      * @param grantResults result
      */
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission granted
-                    Log.e("MainActivity.java", "Permission GRANTED for " +
-                            "WRITE_EXTERNAL_STORAGE.");
-                    performFileSearch();
-                } else {
-                    // permission denied
-                    Log.e("MainActivity.java", "Permission DENIED for " +
-                            "WRITE_EXTERNAL_STORAGE.");
-                }
+        if (requestCode == MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // permission granted
+                Log.e("MainActivity.java", "Permission GRANTED for " +
+                        "WRITE_EXTERNAL_STORAGE.");
+                performFileSearch();
+            } else {
+                // permission denied
+                Log.e("MainActivity.java", "Permission DENIED for " +
+                        "WRITE_EXTERNAL_STORAGE.");
             }
         }
     }
@@ -295,12 +257,10 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
      */
     public String getFileName(Uri uri) {
         String result = null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            if (Objects.equals(uri.getScheme(), "content")) {
-                try (Cursor cursor = getContentResolver().query(uri, null, null, null, null)) {
-                    if (cursor != null && cursor.moveToFirst()) {
-                        result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
-                    }
+        if (Objects.equals(uri.getScheme(), "content")) {
+            try (Cursor cursor = getContentResolver().query(uri, null, null, null, null)) {
+                if (cursor != null && cursor.moveToFirst()) {
+                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
                 }
             }
         }
@@ -348,50 +308,17 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
     public void promptMAPfilename(View view) {
         MaterialAlertDialogBuilder saveAlert = new MaterialAlertDialogBuilder(this);
         saveAlert.setTitle("Save MAP");
-        View viewInflated = LayoutInflater.from(this).inflate(R.layout.text_input_filename, (ViewGroup) findViewById(android.R.id.content), false);
+        View viewInflated = LayoutInflater.from(this).inflate(R.layout.text_input_filename, findViewById(android.R.id.content), false);
         final EditText input = viewInflated.findViewById(R.id.input);
         saveAlert.setView(viewInflated);
 
-        saveAlert.setPositiveButton("Save", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                String saveFilename = input.getText().toString();
-                saveMAP(saveFilename);
-            }
+        saveAlert.setPositiveButton("Save", (dialog, which) -> {
+            dialog.dismiss();
+            String saveFilename = input.getText().toString();
+            saveMAP(saveFilename);
         });
-        saveAlert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
+        saveAlert.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
         saveAlert.show();
-
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setTitle("Save MAP");
-//
-//        View viewInflated = LayoutInflater.from(this).inflate(R.layout.text_input_filename, (ViewGroup) findViewById(android.R.id.content), false);
-//        final EditText input = viewInflated.findViewById(R.id.input);
-//        builder.setView(viewInflated);
-//
-//        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialogInterface, int i) {
-//                dialogInterface.dismiss();
-//                String saveFilename = input.getText().toString();
-//                saveMAP(saveFilename);
-//            }
-//        });
-//        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialogInterface, int i) {
-//                dialogInterface.cancel();
-//            }
-//        });
-//
-//        builder.show();
-
     }
 
     /**
@@ -1349,10 +1276,8 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             ftDev.resetDevice();
             ftDev.clrRts();
             setConfig(baudRate, dataBit, stopBit, parity, flowControl);
-            //midToast("config:", Toast.LENGTH_SHORT);
             textOut("config: ");
         } else {
-            //midToast("DevCount<0", Toast.LENGTH_SHORT);
             textOut("DevCount<0");
         }
 
@@ -1440,7 +1365,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         }
 
         if (currentPortIndex == portIndex && ftDev != null && ftDev.isOpen()) {
-            stringport.append(String.valueOf(portIndex));
+            stringport.append(portIndex);
             textOut(stringport.toString());
             return;
         }
@@ -1456,7 +1381,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
 
         if(ftDev == null)
         {
-            stringport.append(String.valueOf(portIndex));
+            stringport.append(portIndex);
             textOut(stringport.toString());
             return;
         }
@@ -1468,7 +1393,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         }
         else
         {
-            stringport.append(String.valueOf(portIndex));
+            stringport.append(portIndex);
             textOut(stringport.toString());
         }
     }
@@ -1563,30 +1488,13 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
     }
 
     /**
-     * Makes toast
-     * @param str s
-     * @param showTime st
-     */
-    void midToast(String str, int showTime) {
-        Toast toast = Toast.makeText(global_context, str, showTime);
-        toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
-
-        TextView v = toast.getView().findViewById(android.R.id.message);
-        v.setTextColor(Color.YELLOW);
-        toast.show();
-    }
-
-    /**
      * Prints text
      * @param s s
      */
     public void textOut(final String s) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                //status.append("\n" + s);
-                //status.setText(String.format("%s%s", getString(R.string.textStatusTextOut), s));
-            }
+        runOnUiThread(() -> {
+            //status.append("\n" + s);
+            //status.setText(String.format("%s%s", getString(R.string.textStatusTextOut), s));
         });
     }
 
@@ -1595,10 +1503,10 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
      * @param outputBuffer ob
      * @param sine_token st
      */
-    private void setOutputBuffer(byte outputBuffer[], short sine_token[] ) {
+    private void setOutputBuffer(byte[] outputBuffer, short[] sine_token) {
 
         short n = 8;
-        short electrode_token[] = new short[8]/*, sine_token[8]*/;
+        short[] electrode_token = new short[8]/*, sine_token[8]*/;
         for (short i = 0; i < n; ++i) {
             electrode_token[i] = (short)(i + 1);
             //sine_token[i] = i + 1;
@@ -1607,8 +1515,8 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         short pw = 25;
 
         short mode = 28;
-        short elecs[] = new short[64];
-        short amps[] = new short[64];
+        short[] elecs = new short[64];
+        short[] amps = new short[64];
         for (int i = 0; i < ppf; ++i) {
             int j = i / n;
             amps[i] = sine_token[j];
@@ -1660,7 +1568,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
      * @param left_map lm
      * @param right_map rm
      */
-    private void setOutputBuffer(byte outputBuffer[], MAP left_map, MAP right_map) {
+    private void setOutputBuffer(byte[] outputBuffer, MAP left_map, MAP right_map) {
 
         short left_pw = (short)left_map.pulseWidth;
         short right_pw = (short)right_map.pulseWidth;
