@@ -12,6 +12,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -208,10 +209,37 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
      * Opens the file selector
      */
     public void performFileSearch() {
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("text/plain");
-        startActivityForResult(intent, READ_REQUEST_CODE);
+        Intent intent = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("text/plain");
+            startActivityForResult(intent, READ_REQUEST_CODE);
+
+        } else {
+            //intent = new Intent(Intent.ACTION_GET_CONTENT );
+
+            Uri uri = Uri.fromFile(new File("/storage/emulated/0/Download/SampleMap.txt"));
+            assert uri != null;
+            Log.e("MainActivity.java", "Uri: " + uri.toString());
+
+            String fileName = getFileName(uri);
+            textViewMAP.setText(fileName);
+
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("MAPfilename", fileName);
+            editor.apply();
+
+            startMainFunctions();
+            noMAP = false;
+
+        }
+
+        //intent.addCategory(Intent.CATEGORY_OPENABLE);
+        //intent.setType("text/plain");
+        //startActivityForResult(intent, READ_REQUEST_CODE);
     }
 
     /**
@@ -267,10 +295,12 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
      */
     public String getFileName(Uri uri) {
         String result = null;
-        if (Objects.equals(uri.getScheme(), "content")) {
-            try (Cursor cursor = getContentResolver().query(uri, null, null, null, null)) {
-                if (cursor != null && cursor.moveToFirst()) {
-                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            if (Objects.equals(uri.getScheme(), "content")) {
+                try (Cursor cursor = getContentResolver().query(uri, null, null, null, null)) {
+                    if (cursor != null && cursor.moveToFirst()) {
+                        result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                    }
                 }
             }
         }
@@ -288,6 +318,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
     /**
      * Saves the current MAP parameters to a JSON text file on the phone
      */
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     void saveMAP(String saveFilename) {
         String MAPfilename = saveFilename + ".txt";
         File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), MAPfilename);
@@ -368,6 +399,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
      * @param out o
      * @throws IOException e
      */
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void writeJsonStream(OutputStream out) throws IOException {
         JsonWriter writer = new JsonWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
         writer.setIndent("  ");
@@ -674,6 +706,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
      */
     void updateMAPfile(Intent data) {
         Uri uri;
+
         if (data != null) {
             uri = data.getData();
             assert uri != null;

@@ -1,15 +1,70 @@
-% AudioFileProcessor
-% GUI to processes audio files (.wav format)
-% Processed stimuli is sent to the RF coils via USB/UART
+------ This is the README for CCi-Mobile Version 2.2c -----
 
-This application performs ACE processing on the audio wave files with ‘.wav’ format. 
-The audio signal acquired from mono/stereo file and is passed to ACE_Process.m for processing, which implements the basic ACE program. 
-The complete signal is processed in one call (unlike real-time processing) and the processed stimuli is streamed to the board using function call Stream.m which is called inside stimulate.m file. 
+Folder: 'AudioFileProcessor'
+This folder allows the user to perform experimentation in an offline
+manner by using a user-controlled GUI to select (.wav) tokens from
+a user-specified directory to be streamed to the board and to the
+cochlear implant user respectively. The GUI can only processes 
+audio files (.wav format). The processed stimuli is sent to the 
+RF coils via USB/UART commands within the 'CommonFunctions' folder.
 
-Start by running AudioFileProcessor.m
-You will be prompted to select a MAP file. Sample MAP files are provided in the MAPs folder under CCIMobile/MAPs/ 
-Select a map file for your subject and a GUI will be displayed.
+HOW TO PERFORM OFFLINE PROCESSING:
+  The audio signal acquired from mono/stereo file and is passed to 
+  ACE_Process.m for processing, which implements the basic ACE program.
+  If other signal processing is desired the custom button can be used
+  to call individual signal processsing strategies. The program will 
+  default to ACE. The complete signal is processed in one call 
+  (unlike real-time processing) and the processed stimuli is 
+  streamed to the board using function call Stream.m which is called 
+  inside stimulate.m file. 
 
+  Start by running AudioFileProcessor.m. You will be prompted to 
+  select a MAP file. Sample MAP files are provided in the MAPs folder 
+  under CCIMobile/MAPs/. Select a map file for your subject and a 
+  GUI will be displayed.
 
-Browse to the directory where the audio files are located. Select an audio file, and press the Stream button to start processing and streaming data. 
-Sliders can be used to change gain levels. Use small increments when changing gain. 
+  Browse to the directory where the audio files are located. Select 
+  an audio file, and press the Stream button to start processing and 
+  streaming data. Sliders can be used to change gain levels. Use small 
+  increments when changing gain.
+
+   LIST OF ITEMS in 'AudioFileProcessor.m'
+   'ACE_Process.m'
+	Description: This signal processing strategy (Cochlear Corp.)
+	is an 'n-of-m' processing strategy stimulated through a
+	continous-interleaving pattern (CIS). Signal processing is
+	mimicked from the Nucleus MATLAB Tookbox (Cochlear Corp.)
+
+   'AudioFileProcessor.fig'
+	Description: To open, edit or view the GUI in MATLAB, execute
+	'guide' in the command line and select the .fig file. This file
+	can be edited, created, changed, and modified to specific
+	needs of various speech and hearing research experiments. The
+	default GUI includes a MAP check, a MAP title, the directory 
+	of (.wav) files, three callback buttons, a strategy selection
+	button, and sliders for gain variation
+
+   'AudioFileProcessor.m'
+	Description: To run offline processing, run 'AudioFileProcessor.m'
+	which will request the user to select a MAP file before generating
+	a GUI. All of the changes made to the (.fig) file should
+	auto-populate into this program. Additional customization 
+	(signal processing strategies, user-specified signal processing
+	parameters, and additional functions) can be placed within the GUI
+	framework here
+
+   'AudioSignal.m'
+	DescriptiOn: This program resamples the signal to be compatabile
+	within the CCi-MOBILE software suite
+
+   'S_01_01.wav'
+	Description: This is a sample sentence from the IEEE Database
+  
+   'stimulate.m'
+	Description: This function is used to stimulate the signal
+	processing strategies (custom or ace)
+
+   'Stream.m'
+	Description: This function creates electric stimuli and sends the
+	stimuli to the board for stimulation to the CI/HA user
+   

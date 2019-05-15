@@ -2,21 +2,20 @@ function [stimulus] = ACE_Processing_Realtime(audio, bufferHistory, p)
 %% Function: ACE_Processing_Realtime.m
 % [stimulus] = ACE_Processing_Realtime(audio, bufferHistory, p)
 %
-% This function performs this function using these x, y, z general steps
-% and will also generate corresponding a, b, c things. Here are some other
-% general details such as N-point FFT, etc.
+% This function performs ACE processing on the input audio signal. The
+% resulting electrode activation profile can be viewed via the
+% RealtimeSimulator.m GUI.
 %
 % This function calls:
-% 1. [u, ~, ~] = buffer(audio, p.block_size, p.block_size - p.block_shift, bufferHistory)
-% 2. [v, ~, ~] = logarithmic_compression(p, v);
+% 1. [v, ~, ~] = logarithmic_compression(p, v);
 %
-% INPUT(S):
-% audio         = The audio file
-% bufferHistory = The buffer
-% p             =
+% INPUTS:
+% audio         = The left or right audio signal
+% bufferHistory = An array initialized with zeros
+% p             = The handle parameters
 %
-% OUTPUT(s):
-% stimulus      = Use similar notation to describe the outputs
+% OUTPUT:
+% stimulus      = Current levels and electrode information for streaming
 %
 % See 'README.txt' for more information
 %% Beginning of function
@@ -27,21 +26,22 @@ u = fft(v);									% Perform FFT to give Frequency-Time Matrix
 u(p.num_bins+1:end,:) = [];					% Discard the symmetric bins.
 v = u .* conj(u);                       	% Power (magnitude squared) of each bin.
 u = p.weights * v;                      	% Weighted sum of bin powers.
-u = sqrt(u);                            	% Magnitude.
+u = sqrt(u);                                % Magnitude.
 v = u .* repmat(p.gains, 1, size(u,2));
 [num_bands, num_time_slots] = size(v);
 x0 = num_bands * (0:(num_time_slots-1));
+
 for n = 1: p.num_rejected
     [~, k] = min(v);
     xk = x0 + k;
-    v(xk) = NaN;	% Reject the smallest values.
+    v(xk) = NaN;                        	% Reject the smallest values.
 end
 
 [v, ~, ~] = logarithmic_compression(p, v);
 cseq.channels = repmat(p.channel_order, num_time_slots, 1);
 
-reord_env = v(p.channel_order,:);           % Re-order the channels (rows).
-%reord_env = v((num_bands:-1:1)',:);		% Re-order the channels (rows).
+reord_env = v(p.channel_order,:);			% Re-order the channels (rows).
+% reord_env = v((num_bands:-1:1)',:);		% Re-order the channels (rows).
 cseq.magnitudes = reord_env(:);				% Concatenate columns.
 
 skip = isnan(cseq.magnitudes);
@@ -69,17 +69,21 @@ q.current_levels = round(q_t + q_r .* p.volume_level .* q_magnitudes);
 
 % Idle pulses are marked by magnitudes less than zero.
 q_is_idle = (q_magnitudes < 0);		% logical vector
+
 % The current levels calculated above do not apply for idle pulses,
 % set idle pulses current level to zero:
 q.current_levels(q_is_idle)	= 0;
+
 % If special_idle, then also set the idle pulses electrode to zero:
 %q.electrodes(q_is_idle) = 0;
 q.phase_widths		= 28;           % Constant phase width.
 q.phase_gaps		= 8;			% Constant phase gap.
 q.periods			= 125;			% Copy periods.
 
-%% Modification pertinent to streaming
+%% Modification pertinent to Streaming
+
 stimulus.current_levels = q.current_levels;
 stimulus.electrodes = q.electrodes;
+
 end
 

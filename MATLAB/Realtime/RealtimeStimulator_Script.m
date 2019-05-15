@@ -1,26 +1,33 @@
-% RealtimeStimulator_Script
-% Equivalent RealtimeStimulator GUI in a script form
-% It processes audio from the BTE in realtime for nframes and sends stimuli
-% to the coil via USB/UART
+%% Function: nameOfFunction.m
+%
+% This script manages a GUI for the following tasks: selecting/opening a
+% MAP file, starting and stopping processing/streaming, sliders to adjust
+% microphone sensitivity, gain, and volume.
+%           CCi-MOBILE Version: 2.2c
+%           Created by: Hussnain Ali, 2016
+%           Copyright Cochlear Ltd - derived from Nucleus MATLAB Toolbox v2*
+%
+% See 'README.txt' for more information
+%% Beginning of function
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Copyright: CRSS-CILab, UT-Dallas
-%   Authors: Hussnain Ali
-%      Date: 2015/09/28
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-clc; clear all; close all;
-global fs; fs = 16000;
+clc;
+clear all;
+close all;
+global fs;
+fs = 16000;
 t = 5000;       % time duration in ms. The script will run for 't'ms
 check = 1;      % Check = 0 for any human testing
+
 % Check = 1 for testing integrity of the output on oscilloscope
 electrodogram_plot = 1; % = 1 will plot the electrodogram.
+
 % If t is large, more memory will be required to store the variables,
 % which could impact the performance and realtime capabilities.
 % For large time durations, set electrodogram_plot = 0;
 
 % add common functions path to the current directory
-currentFolder = pwd; CCIMobileFolder = fileparts(currentFolder); %currentFolder(1:end-8);
+currentFolder = pwd;
+CCIMobileFolder = fileparts(currentFolder); % currentFolder(1:end-8);
 CommonFunctionsFolder = [CCIMobileFolder '\CommonFunctions\'];
 addpath(CommonFunctionsFolder);
 
@@ -30,7 +37,8 @@ s = initializeBoard(p);
 outputBuffer = create_output_buffer(p);
 
 cl=[];el=[];
-p.General.LeftOn = 0; p.General.RightOn = 0;
+p.General.LeftOn = 0;
+p.General.RightOn = 0;
 if (isfield(p,'Left') ==1)
     sine_token_l=uint8(abs(150.*sin(2.*pi.*(0:1:p.Left.pulses_per_frame).*0.5/p.Left.pulses_per_frame))); %figure; plot(sine_token);
     %sine_token_l=uint8(150.*sin(2.*pi.*(0:1:p.Left.pulses_per_frame).*0.01)); %figure; plot(sine_token);
@@ -61,13 +69,15 @@ while frame_no<nframes % use while else timing won't be right
             
             pulses_per_frame_left = numel(stimuli.left.electrodes);
             a=7;
-            for (i=1:pulses_per_frame_left)
-                outputBuffer(a) = uint8(stimuli.left.electrodes(i)); a=a+1; %left electrodes
+            for i=1:pulses_per_frame_left
+                outputBuffer(a) = uint8(stimuli.left.electrodes(i));
+                a=a+1; %left electrodes
             end
             
             a= 133;
-            for (i=1:pulses_per_frame_left)
-                outputBuffer(a) = uint8(stimuli.left.current_levels(i)); a=a+1; %left amplitudes
+            for i=1:pulses_per_frame_left
+                outputBuffer(a) = uint8(stimuli.left.current_levels(i));
+                a=a+1; %left amplitudes
             end
             bufferHistory_left = audio_left(p.Left.block_size-p.Left.NHIST+1:end);
         else
@@ -82,12 +92,14 @@ while frame_no<nframes % use while else timing won't be right
             pulses_per_frame_right = numel(stimuli.right.electrodes);
             
             a=265;
-            for (i=1:numel(stimuli.right.electrodes))
-                outputBuffer(a) =uint8(stimuli.right.electrodes(i)); a=a+1; %right electrodes
+            for i=1:numel(stimuli.right.electrodes)
+                outputBuffer(a) =uint8(stimuli.right.electrodes(i));
+                a=a+1; %right electrodes
             end
             a=391;
-            for (i=1:numel(stimuli.right.electrodes))
-                outputBuffer(a) = uint8(stimuli.right.current_levels(i)); a=a+1; %right amplitudes
+            for i=1:numel(stimuli.right.electrodes)
+                outputBuffer(a) = uint8(stimuli.right.current_levels(i));
+                a=a+1; %right amplitudes
             end
             bufferHistory_right = audio_right(p.Right.block_size-p.Right.NHIST+1:end);
         else
@@ -104,7 +116,7 @@ while frame_no<nframes % use while else timing won't be right
             % To check the integrity of the output stimuli on oscilloscope
             % If check = 1, you would see sine wave on electrodes 1 - 8
             % A regular sine wave indicates that timing is correct
-            for j=1:p.Left.pulses_per_frame/p.Left.Nmaxima; %p.left.Nmaxima
+            for j=1:p.Left.pulses_per_frame/p.Left.Nmaxima %p.left.Nmaxima
                 stim.l(j)= 200;%sine_token_l(indL);
                 indL=indL+1;
                 if indL==length(sine_token_l)+1
@@ -112,7 +124,7 @@ while frame_no<nframes % use while else timing won't be right
                 end
             end
             
-            for j=1:p.Right.pulses_per_frame/p.Right.Nmaxima; %right.Nmaxima
+            for j=1:p.Right.pulses_per_frame/p.Right.Nmaxima %right.Nmaxima
                 stim.r(j)= sine_token_r(indR);
                 indR=indR+1;
                 if indR==length(sine_token_r)+1
@@ -144,7 +156,8 @@ while frame_no<3 % send at least 2 null frames to clear out memory
     
 end
 
-delete(s); clear s;
+delete(s);
+clear s;
 % figure; plot(time(10:end));
 % average_time = sum(time)/nframes
 

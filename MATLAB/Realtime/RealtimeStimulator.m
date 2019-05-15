@@ -1,39 +1,26 @@
 function varargout = RealtimeStimulator(varargin)
-% RealtimeStimulator
-% GUI to processes audio from the BTE in realtime
-% Processed stimuli is sent to the RF coils via USB/UART
-% Processing code starts at line: function button_start_Callback(hObject, eventdata, handles)
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Copyright: CRSS-CILab, UT-Dallas
-%   Authors: Hussnain Ali
-%      Date: 2016/06/14
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%      REALTIMESTIMULATOR MATLAB code for RealtimeStimulator.fig
-%      REALTIMESTIMULATOR, by itself, creates a new REALTIMESTIMULATOR or raises the existing
-%      singleton*.
+%% Function: RealtimeStimulator.m
+% [varargout] = RealtimeStimulator(varargin)
 %
-%      H = REALTIMESTIMULATOR returns the handle to a new REALTIMESTIMULATOR or the handle to
-%      the existing singleton*.
+% This function manages a GUI for the following tasks: selecting/opening a
+% MAP file, starting and stopping processing/streaming, sliders to adjust
+% microphone sensitivity, gain, and volume.
+%           CCi-MOBILE Version: 2.2c
+%           Created by: Hussnain Ali, 2016
+%           Copyright Cochlear Ltd - derived from Nucleus MATLAB Toolbox v2*
 %
-%      REALTIMESTIMULATOR('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in REALTIMESTIMULATOR.M with the given input arguments.
+% This function calls:
+% 1. p = initialize_ACE_integer_ppf;
+% 2. s = initializeBoard(p);
 %
-%      REALTIMESTIMULATOR('Property','Value',...) creates a new REALTIMESTIMULATOR or raises the
-%      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before RealtimeStimulator_OpeningFcn gets called.  An
-%      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to RealtimeStimulator_OpeningFcn via varargin.
+% INPUT:
+% varargin      = A variable-length input argument list
 %
-%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
-%      instance to run (singleton)".
+% OUTPUT:
+% varargout     = A variable-length output argument list
 %
-% See also: GUIDE, GUIDATA, GUIHANDLES
-
-% Edit the above text to modify the response to help RealtimeStimulator
-
-% Last Modified by GUIDE v2.5 03-Oct-2016 20:03:48
+% See 'README.txt' for more information
+%% Beginning of function
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -65,10 +52,12 @@ function RealtimeStimulator_OpeningFcn(hObject, eventdata, handles, varargin)
 
 % Choose default command line output for RealtimeStimulator
 handles.output = hObject;
-global fs; fs = 16000;
+global fs;
+fs = 16000;
 
 % add common functions path to the current directory
-currentFolder = pwd; CCIMobileFolder = fileparts(currentFolder); %currentFolder(1:end-8);
+currentFolder = pwd;
+CCIMobileFolder = fileparts(currentFolder); %currentFolder(1:end-8);
 CommonFunctionsFolder = [CCIMobileFolder '\CommonFunctions\'];
 addpath(CommonFunctionsFolder);
 
@@ -77,7 +66,8 @@ handles.parameters = p;
 handles.stop = 0;
 
 if (isfield(p,'Left')==1)
-    p.General.LeftOn = 1; handles.parameters.General.LeftOn = 1;
+    p.General.LeftOn = 1;
+    handles.parameters.General.LeftOn = 1;
     set(handles.slider_sensitivity_left,'Value', p.Left.Sensitivity );
     set(handles.slider_gain_left,'Value', p.Left.Gain);
     set(handles.slider_volume_right,'Value', p.Left.Volume);
@@ -86,7 +76,8 @@ if (isfield(p,'Left')==1)
     set(handles.text_vol_left, 'String', ['Volume = ' num2str(p.Left.Volume)]);
     set(handles.checkbox_left, 'Value', p.General.LeftOn);
 else
-    p.General.LeftOn = 0; handles.parameters.General.LeftOn = 0;
+    p.General.LeftOn = 0;
+    handles.parameters.General.LeftOn = 0;
     set(handles.slider_sensitivity_left,'Enable','off' );
     set(handles.slider_gain_left,'Enable','off');
     set(handles.slider_volume_right,'Enable','off');
@@ -96,7 +87,8 @@ else
     set(handles.checkbox_left, 'Enable','off');
 end
 if (isfield(p,'Right')==1)
-    p.General.RightOn = 1; handles.parameters.General.RightOn = 1;
+    p.General.RightOn = 1;
+    handles.parameters.General.RightOn = 1;
     set(handles.slider_sensitivity_right,'Value', p.Right.Sensitivity);
     set(handles.slider_gain_right,'Value', p.Right.Gain);
     set(handles.slider_volume_right,'Value', p.Right.Volume);
@@ -105,7 +97,8 @@ if (isfield(p,'Right')==1)
     set(handles.text_vol_right, 'String', ['Volume = ' num2str(p.Right.Volume)]);
     set(handles.checkbox_right, 'Value', p.General.RightOn);
 else
-    p.General.RightOn = 0; handles.parameters.General.RightOn = 0;
+    p.General.RightOn = 0;
+    handles.parameters.General.RightOn = 0;
     set(handles.slider_sensitivity_right,'Enable','off');
     set(handles.slider_gain_right,'Enable','off');
     set(handles.slider_volume_right,'Enable','off');
@@ -138,9 +131,11 @@ function checkbox_left_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 new_value = get(hObject,'Value');
-drawnow;     handles = guidata(hObject);
-handles.parameters.General.LeftOn = new_value; guidata(hObject, handles);
-if new_value==0
+drawnow;
+handles = guidata(hObject);
+handles.parameters.General.LeftOn = new_value;
+guidata(hObject, handles);
+if new_value == 0
     set(handles.slider_sensitivity_left,'Enable','off' );
     set(handles.slider_gain_left,'Enable','off');
     set(handles.slider_volume_right,'Enable','off');
@@ -162,7 +157,8 @@ function checkbox_left_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to checkbox_left (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
-handles.parameters.General.LeftOn = 1; guidata(hObject, handles);
+handles.parameters.General.LeftOn = 1;
+guidata(hObject, handles);
 
 
 % --- Executes on button press in checkbox_right.
@@ -171,8 +167,10 @@ function checkbox_right_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 new_value = get(hObject,'Value');
-drawnow;     handles = guidata(hObject);
-handles.parameters.General.RightOn = new_value; guidata(hObject, handles);
+drawnow;
+handles = guidata(hObject);
+handles.parameters.General.RightOn = new_value;
+guidata(hObject, handles);
 if new_value==0
     set(handles.slider_sensitivity_right,'Enable','off');
     set(handles.slider_gain_right,'Enable','off');
@@ -196,7 +194,8 @@ function checkbox_right_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to checkbox_right (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
-handles.parameters.General.RightOn = 1; guidata(hObject, handles);
+handles.parameters.General.RightOn = 1;
+guidata(hObject, handles);
 
 % --- Executes on slider movement.
 function slider_sensitivity_left_Callback(hObject, eventdata, handles)
@@ -204,9 +203,10 @@ function slider_sensitivity_left_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 new_value = get(hObject,'Value');
-drawnow;     handles = guidata(hObject);
+drawnow;
+handles = guidata(hObject);
 handles.parameters.Left.Sensitivity = new_value;
-handles.parameters.Left.scale_factor =handles.parameters.Left.Sensitivity/32768;
+handles.parameters.Left.scale_factor = handles.parameters.Left.Sensitivity/32768;
 guidata(hObject, handles);
 set(handles.text_sens_left, 'String', ['Sensitivity = ' num2str(handles.parameters.Left.Sensitivity)]);
 % Hints: get(hObject,'Value') returns position of slider
@@ -230,7 +230,8 @@ function slider_sensitivity_right_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 new_value = get(hObject,'Value');
-drawnow;     handles = guidata(hObject);
+drawnow;
+handles = guidata(hObject);
 handles.parameters.Right.Sensitivity = new_value;
 handles.parameters.Right.scale_factor =handles.parameters.Right.Sensitivity/32768;
 set(handles.text_sens_right, 'String', ['Sensitivity = ' num2str(handles.parameters.Right.Sensitivity)]);
@@ -256,7 +257,8 @@ function slider_gain_left_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 new_value = get(hObject,'Value');
-drawnow;     handles = guidata(hObject);
+drawnow;
+handles = guidata(hObject);
 handles.parameters.Left.Gain = new_value;
 handles.parameters.Left.gains_dB = handles.parameters.Left.Gain + handles.parameters.Left.BandGains;
 handles.parameters.Left.gains = 10 .^ (handles.parameters.Left.gains_dB / 20.0);  %handles.parameters.Left.gains(23-handles.parameters.left.off_electrodes)=[];
@@ -283,7 +285,8 @@ function slider_gain_right_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 new_value = get(hObject,'Value');
-drawnow;     handles = guidata(hObject);
+drawnow;
+handles = guidata(hObject);
 handles.parameters.Right.Gain = new_value;
 handles.parameters.Right.gains_dB = handles.parameters.Right.Gain + handles.parameters.Right.BandGains;
 handles.parameters.Right.gains = 10 .^ (handles.parameters.Right.gains_dB / 20.0);  %handles.parameters.right.gains(23-handles.parameters.right.off_electrodes)=[];
@@ -311,9 +314,11 @@ function slider_volume_left_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 new_value = get(hObject,'Value');
-drawnow;     handles = guidata(hObject);
+drawnow;
+handles = guidata(hObject);
 handles.parameters.Left.Volume = new_value;
-handles.parameters.Left.volume_level = handles.parameters.Left.Volume/10;  guidata(hObject, handles);
+handles.parameters.Left.volume_level = handles.parameters.Left.Volume/10;
+guidata(hObject, handles);
 set(handles.text_vol_left, 'String', ['Volume = ' num2str(handles.parameters.Left.Volume)]);
 % Hints: get(hObject,'Value') returns position of slider
 %        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
@@ -337,7 +342,8 @@ function slider_volume_right_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 new_value = get(hObject,'Value');
-drawnow;     handles = guidata(hObject);
+drawnow;
+handles = guidata(hObject);
 handles.parameters.Right.Volume = new_value;
 handles.parameters.Right.volume_level = handles.parameters.Right.Volume/10;guidata(hObject, handles);
 set(handles.text_vol_right, 'String', ['Volume = ' num2str(handles.parameters.Right.Volume)]);
@@ -399,7 +405,8 @@ if (isfield(p,'Right') ==1)
     indR = 1;
     bufferHistory_right = (zeros(1, p.Right.block_size - p.Right.block_shift));
 end
-handles.stop = 0; guidata(hObject, handles);
+handles.stop = 0;
+guidata(hObject, handles);
 
 %clear stimulation buffers by sending null frames
 frame_no=1;
@@ -415,8 +422,10 @@ while frame_no<3 % send at least 2 null frames to clear out memory
 end
 
 while handles.stop==0 % use while else timing won't be right
-    drawnow; handles = guidata(hObject); p = handles.parameters;
-
+    drawnow;
+    handles = guidata(hObject);
+    p = handles.parameters;
+    
     if Wait(s)>= 512
         AD_data_bytes = Read(s, 512);                       % Read audio from BTE
         AD_data=typecast(int8(AD_data_bytes), 'int16');     % Type cast to short 16 bits
@@ -447,13 +456,15 @@ while handles.stop==0 % use while else timing won't be right
             stimuli.right = ACE_Processing_Realtime(audio_right, bufferHistory_right, p.Right);
             a=265;
             %for (i=1:p.Right.pulses_per_frame)
-            for (i=1:numel(stimuli.right.electrodes))
-                outputBuffer(a) =uint8(stimuli.right.electrodes(i)); a=a+1; %right electrodes
+            for i=1:numel(stimuli.right.electrodes)
+                outputBuffer(a) = uint8(stimuli.right.electrodes(i));
+                a=a+1; %right electrodes
             end
             a=391;
-            for (i=1:numel(stimuli.right.electrodes))
+            for i=1:numel(stimuli.right.electrodes)
                 %for (i=1:p.Right.pulses_per_frame)
-                outputBuffer(a) = uint8(stimuli.right.current_levels(i)); a=a+1; %right amplitudes
+                outputBuffer(a) = uint8(stimuli.right.current_levels(i));
+                a=a+1; %right amplitudes
             end
             bufferHistory_right = audio_right(p.Right.block_size-p.Right.NHIST+1:end);
         else
@@ -467,28 +478,30 @@ while handles.stop==0 % use while else timing won't be right
         % and uncomment the following section
         % This will write sine stimuli to the RF coil which can be
         % checked on the oscilloscope for timing verification.
-
-%             for j=1:p.Left.pulses_per_frame/p.Left.Nmaxima;
-%                 stim.l(j)= sine_token_l(indL);
-%                 indL=indL+1;
-%                 if indL==length(sine_token_l)+1
-%                     indL=1;
-%                 end
-%             end
-%             
-%             for j=1:p.Right.pulses_per_frame/p.Right.Nmaxima;
-%                 stim.r(j)= 200; %sine_token_l(indL);
-%                 indR=indR+1;
-%                 if indR==length(sine_token_r)+1
-%                     indR=1;
-%                 end
-%             end
-%             stimulus = UART_output_buffer(stim, p);
-%             Write(s, stimulus,516);
-
-        clear AD_data_bytes; clear AD_data;
+        
+        %             for j=1:p.Left.pulses_per_frame/p.Left.Nmaxima;
+        %                 stim.l(j)= sine_token_l(indL);
+        %                 indL=indL+1;
+        %                 if indL==length(sine_token_l)+1
+        %                     indL=1;
+        %                 end
+        %             end
+        %
+        %             for j=1:p.Right.pulses_per_frame/p.Right.Nmaxima;
+        %                 stim.r(j)= 200; %sine_token_l(indL);
+        %                 indR=indR+1;
+        %                 if indR==length(sine_token_r)+1
+        %                     indR=1;
+        %                 end
+        %             end
+        %             stimulus = UART_output_buffer(stim, p);
+        %             Write(s, stimulus,516);
+        
+        clear AD_data_bytes;
+        clear AD_data;
     end
     
 end % end while loop, until stop button is pressed
 
-delete(s); clear s;
+delete(s);
+clear s;
