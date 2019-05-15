@@ -58,7 +58,6 @@ cseq.channels(idle_pulses) = length(electrodes);
 % Create the fields in the order we like to show them in Disp_sequence:
 q.electrodes	= electrodes(cseq.channels);
 q.modes			= p.StimulationModeCode;	% Constant mode.
-
 % Current level:
 ranges			= comfort_levels - threshold_levels;
 q_magnitudes	= cseq.magnitudes;

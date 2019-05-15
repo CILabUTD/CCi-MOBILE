@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="cilab.utdallas.edu.ccimobile.TestingActivity"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/stuff1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:hint="@string/stuff"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toStartOf="@+id/stuff2"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1.75"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <CheckBox
+            android:id="@+id/stuff2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/stuff1"
+            app:layout_constraintEnd_toStartOf="@+id/stuff3"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintHorizontal_weight="1.25"
+            app:layout_constraintStart_toEndOf="@+id/stuff1"
+            app:layout_constraintTop_toTopOf="@+id/stuff1" />
+
+        <TextView
+            android:id="@+id/stuff3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/stuff"
+            app:layout_constraintBottom_toBottomOf="@+id/stuff2"
+            app:layout_constraintEnd_toStartOf="@+id/stuff4"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/stuff2"
+            app:layout_constraintTop_toTopOf="@+id/stuff2"
+            app:layout_constraintVertical_bias="0.517" />
+
+        <TextView
+            android:id="@+id/stuff4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/stuff"
+            app:layout_constraintBottom_toBottomOf="@+id/stuff3"
+            app:layout_constraintEnd_toStartOf="@+id/stuff5"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/stuff3"
+            app:layout_constraintTop_toTopOf="@+id/stuff3"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/stuff5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/stuff"
+            app:layout_constraintBottom_toBottomOf="@+id/stuff4"
+            app:layout_constraintEnd_toStartOf="@+id/stuff6"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/stuff4"
+            app:layout_constraintTop_toTopOf="@+id/stuff4"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/stuff6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/stuff"
+            app:layout_constraintBottom_toBottomOf="@+id/stuff5"
+            app:layout_constraintEnd_toStartOf="@+id/stuff7"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/stuff5"
+            app:layout_constraintTop_toTopOf="@+id/stuff5"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/stuff7"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/stuff"
+            app:layout_constraintBottom_toBottomOf="@+id/stuff6"
+            app:layout_constraintEnd_toStartOf="@id/stuff8"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/stuff6"
+            app:layout_constraintTop_toTopOf="@+id/stuff6"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/stuff8"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/stuff"
+            app:layout_constraintBottom_toBottomOf="@+id/stuff7"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/stuff7"
+            app:layout_constraintTop_toTopOf="@+id/stuff7"
+            app:layout_constraintVertical_bias="0.0" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>
+

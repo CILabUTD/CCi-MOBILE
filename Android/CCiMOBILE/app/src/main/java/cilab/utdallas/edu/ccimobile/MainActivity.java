@@ -18,12 +18,17 @@ import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.OpenableColumns;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+
+import com.google.android.material.color.MaterialColors;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
+
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.JsonWriter;
 import android.util.Log;
 import android.view.Gravity;
@@ -101,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
 
     TextView status, connectionStatus, leftSensitivity, rightSensitivity, leftGain, rightGain, textViewMAP;
     ImageView statusImage;
-    ToggleButton buttonStartStop;
+    ToggleButton buttonStartStop, buttonOnOff;
     Button buttonSaveMAP;
 
     BubbleSeekBar bubbleLeftSens, bubbleLeftGain, bubbleRightSens, bubbleRightGain;
@@ -119,6 +124,9 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Toolbar myToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(myToolbar);
+
         global_context = this;
         status = findViewById(R.id.textStatus);
         leftSensitivity = findViewById(R.id.textViewLeftSensitivity);
@@ -131,6 +139,9 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         bubbleLeftGain = findViewById(R.id.bubbleLeftGain);
         bubbleRightSens = findViewById(R.id.bubbleRightSens);
         bubbleRightGain = findViewById(R.id.bubbleRightGain);
+
+        buttonOnOff = findViewById(R.id.toggleButtonOnOff);
+        buttonOnOff.setEnabled(false);
 
         // Disable buttons/sliders
         buttonSaveMAP.setEnabled(false);
@@ -335,30 +346,51 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
      * Prompts the user for the MAP filename
      */
     public void promptMAPfilename(View view) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Save MAP");
-
+        MaterialAlertDialogBuilder saveAlert = new MaterialAlertDialogBuilder(this);
+        saveAlert.setTitle("Save MAP");
         View viewInflated = LayoutInflater.from(this).inflate(R.layout.text_input_filename, (ViewGroup) findViewById(android.R.id.content), false);
         final EditText input = viewInflated.findViewById(R.id.input);
-        builder.setView(viewInflated);
+        saveAlert.setView(viewInflated);
 
-        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+        saveAlert.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
                 String saveFilename = input.getText().toString();
                 saveMAP(saveFilename);
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        saveAlert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.cancel();
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
             }
         });
+        saveAlert.show();
 
-        builder.show();
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setTitle("Save MAP");
+//
+//        View viewInflated = LayoutInflater.from(this).inflate(R.layout.text_input_filename, (ViewGroup) findViewById(android.R.id.content), false);
+//        final EditText input = viewInflated.findViewById(R.id.input);
+//        builder.setView(viewInflated);
+//
+//        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                dialogInterface.dismiss();
+//                String saveFilename = input.getText().toString();
+//                saveMAP(saveFilename);
+//            }
+//        });
+//        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                dialogInterface.cancel();
+//            }
+//        });
+//
+//        builder.show();
 
     }
 
@@ -487,10 +519,12 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         if (noMAP || errorMAP) {
             menu.findItem(R.id.menuSettings).setEnabled(false);
             menu.findItem(R.id.menuEnvironments).setEnabled(false);
+            //menu.findItem(R.id.menuTesting).setEnabled(false);
         }
         else {
             menu.findItem(R.id.menuSettings).setEnabled(true);
             menu.findItem(R.id.menuEnvironments).setEnabled(true);
+            //menu.findItem(R.id.menuTesting).setEnabled(true);
         }
         return true;
     }
@@ -522,6 +556,10 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
                 return true;
             case R.id.menuEnvironments:
                 myIntent = new Intent(MainActivity.this, EnvironmentsActivity.class);
+                MainActivity.this.startActivityForResult(myIntent, 1);
+                return true;
+            case R.id.menuTesting:
+                myIntent = new Intent(MainActivity.this, TestingActivity.class);
                 MainActivity.this.startActivityForResult(myIntent, 1);
                 return true;
             default:
@@ -758,7 +796,9 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
                 setProgressBarIndeterminateVisibility(false);
                 //results = resultData.getString("result");
                 String msg = "Completion Message";
-                Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+                //Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+                Snackbar.make(findViewById(R.id.rootMain), msg, Snackbar.LENGTH_LONG).setAction("Action", null).show();
+
                 break;
 
             case InitializationService.STATUS_STEP0_FINISHED:
@@ -789,16 +829,23 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
                 //String msg3 = "Step 3 completed";
                 status.setText(R.string.textReady);
                 initializeConnection();
-                buttonStartStop.setEnabled(true);
-                buttonStartStop.setButtonDrawable(R.drawable.start);
+
+                //buttonStartStop.setEnabled(true);
+                //buttonStartStop.setButtonDrawable(R.drawable.start);
+
+                buttonOnOff.setEnabled(true);
+                buttonOnOff.setChecked(false);
+
                 connectionStatus.setText(R.string.textConnected);
-                statusImage.setImageResource(R.drawable.connected);
+                statusImage.setImageResource(R.drawable.ic_done_black_24dp);
                 break;
 
             case InitializationService.STATUS_ERROR:
                 /* Handle the error */
                 String error = resultData.getString(Intent.EXTRA_TEXT);
-                Toast.makeText(this, error, Toast.LENGTH_LONG).show();
+                //Toast.makeText(this, error, Toast.LENGTH_LONG).show();
+                Snackbar.make(findViewById(R.id.rootMain), "Error: " + error, Snackbar.LENGTH_LONG).setAction("Action", null).show();
+
                 break;
         }
     }
@@ -826,17 +873,17 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         MAP_filename = preferences.getString("MAPfilename","");
 
         // Check if filename string is empty
+        assert MAP_filename != null;
         if (!MAP_filename.isEmpty()) {
             leftMAP.getMAPData(MAP_filename, "left");
             rightMAP.getMAPData(MAP_filename, "right");
 
             if (leftMAP.dataMissing && rightMAP.dataMissing)
-                Toast.makeText(getApplicationContext(), "Error: MAP could not be opened due to missing data from both left and right ear. Please select a different MAP.", Toast.LENGTH_LONG).show();
+                Snackbar.make(findViewById(R.id.rootMain), "Error: MAP could not be opened due to missing data from both left and right ear. Please select a different MAP.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             else if (leftMAP.dataMissing)
-                Toast.makeText(getApplicationContext(), "Error: MAP could not be opened due to missing data from left ear. Please select a different MAP.", Toast.LENGTH_LONG).show();
+                Snackbar.make(findViewById(R.id.rootMain), "Error: MAP could not be opened due to missing data from left ear. Please select a different MAP.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             else if (rightMAP.dataMissing)
-                Toast.makeText(getApplicationContext(), "Error: MAP could not be opened due to missing data from right ear. Please select a different MAP.", Toast.LENGTH_LONG).show();
-
+                Snackbar.make(findViewById(R.id.rootMain), "Error: MAP could not be opened due to missing data from right ear. Please select a different MAP.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             if (leftMAP.dataMissing || rightMAP.dataMissing) {
                 errorMAP = true;
                 disableSliders("both");
@@ -848,7 +895,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             }
         }
         else {
-            Toast.makeText(getApplicationContext(), "Please select a valid MAP.", Toast.LENGTH_LONG).show();
+            Snackbar.make(findViewById(R.id.rootMain), "Please select a valid MAP.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
         }
     }
 
@@ -1045,21 +1092,15 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
     private void initializeGUI() {
         connectionStatus = findViewById(R.id.textConnectionStatus);
         statusImage = findViewById(R.id.imageStatus);
-        buttonStartStop = findViewById(R.id.toggleButtonStartStop);
-
         connectionStatus.setText(R.string.Connecting3);
-        buttonStartStop.setText(null);
-        buttonStartStop.setTextOn(null);
-        buttonStartStop.setTextOff(null);
+        buttonSaveMAP.setEnabled(true);
 
-        buttonStartStop.setButtonDrawable(R.drawable.start0);
-
-        buttonStartStop.setEnabled(false);
-
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-            buttonSaveMAP.setEnabled(true);
-        }
+        //buttonStartStop = findViewById(R.id.toggleButtonStartStop);
+        //buttonStartStop.setText(null);
+        //buttonStartStop.setTextOn(null);
+        //buttonStartStop.setTextOff(null);
+        //buttonStartStop.setButtonDrawable(R.drawable.start0);
+        //buttonStartStop.setEnabled(false);
 
         updateGUI("both");
 
@@ -1079,7 +1120,8 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
                 leftMAP.sensitivity = value;
                 leftScaleFactor = value / 32768;
                 leftACE = new ACE(leftMAP);
-                Toast.makeText(getApplicationContext(), "Left Sensitivity value changed to " + value, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Left Sensitivity value changed to " + value, Toast.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(R.id.rootMain), "Left Sensitivity value changed to " + value, Snackbar.LENGTH_SHORT).setAction("Action", null).show();
 
                 // Update preferences value
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
@@ -1109,7 +1151,8 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             public void getProgressOnActionUp(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat) {
                 leftMAP.gain = value;
                 leftACE = new ACE(leftMAP);
-                Toast.makeText(getApplicationContext(), "Left Gain value changed to " + value + " dB", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Left Gain value changed to " + value + " dB", Toast.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(R.id.rootMain), "Left Gain value changed to " + value + " dB", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
 
                 // Update preferences value
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
@@ -1138,7 +1181,8 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
                 rightMAP.sensitivity = value;
                 rightScaleFactor = value / 32768;
                 rightACE = new ACE(rightMAP);
-                Toast.makeText(getApplicationContext(), "Right Sensitivity value changed to " + value, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Right Sensitivity value changed to " + value, Toast.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(R.id.rootMain), "Right Sensitivity value changed to " + value, Snackbar.LENGTH_SHORT).setAction("Action", null).show();
 
                 // Update preferences value
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
@@ -1167,7 +1211,8 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             public void getProgressOnActionUp(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat) {
                 rightMAP.gain = value;
                 rightACE = new ACE(rightMAP);
-                Toast.makeText(getApplicationContext(), "Right Gain value changed to " + value + " dB", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Right Gain value changed to " + value + " dB", Toast.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(R.id.rootMain), "Right Gain value changed to " + value + " dB", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
 
                 // Update preferences value
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
@@ -1278,7 +1323,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         }
         else  {
             //status.append("ftDev is set");
-            status.setText(R.string.textftDevset);
+            //status.setText(R.string.textftDevset);
             return 1; }
     }
 
@@ -1540,7 +1585,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             @Override
             public void run() {
                 //status.append("\n" + s);
-                status.setText(String.format("%s%s", getString(R.string.textStatusTextOut), s));
+                //status.setText(String.format("%s%s", getString(R.string.textStatusTextOut), s));
             }
         });
     }
@@ -1674,6 +1719,14 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         }
     }
 
+    public void buttonOnOff(View view) {
+        if (((ToggleButton) view).isChecked()) {
+            startProcessing();
+        } else {
+            stopProcessing();
+        }
+    }
+
     /**
      * Start processing
      */
@@ -1683,7 +1736,9 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         if (ftDev == null){
             //status.append("DEVICE IS NULL");
             status.setText(R.string.textDeviceNull);
-            Toast.makeText(this,"Device not Connected. Please reconnect the board,",Toast.LENGTH_LONG).show();
+            //Toast.makeText(this,"Device not Connected. Please reconnect the board,",Toast.LENGTH_LONG).show();
+            Snackbar.make(findViewById(R.id.rootMain), "Device not connected. Please reconnect the board.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+
         }
         else {
             status.setText(R.string.textRunning);

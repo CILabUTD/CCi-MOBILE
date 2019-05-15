@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/rootSettings"
     tools:context="cilab.utdallas.edu.ccimobile.SettingsActivity">
 
     <TableLayout
@@ -24,7 +25,7 @@
                 android:padding="8dp" />
 
             <TextView
-                android:id="@+id/textView01"
+                android:id="@+id/textViewLeft"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -33,7 +34,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textView02"
+                android:id="@+id/textViewRight"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -49,7 +50,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView1"
+                android:id="@+id/textViewImplantType"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -58,14 +59,14 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textView18"
+                android:id="@+id/textViewITL"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="@string/stuff" />
 
             <TextView
-                android:id="@+id/textView22"
+                android:id="@+id/textViewITR"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -79,7 +80,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/textViewSamplingFreq"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -88,14 +89,14 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textView19"
+                android:id="@+id/textViewSFL"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="@string/stuff" />
 
             <TextView
-                android:id="@+id/textView23"
+                android:id="@+id/textViewSFR"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -118,14 +119,14 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textView20"
+                android:id="@+id/textViewNCL"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="@string/stuff" />
 
             <TextView
-                android:id="@+id/textView24"
+                android:id="@+id/textViewNCR"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -148,14 +149,14 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textView21"
+                android:id="@+id/textViewFTL"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="@string/stuff" />
 
             <TextView
-                android:id="@+id/textView25"
+                android:id="@+id/textViewFTR"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -178,13 +179,13 @@
                 android:textStyle="bold" />
 
             <Spinner
-                android:id="@+id/soundProcessSpinnerLeft"
+                android:id="@+id/spinnerSPSL"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
             <Spinner
-                android:id="@+id/soundProcessSpinnerRight"
+                android:id="@+id/spinnerSPSR"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
@@ -206,13 +207,13 @@
                 android:textStyle="bold" />
 
             <Spinner
-                android:id="@+id/nMaximaSpinnerLeft"
+                android:id="@+id/spinnerNML"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
             <Spinner
-                android:id="@+id/nMaximaSpinnerRight"
+                android:id="@+id/spinnerNMR"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
@@ -234,13 +235,13 @@
                 android:textStyle="bold" />
 
             <Spinner
-                android:id="@+id/stimModeLeft"
+                android:id="@+id/spinnerSML"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
             <Spinner
-                android:id="@+id/stimModeRight"
+                android:id="@+id/spinnerSMR"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
@@ -262,7 +263,7 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/editText4"
+                android:id="@+id/editTextSRL"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -273,7 +274,7 @@
                 android:importantForAutofill="no" />
 
             <EditText
-                android:id="@+id/editText17"
+                android:id="@+id/editTextSRR"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -300,7 +301,7 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/editText5"
+                android:id="@+id/editTextPWL"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -311,7 +312,7 @@
                 android:importantForAutofill="no" />
 
             <EditText
-                android:id="@+id/editText18"
+                android:id="@+id/editTextPWR"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -338,7 +339,7 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/editText6"
+                android:id="@+id/editTextSL"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -349,7 +350,7 @@
                 android:importantForAutofill="no" />
 
             <EditText
-                android:id="@+id/editText19"
+                android:id="@+id/editTextSR"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -376,7 +377,7 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/editText7"
+                android:id="@+id/editTextGL"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -387,7 +388,7 @@
                 android:importantForAutofill="no" />
 
             <EditText
-                android:id="@+id/editText20"
+                android:id="@+id/editTextGR"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -414,13 +415,13 @@
                 android:textStyle="bold" />
 
             <Spinner
-                android:id="@+id/volumeSpinnerLeft"
+                android:id="@+id/spinnerVL"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
             <Spinner
-                android:id="@+id/volumeSpinnerRight"
+                android:id="@+id/spinnerVR"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
@@ -442,7 +443,7 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/editText9"
+                android:id="@+id/editTextQFL"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -453,7 +454,7 @@
                 android:importantForAutofill="no" />
 
             <EditText
-                android:id="@+id/editText22"
+                android:id="@+id/editTextQFR"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -480,7 +481,7 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/editText10"
+                android:id="@+id/editTextBLL"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -491,7 +492,7 @@
                 android:importantForAutofill="no" />
 
             <EditText
-                android:id="@+id/editText23"
+                android:id="@+id/editTextBLR"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -518,7 +519,7 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/editText11"
+                android:id="@+id/editTextSLL"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -529,7 +530,7 @@
                 android:importantForAutofill="no" />
 
             <EditText
-                android:id="@+id/editText24"
+                android:id="@+id/editTextSLR"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -556,13 +557,13 @@
                 android:textStyle="bold" />
 
             <Spinner
-                android:id="@+id/stimOrderLeft"
+                android:id="@+id/spinnerSOL"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
             <Spinner
-                android:id="@+id/stimOrderRight"
+                android:id="@+id/spinnerSOR"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
@@ -584,13 +585,13 @@
                 android:textStyle="bold" />
 
             <Spinner
-                android:id="@+id/windowSpinnerLeft"
+                android:id="@+id/spinnerWL"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
             <Spinner
-                android:id="@+id/windowSpinnerRight"
+                android:id="@+id/spinnerWR"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />

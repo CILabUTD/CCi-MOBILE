@@ -1,244 +1,265 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootMain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:fitsSystemWindows="true"
     tools:context="cilab.utdallas.edu.ccimobile.MainActivity">
 
-    <LinearLayout
-        android:id="@+id/linearLayoutFilename"
-        android:layout_width="fill_parent"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayoutTop"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="5dp"
-        android:gravity="start"
-        android:orientation="horizontal">
+        android:paddingTop="@dimen/appbar_padding_top"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-        <TextView
-            android:id="@+id/textView214"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="start"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
             android:layout_weight="1"
-            android:text="@string/textCurrentMAP" />
+            android:background="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:title="@string/app_name">
+
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <!--<TextView-->
+            <!--android:id="@+id/textView214"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginStart="8dp"-->
+            <!--android:layout_marginTop="8dp"-->
+            <!--android:gravity="start"-->
+            <!--android:text="@string/textCurrentMAP"-->
+            <!--app:layout_constraintEnd_toStartOf="@+id/textView215"-->
+            <!--app:layout_constraintHorizontal_bias="0.5"-->
+            <!--app:layout_constraintStart_toStartOf="parent"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/textStatus" />-->
 
         <TextView
             android:id="@+id/textView215"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
             android:gravity="end"
-            android:layout_weight="1"
-            android:hint="@string/textMAPSelect" />
-    </LinearLayout>
+            android:text="@string/textMAPSelect"
+            app:layout_constraintTop_toBottomOf="@id/textConnectionStatus"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-    <LinearLayout
-        style="?android:attr/buttonBarStyle"
-        android:id="@+id/linearLayoutButtons"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/linearLayoutRight"
-        android:layout_marginTop="-15dp"
-        android:gravity="bottom|center_horizontal"
-        android:orientation="horizontal">
 
         <Button
             android:id="@+id/selectMAPbutton"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="136dp"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="35dp"
-            android:layout_marginTop="-5dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginTop="16dp"
             android:onClick="selectMAP"
-            android:text="@string/manage_map_button" />
+            android:text="@string/manage_map_button"
+            app:icon="@drawable/ic_folder_open_black_24dp"
+            app:layout_constraintEnd_toStartOf="@+id/buttonSaveMAP"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toggleButtonOnOff" />
 
         <Button
             android:id="@+id/buttonSaveMAP"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="136dp"
+            style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="-5dp"
-            android:layout_marginEnd="35dp"
+            android:layout_marginTop="16dp"
             android:onClick="promptMAPfilename"
-            android:text="@string/textSaveMap" />
-    </LinearLayout>
+            android:text="@string/textSaveMap"
+            app:icon="@drawable/ic_file_download_black_24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/selectMAPbutton"
+            app:layout_constraintTop_toBottomOf="@+id/toggleButtonOnOff" />
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:gravity="top"
-        android:id="@+id/linearLayoutTop">
+        <ToggleButton
+            android:id="@+id/toggleButtonOnOff"
+            style="@style/toggleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/playpauseicons_bg"
+            android:checked="false"
+            android:onClick="buttonOnOff"
+            android:textOff=""
+            android:textOn=""
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bubbleRightGain" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:text="@string/cci_mobile"
             android:id="@+id/textStatus"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
             android:gravity="bottom"
-            android:textColor="#ff5100ff"
-            android:layout_weight="2"
-            android:includeFontPadding="false"/>
+            android:includeFontPadding="false"
+            android:text="@string/cci_mobile"
+            android:textColor="@color/colorAccent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:layout_weight="2"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:text="@string/not_connected"
             android:id="@+id/textConnectionStatus"
-            android:gravity="end" />
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginEnd="24dp"
+            android:gravity="end"
+            android:text="@string/not_connected"
+            app:layout_constraintEnd_toEndOf="@id/imageStatus"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:layout_gravity="end"
-            android:layout_width="20dp"
-            android:layout_height="match_parent"
             android:id="@+id/imageStatus"
-            android:src="@drawable/disconnected"
-            android:contentDescription="@string/imageDesc" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayoutFilename"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="25dp"
-        android:layout_marginBottom="5dp"
-        android:id="@+id/linearLayoutLeft">
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="@string/imageDesc"
+            android:src="@drawable/ic_do_not_disturb_black_24dp"
+            app:layout_constraintBottom_toBottomOf="@+id/textConnectionStatus"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/textConnectionStatus"
+            app:layout_constraintTop_toTopOf="@+id/textConnectionStatus" />
 
         <TextView
+            android:id="@+id/textViewLeftSensitivity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
             android:text="@string/textLeftSens"
-            android:id="@+id/textViewLeftSensitivity"
-            android:layout_marginBottom="10dp"
-            android:layout_gravity="center_horizontal" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView215" />
 
         <com.xw.repo.BubbleSeekBar
             android:id="@+id/bubbleSeekBarLeftSensitivity"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
-            app:bsb_max="10"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:progress="0"
+            app:bsb_max="10"
+            app:bsb_section_text_position="bottom_sides"
+            app:bsb_show_progress_in_float="true"
             app:bsb_show_section_mark="true"
             app:bsb_show_section_text="true"
-            app:bsb_show_progress_in_float="true"
             app:bsb_show_thumb_text="true"
-            app:bsb_section_text_position="bottom_sides"
-            />
-
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewLeftSensitivity" />
 
         <TextView
+            android:id="@+id/textViewLeftGain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/textLeftGain"
-            android:id="@+id/textViewLeftGain"
+            android:layout_marginTop="16dp"
             android:layout_marginBottom="10dp"
-            android:layout_gravity="center_horizontal" />
+            android:text="@string/textLeftGain"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bubbleSeekBarLeftSensitivity" />
 
         <com.xw.repo.BubbleSeekBar
             android:id="@+id/bubbleLeftGain"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
-            app:bsb_max="50"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:progress="0"
+            app:bsb_max="50"
+            app:bsb_section_text_position="bottom_sides"
+            app:bsb_show_progress_in_float="true"
             app:bsb_show_section_mark="true"
             app:bsb_show_section_text="true"
-            app:bsb_show_progress_in_float="true"
             app:bsb_show_thumb_text="true"
-            app:bsb_section_text_position="bottom_sides"
-            />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewLeftGain" />
 
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayoutLeft"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/linearLayoutRight">
 
         <TextView
+            android:id="@+id/textViewRightSensitivity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
             android:text="@string/textRightSens"
-            android:id="@+id/textViewRightSensitivity"
-            android:layout_marginBottom="10dp"
-            android:layout_gravity="center_horizontal" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bubbleLeftGain" />
 
         <com.xw.repo.BubbleSeekBar
             android:id="@+id/bubbleRightSens"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
-            app:bsb_max="10"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:progress="0"
+            app:bsb_max="10"
+            app:bsb_section_text_position="bottom_sides"
+            app:bsb_show_progress_in_float="true"
             app:bsb_show_section_mark="true"
             app:bsb_show_section_text="true"
-            app:bsb_show_progress_in_float="true"
             app:bsb_show_thumb_text="true"
-            app:bsb_section_text_position="bottom_sides"
-            />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewRightSensitivity" />
 
 
         <TextView
+            android:id="@+id/textViewRightGain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/textRightGain"
-            android:id="@+id/textViewRightGain"
+            android:layout_marginTop="16dp"
             android:layout_marginBottom="10dp"
-            android:layout_gravity="center_horizontal" />
+            android:text="@string/textRightGain"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bubbleRightSens" />
 
         <com.xw.repo.BubbleSeekBar
             android:id="@+id/bubbleRightGain"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
-            app:bsb_max="50"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:progress="0"
+            app:bsb_max="50"
+            app:bsb_section_text_position="bottom_sides"
+            app:bsb_show_progress_in_float="true"
             app:bsb_show_section_mark="true"
             app:bsb_show_section_text="true"
-            app:bsb_show_progress_in_float="true"
             app:bsb_show_thumb_text="true"
-            app:bsb_section_text_position="bottom_sides"
-            />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewRightGain" />
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayoutBottom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:orientation="vertical">
-
-        <ToggleButton
-            android:id="@+id/toggleButtonStartStop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:background="@null"
-            android:checked="false"
-            android:onClick="startOrStop"
-            android:textAlignment="center" />
-
-    </LinearLayout>
-
-
-</RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

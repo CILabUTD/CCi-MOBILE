@@ -1,11 +1,12 @@
 package cilab.utdallas.edu.ccimobile;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.Toast;
+
+import com.google.android.material.snackbar.Snackbar;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class EnvironmentsActivity extends AppCompatActivity {
 
@@ -19,32 +20,26 @@ public class EnvironmentsActivity extends AppCompatActivity {
     }
 
     public void classroom(View view) {
-        midToast("Classroom Environment Selected");
-    }
-
-    void midToast(String str) {
-        Toast toast = Toast.makeText(this_context, str, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
-        toast.show();
+        Snackbar.make(findViewById(R.id.envs), "Classroom Environment Selected", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
     }
 
     public void conversation(View view) {
-        midToast("Conversational Environment Selected");
+        Snackbar.make(findViewById(R.id.envs), "Conversational Environment Selected", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
     }
 
     public void leisure(View view) {
-        midToast("Leisure Environment Selected");
+        Snackbar.make(findViewById(R.id.envs), "Leisure Environment Selected", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
     }
 
     public void market(View view) {
-        midToast("Market Environment Selected");
+        Snackbar.make(findViewById(R.id.envs), "Market Environment Selected", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
     }
 
     public void tv(View view) {
-        midToast("TV Environment Selected");
+        Snackbar.make(findViewById(R.id.envs), "TV Environment Selected", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
     }
 
     public void driving(View view) {
-        midToast("Driving Environment Selected");
+        Snackbar.make(findViewById(R.id.envs), "Driving Environment Selected", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
     }
 }
