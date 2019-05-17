@@ -81,16 +81,13 @@ public class SettingsActivity extends AppCompatActivity implements ParametersFra
 
         fab = findViewById(R.id.fab);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ParametersFrag fragmentObj = (ParametersFrag) mSectionsPagerAdapter.instantiateItem(mViewPager, 0);
-                boolean problems = fragmentObj.updateMAPButton();
-                if (!problems)
-                    Snackbar.make(findViewById(R.id.rootSettings), "MAP updated successfully.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                sendIntentBack(fragmentObj);
+        fab.setOnClickListener(view -> {
+            ParametersFrag fragmentObj = (ParametersFrag) mSectionsPagerAdapter.instantiateItem(mViewPager, 0);
+            boolean problems = fragmentObj.updateMAPButton();
+            if (!problems)
+                Snackbar.make(findViewById(R.id.rootSettings), "MAP updated successfully.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            sendIntentBack(fragmentObj);
 
-            }
         });
 
 
