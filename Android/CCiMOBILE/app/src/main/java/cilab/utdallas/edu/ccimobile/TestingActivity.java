@@ -42,13 +42,13 @@ public class TestingActivity extends AppCompatActivity {
 
         // Create a numeric X axis
         final IAxis xAxis = sciChartBuilder.newNumericAxis()
-                .withAxisTitle("X Axis Title")
-                .withVisibleRange(0, 10)
+                .withAxisTitle("Electrode")
+                .withVisibleRange(1, 22)
                 .build();
 
         // Create a numeric Y axis
         final IAxis yAxis = sciChartBuilder.newNumericAxis()
-                .withAxisTitle("Y Axis Title").withVisibleRange(-1, 1).build();
+                .withAxisTitle("Current").withVisibleRange(0, 1).build();
 
         // Add the Y axis to the YAxes collection of the surface
         Collections.addAll(surface.getYAxes(), yAxis);
@@ -61,7 +61,7 @@ public class TestingActivity extends AppCompatActivity {
         final int dataCount = 22;
         for (int i = 0; i < dataCount; i++)
         {
-            lineData.append(i, Math.sin(i * 2 * Math.PI / dataCount));
+            lineData.append(i+1, Math.abs(Math.sin(i * 2 * Math.PI / dataCount)));
         }
 
         // Set up an update
@@ -76,7 +76,7 @@ public class TestingActivity extends AppCompatActivity {
                     // Fill the DoubleValues collections
                     for (int i = 0; i < dataCount; i++)
                     {
-                        lineDoubleData.set(i, Math.sin(i * 2 * Math.PI / dataCount + _phaseShift));
+                        lineDoubleData.set(i, Math.abs(Math.sin(i * 2 * Math.PI / dataCount + _phaseShift)));
                     }
                     // Update DataSeries using bunch update
                     lineData.updateRangeYAt(0, lineDoubleData);
