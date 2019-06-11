@@ -1722,6 +1722,8 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
                     leftStimuli = leftACE.processAudio(leftData);
                     rightStimuli = rightACE.processAudio(rightData);
 
+                    // put graph update here?????
+
                     // STEP 3: Stream Stimuli
                     updateOutputBuffer(); // comment this to pass sine wave
                     rc = ftDev.write(writeBuffer, 516, true); // comment this to pass sine wave

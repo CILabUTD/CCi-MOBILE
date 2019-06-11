@@ -1,27 +1,22 @@
 package cilab.utdallas.edu.ccimobile;
 
 import android.os.Bundle;
-import android.view.Gravity;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.scichart.charting.ClipMode;
 import com.scichart.charting.model.dataSeries.XyDataSeries;
-import com.scichart.charting.modifiers.AxisDragModifierBase;
-import com.scichart.charting.modifiers.ModifierGroup;
 import com.scichart.charting.visuals.SciChartSurface;
-import com.scichart.charting.visuals.annotations.HorizontalAnchorPoint;
-import com.scichart.charting.visuals.annotations.TextAnnotation;
-import com.scichart.charting.visuals.annotations.VerticalAnchorPoint;
 import com.scichart.charting.visuals.axes.IAxis;
-import com.scichart.charting.visuals.pointmarkers.EllipsePointMarker;
-import com.scichart.charting.visuals.renderableSeries.IRenderableSeries;
-import com.scichart.core.annotations.Orientation;
+import com.scichart.charting.visuals.renderableSeries.FastColumnRenderableSeries;
+import com.scichart.core.framework.UpdateSuspender;
+import com.scichart.core.model.DoubleValues;
 import com.scichart.drawing.utility.ColorUtil;
 import com.scichart.extensions.builders.SciChartBuilder;
 
 import java.util.Collections;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class TestingActivity extends AppCompatActivity {
 
@@ -30,8 +25,7 @@ public class TestingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.testing);
 
-        // Create a SciChartSurface
-        SciChartSurface surface = new SciChartSurface(this);
+        SciChartSurface surface = findViewById(R.id.chartView);
 
         // Licensing SciChartSurface
         try {
@@ -39,12 +33,6 @@ public class TestingActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        // Get a layout declared in "testing.xml" by id
-        LinearLayout chartLayout = findViewById(R.id.chart_layout);
-
-        // Add the SciChartSurface to the layout
-        chartLayout.addView(surface);
 
         // Initialize the SciChartBuilder
         SciChartBuilder.init(this);
@@ -55,41 +43,12 @@ public class TestingActivity extends AppCompatActivity {
         // Create a numeric X axis
         final IAxis xAxis = sciChartBuilder.newNumericAxis()
                 .withAxisTitle("X Axis Title")
-                .withVisibleRange(-5, 15)
+                .withVisibleRange(0, 10)
                 .build();
 
         // Create a numeric Y axis
         final IAxis yAxis = sciChartBuilder.newNumericAxis()
-                .withAxisTitle("Y Axis Title").withVisibleRange(0, 100).build();
-
-        // Create a TextAnnotation and specify the inscription and position for it
-        TextAnnotation textAnnotation = sciChartBuilder.newTextAnnotation()
-                .withX1(5.0)
-                .withY1(55.0)
-                .withText("Hello World!")
-                .withHorizontalAnchorPoint(HorizontalAnchorPoint.Center)
-                .withVerticalAnchorPoint(VerticalAnchorPoint.Center)
-                .withFontStyle(20, ColorUtil.White)
-                .build();
-
-//        // Create interactivity modifiers
-//        ModifierGroup chartModifiers = sciChartBuilder.newModifierGroup()
-//                .withPinchZoomModifier().withReceiveHandledEvents(true).build()
-//                .withZoomPanModifier().withReceiveHandledEvents(true).build()
-//                .build();
-
-        // Part 04
-        // Add a bunch of interaction modifiers to a ModifierGroup
-        ModifierGroup additionalModifiers = sciChartBuilder.newModifierGroup()
-                .withPinchZoomModifier().build()
-                .withZoomPanModifier().withReceiveHandledEvents(true).build()
-                .withZoomExtentsModifier().withReceiveHandledEvents(true).build()
-                .withXAxisDragModifier().withReceiveHandledEvents(true).withDragMode(AxisDragModifierBase.AxisDragMode.Scale).withClipModex(ClipMode.None).build()
-                .withYAxisDragModifier().withReceiveHandledEvents(true).withDragMode(AxisDragModifierBase.AxisDragMode.Pan).build()
-                .build();
-
-        // Add the modifiers to the SciChartSurface
-        surface.getChartModifiers().add(additionalModifiers);
+                .withAxisTitle("Y Axis Title").withVisibleRange(-1, 1).build();
 
         // Add the Y axis to the YAxes collection of the surface
         Collections.addAll(surface.getYAxes(), yAxis);
@@ -97,71 +56,54 @@ public class TestingActivity extends AppCompatActivity {
         // Add the X axis to the XAxes collection of the surface
         Collections.addAll(surface.getXAxes(), xAxis);
 
-        // Add the annotation to the Annotations collection of the surface
-        Collections.addAll(surface.getAnnotations(), textAnnotation);
+        final XyDataSeries lineData = sciChartBuilder.newXyDataSeries(Integer.class, Double.class).build();
 
-        // Add the interactions to the ChartModifiers collection of the surface
-        // Collections.addAll(surface.getChartModifiers(), chartModifiers);
-
-        // Part 05
-
-        // Create a LegendModifier and configure a chart legend
-        ModifierGroup legendModifier = sciChartBuilder.newModifierGroup()
-                .withLegendModifier()
-                .withOrientation(Orientation.HORIZONTAL)
-                .withPosition(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM, 10)
-                .build()
-                .build();
-
-        // Add the LegendModifier to the SciChartSurface
-        surface.getChartModifiers().add(legendModifier);
-
-        // Create and configure a CursorModifier
-        ModifierGroup cursorModifier = sciChartBuilder.newModifierGroup()
-                .withCursorModifier().withShowTooltip(true).build()
-                .build();
-
-        // Add the CursorModifier to the SciChartSurface
-        surface.getChartModifiers().add(cursorModifier);
-
-        // Part 03
-
-        // Create a couple of DataSeries for numeric (Int, Double) data
-        XyDataSeries lineData = sciChartBuilder.newXyDataSeries(Integer.class, Double.class).build();
-        XyDataSeries scatterData = sciChartBuilder.newXyDataSeries(Integer.class, Double.class).build();
-
-        for (int i = 0; i < 1000; i++)
+        final int dataCount = 22;
+        for (int i = 0; i < dataCount; i++)
         {
-            lineData.append(i, Math.sin(i * 0.1));
-            scatterData.append(i, Math.cos(i * 0.1));
+            lineData.append(i, Math.sin(i * 2 * Math.PI / dataCount));
         }
 
-        // Create and configure a line series
-        final IRenderableSeries lineSeries = sciChartBuilder.newLineSeries()
+        // Set up an update
+        final DoubleValues lineDoubleData = new DoubleValues(dataCount);
+        lineDoubleData.setSize(dataCount);
+
+        TimerTask updateDataTask = new TimerTask() {
+            private double _phaseShift = 0.0;
+            @Override
+            public void run() {
+                UpdateSuspender.using(surface, () -> {
+                    // Fill the DoubleValues collections
+                    for (int i = 0; i < dataCount; i++)
+                    {
+                        lineDoubleData.set(i, Math.sin(i * 2 * Math.PI / dataCount + _phaseShift));
+                    }
+                    // Update DataSeries using bunch update
+                    lineData.updateRangeYAt(0, lineDoubleData);
+                    surface.zoomExtents();
+                });
+                _phaseShift += 0.01;
+            }
+        };
+
+        Timer timer = new Timer();
+        long delay = 0;
+        long interval = 50; // updates every 10 ms
+        timer.schedule(updateDataTask, delay, interval);
+
+        // Create and configure the Column Chart Series
+        final FastColumnRenderableSeries columnSeries = sciChartBuilder.newColumnSeries()
+                .withStrokeStyle(0xA99A8A)
+                .withDataPointWidth(1)
+                .withLinearGradientColors(ColorUtil.LightSteelBlue, ColorUtil.SteelBlue)
                 .withDataSeries(lineData)
-                .withStrokeStyle(ColorUtil.LightBlue, 2f, true)
                 .build();
 
-        // Create an Ellipse PointMarker for the Scatter Series
-        EllipsePointMarker pointMarker = sciChartBuilder
-                .newPointMarker(new EllipsePointMarker())
-                .withFill(ColorUtil.LightBlue)
-                .withStroke(ColorUtil.Green, 2f)
-                .withSize(10)
-                .build();
+        // Add the chart series to the RenderableSeriesCollection of the surface
+        Collections.addAll(surface.getRenderableSeries(), columnSeries);
 
-        // Create and configure a scatter series
-        final IRenderableSeries scatterSeries = sciChartBuilder.newScatterSeries()
-                .withDataSeries(scatterData)
-                .withPointMarker(pointMarker)
-                .build();
-
-        // Add a RenderableSeries onto the SciChartSurface
-        surface.getRenderableSeries().add(scatterSeries);
-        surface.getRenderableSeries().add(lineSeries);
-
+        // Should be called at the end of chart set up
         surface.zoomExtents();
-
 
     }
 
