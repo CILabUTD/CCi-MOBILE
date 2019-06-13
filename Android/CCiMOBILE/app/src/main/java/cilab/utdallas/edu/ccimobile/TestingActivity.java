@@ -108,3 +108,28 @@ public class TestingActivity extends AppCompatActivity {
     }
 
 }
+
+//        TimerTask updateDataTask = new TimerTask() {
+//            //private double _phaseShift = 0.0;
+//            @Override
+//            public void run() {
+//                UpdateSuspender.using(surface, () -> {
+//                    // zero
+//                    for (int i = 0; i < dataCount; i++)
+//                    {
+//                        lineIntegerData.set(i, 0);
+//                    }
+//
+//                    // current values
+//                    for (int i : leftStimuli.Electrodes) {
+//                        lineIntegerData.set(i, leftStimuli.Amplitudes[i]);
+//                    }
+//
+//
+//                    // Update DataSeries using bunch update
+//                    lineData.updateRangeYAt(0, lineIntegerData);
+//                    surface.zoomExtents();
+//                });
+//                //_phaseShift += 0.01;
+//            }
+//        };
