@@ -45,7 +45,18 @@
                                 <PersistentState>
                                   <option name="children">
                                     <map>
-                                      <entry key="foregroundImage">
+                                      <entry key="backgroundImage">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="trimmed" value="true" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
+                                      <entry key="foregroundClipArt">
                                         <value>
                                           <PersistentState>
                                             <option name="values">
@@ -57,13 +68,27 @@
                                           </PersistentState>
                                         </value>
                                       </entry>
+                                      <entry key="foregroundImage">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="color" value="000000" />
+                                                <entry key="scalingPercent" value="84" />
+                                                <entry key="trimmed" value="true" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
                                     </map>
                                   </option>
                                   <option name="values">
                                     <map>
                                       <entry key="backgroundAssetType" value="COLOR" />
-                                      <entry key="backgroundColor" value="ad8fda" />
-                                      <entry key="foregroundImage" value="C:\Users\asb180001\Desktop\g2236.png" />
+                                      <entry key="backgroundColor" value="80e5ff" />
+                                      <entry key="backgroundImage" value="C:\Users\asb180001\Documents\GitHub\CCi-MOBILE\Android\CCiMOBILE\app\src\main\res\drawable\blankbg.xml" />
+                                      <entry key="foregroundImage" value="C:\Users\asb180001\Documents\Research\CCi-Mobile documents\appicon_white2.png" />
                                     </map>
                                   </option>
                                 </PersistentState>

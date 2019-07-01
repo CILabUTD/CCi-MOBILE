@@ -184,7 +184,9 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
 
         // Create a numeric Y axis
         final IAxis yAxis = sciChartBuilder.newNumericAxis()
-                .withAxisTitle("Current").withVisibleRange(0, 350).build();
+                .withAxisTitle("Current")
+                .withVisibleRange(0, 200)
+                .build();
 
         // Add the Y axis to the YAxes collection of the surface
         Collections.addAll(surface.getYAxes(), yAxis);
@@ -197,7 +199,8 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         final int dataCount = 22;
         for (int i = 0; i < dataCount; i++)
         {
-            lineData.append(i+1, 300 * Math.abs(Math.sin(i * 2 * Math.PI / dataCount)));
+//            lineData.append(i+1, 300 * Math.abs(Math.sin(i * 2 * Math.PI / dataCount)));
+            lineData.append(i+1, (double) 200);
         }
 
         // Set up an update
