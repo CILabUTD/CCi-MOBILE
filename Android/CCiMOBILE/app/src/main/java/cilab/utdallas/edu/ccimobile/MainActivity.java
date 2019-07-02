@@ -48,7 +48,6 @@ import com.scichart.charting.visuals.axes.IAxis;
 import com.scichart.charting.visuals.renderableSeries.FastColumnRenderableSeries;
 import com.scichart.core.framework.UpdateSuspender;
 import com.scichart.core.model.DoubleValues;
-import com.scichart.core.model.IntegerValues;
 import com.scichart.drawing.utility.ColorUtil;
 import com.scichart.extensions.builders.SciChartBuilder;
 import com.xw.repo.BubbleSeekBar;
@@ -78,6 +77,9 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
     boolean noMAP = true; // No MAP selected yet
     boolean errorMAP = false;
     int disAlpha = 38; // opacity at 38% when item disabled
+
+    Uri myFolder;
+    public int[] electrodeStates;
 
     public static D2xxManager ftD2xx = null;
     FT_Device ft_device_0, ft_device_1, ftDev;
@@ -294,6 +296,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         } else {
             // If permission already exists, perform file search
             Log.e("MainActivity.java", "Permission was already granted.");
+            //verifyFolderExists();
             performFileSearch();
         }
     }
@@ -313,8 +316,15 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
     public void performFileSearch() {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            //Uri uri = Uri.parse(Environment.getExternalStorageDirectory() + "/CCi-MOBILE MAPs/");
+//            DocumentFile file = DocumentFile.fromTreeUri(this, myFolder);
+//            intent.putExtra(EXTRA_INITIAL_URI, file.getUri());
+//        }
         intent.setType("text/plain");
         startActivityForResult(intent, READ_REQUEST_CODE);
+        // Environment.getExternalStorageDirectory() +
+        //                    File.separator + "CCi-MOBILE MAPs"
     }
 
     /**
@@ -350,6 +360,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
                 // permission granted
                 Log.e("MainActivity.java", "Permission GRANTED for " +
                         "WRITE_EXTERNAL_STORAGE.");
+                //verifyFolderExists();
                 performFileSearch();
             } else {
                 // permission denied
@@ -569,13 +580,27 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
      * Creates a folder in phone storage if one doesn't exist.
      */
     void verifyFolderExists() {
-        File folder = new File(Environment.getExternalStorageDirectory() +
-                File.separator + "CCiMOBILE MAPs");
-        boolean success = true;
-        if (!folder.exists()) {
-            success = folder.mkdirs();
+        // Check if external storage is available
+        if (isExternalStorageWritable()) {
+            File folder = new File(Environment.getExternalStorageDirectory() +
+                    File.separator + "CCi-MOBILE MAPs");
+            myFolder = Uri.fromFile(folder);
+
+            boolean success = true;
+            if (!folder.exists()) {
+                success = folder.mkdirs();
+                Snackbar.make(findViewById(R.id.rootMain), "Created folder in phone storage: 'CCi-MOBILE MAPs.'", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            }
+            folderExists = success;
+        } else {
+            Snackbar.make(findViewById(R.id.rootMain), "Error: External phone storage unavailable. Cannot read or write to MAPs.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
         }
-        folderExists = success;
+    }
+
+    /* Checks if external storage is available for read and write */
+    public boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        return Environment.MEDIA_MOUNTED.equals(state);
     }
 
     /**
@@ -758,6 +783,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
 
             startMainFunctions();
             noMAP = false;
+
         }
     }
 
@@ -915,11 +941,11 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             rightMAP.getMAPData(MAP_filename, "right");
 
             if (leftMAP.dataMissing && rightMAP.dataMissing)
-                Snackbar.make(findViewById(R.id.rootMain), "Error: MAP could not be opened due to missing data from both left and right ear. Please select a different MAP.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                Snackbar.make(findViewById(R.id.rootMain), "Error: Left and right MAP data missing. Please select a valid MAP.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             else if (leftMAP.dataMissing)
-                Snackbar.make(findViewById(R.id.rootMain), "Error: MAP could not be opened due to missing data from left ear. Please select a different MAP.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                Snackbar.make(findViewById(R.id.rootMain), "Error: Left MAP data missing. Please select a valid MAP.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             else if (rightMAP.dataMissing)
-                Snackbar.make(findViewById(R.id.rootMain), "Error: MAP could not be opened due to missing data from right ear. Please select a different MAP.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                Snackbar.make(findViewById(R.id.rootMain), "Error: Right MAP data missing. Please select a valid MAP.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             if (leftMAP.dataMissing || rightMAP.dataMissing) {
                 errorMAP = true;
                 disableSliders("both");
@@ -931,7 +957,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             }
         }
         else {
-            Snackbar.make(findViewById(R.id.rootMain), "Please select a valid MAP.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            Snackbar.make(findViewById(R.id.rootMain), "Error: Empty MAP. Please select a valid MAP.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
         }
     }
 
@@ -1830,14 +1856,6 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
                     // STEP 2: Process Audio Signal
                     leftStimuli = leftACE.processAudio(leftData);
                     rightStimuli = rightACE.processAudio(rightData);
-
-//                    int [] elecbar = new int [22];
-//                    for (int i : leftStimuli.Electrodes) {
-//                        elecbar[i] = leftStimuli.Amplitudes[i];
-//                    }
-
-                    // put graph update here?????
-
 
                     // STEP 3: Stream Stimuli
                     updateOutputBuffer(); // comment this to pass sine wave

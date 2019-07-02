@@ -291,20 +291,20 @@ public class SettingsActivity extends AppCompatActivity implements ParametersFra
 
         private void updateElectrodeLayout() {
             ArrayList<Electrode> eList = new ArrayList<>();
-            int numBands = 22;
+            //int numBands = 22;
 
             if (leftExists && rightExists) {
-                for (int i = 0; i < numBands; i++) {
+                for (int i = 0; i < leftMAPnbands; i++) {
                     eList.add(new Electrode(leftMAPelectrodes[i],true,leftMAPTHR[i],leftMAPMCL[i],leftMAPgains[i],rightMAPTHR[i],rightMAPMCL[i],rightMAPgains[i]));
                 }
             }
             else if (leftExists) {
-                for (int i = 0; i < numBands; i++) {
+                for (int i = 0; i < leftMAPnbands; i++) {
                     eList.add(new Electrode(leftMAPelectrodes[i],true,leftMAPTHR[i],leftMAPMCL[i],leftMAPgains[i],-1,-1,-1));
                 }
             }
             else if (rightExists) {
-                for (int i = 0; i < numBands; i++) {
+                for (int i = 0; i < rightMAPnbands; i++) {
                     eList.add(new Electrode(rightMAPelectrodes[i],true,-1,-1,-1,rightMAPTHR[i],rightMAPMCL[i],rightMAPgains[i]));
                 }
             }
