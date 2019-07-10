@@ -248,7 +248,6 @@ public class InitializationService extends IntentService{
         }
         //global_context = this;
         //verifyStoragePermissions(this);
-        //  midToast("instance:" + t, Toast.LENGTH_SHORT);
         /*try {
             textOut("BOARD IS READY NOW");
         } catch (IOException e) {

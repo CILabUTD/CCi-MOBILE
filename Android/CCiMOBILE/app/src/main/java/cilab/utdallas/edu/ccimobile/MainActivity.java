@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -18,35 +17,39 @@ import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.OpenableColumns;
-import androidx.annotation.NonNull;
-
-import com.google.android.material.color.MaterialColors;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.JsonWriter;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.ftdi.j2xx.D2xxManager;
 import com.ftdi.j2xx.FT_Device;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
+import com.scichart.charting.model.dataSeries.XyDataSeries;
+import com.scichart.charting.visuals.SciChartSurface;
+import com.scichart.charting.visuals.axes.IAxis;
+import com.scichart.charting.visuals.renderableSeries.FastColumnRenderableSeries;
+import com.scichart.core.framework.UpdateSuspender;
+import com.scichart.core.model.DoubleValues;
+import com.scichart.drawing.utility.ColorUtil;
+import com.scichart.extensions.builders.SciChartBuilder;
 import com.xw.repo.BubbleSeekBar;
 
 import java.io.File;
@@ -58,9 +61,12 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Queue;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * The MainActivity class manages the home activity of the application
@@ -71,6 +77,9 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
     boolean noMAP = true; // No MAP selected yet
     boolean errorMAP = false;
     int disAlpha = 38; // opacity at 38% when item disabled
+
+    Uri myFolder;
+    public int[] electrodeStates;
 
     public static D2xxManager ftD2xx = null;
     FT_Device ft_device_0, ft_device_1, ftDev;
@@ -94,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
     final byte XOFF = 0x13;    // Pause transmission //
 
     private boolean start = false;
-    short sine_stim[], sin_token[], null_token[], sine_token[];
+    short[] sine_stim, sin_token, null_token, sine_token;
 
     public MAP leftMAP, rightMAP;
     private ACE leftACE, rightACE;
@@ -153,6 +162,95 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         rightSensitivity.setText(R.string.textRightSens);
         rightGain.setText(R.string.textRightGain);
 
+        // chart
+        SciChartSurface surface = findViewById(R.id.chartSurface);
+
+        surface.setTheme(R.style.SciChart_Bright_Spark);
+
+        // Licensing SciChartSurface
+        try {
+            SciChartSurface.setRuntimeLicenseKeyFromResource(this, "app\\src\\main\\res\\raw\\license.xml");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Initialize the SciChartBuilder
+        SciChartBuilder.init(this);
+
+        // Obtain the SciChartBuilder instance
+        final SciChartBuilder sciChartBuilder = SciChartBuilder.instance();
+
+        // Create a numeric X axis
+        final IAxis xAxis = sciChartBuilder.newNumericAxis()
+                .withAxisTitle("Channel")
+                .withVisibleRange(1, 22)
+                .build();
+
+        // Create a numeric Y axis
+        final IAxis yAxis = sciChartBuilder.newNumericAxis() // 250 max
+                .withAxisTitle("Clinical Level")
+                .withVisibleRange(0, 250)
+                .build();
+
+        // Add the Y axis to the YAxes collection of the surface
+        Collections.addAll(surface.getYAxes(), yAxis);
+
+        // Add the X axis to the XAxes collection of the surface
+        Collections.addAll(surface.getXAxes(), xAxis);
+
+        final XyDataSeries lineData = sciChartBuilder.newXyDataSeries(Integer.class, Double.class).build();
+        final int dataCount = 22;
+
+        // initialize with max values
+        for (int i = 0; i < dataCount; i++)
+        {
+            lineData.append(i+1, (double) 250);
+        }
+
+        // Set up an update
+        final DoubleValues lineDoubleData = new DoubleValues(dataCount);
+        lineDoubleData.setSize(dataCount);
+
+        TimerTask updateDataTask = new TimerTask() {
+            @Override
+            public void run() {
+                UpdateSuspender.using(surface, () -> {
+                    // Clear data
+                    for (int i = 0; i < dataCount; i++) {
+                        lineDoubleData.set(i, 0);
+                    }
+
+                    // Put in active electrodes & current values (convert to channels) for first nMaxima
+                    for (int i = 0; i < leftMAP.nMaxima; i++) {
+                        lineDoubleData.set(dataCount-leftStimuli.Electrodes[i], leftStimuli.Amplitudes[i]);
+                    }
+
+                    // Update DataSeries using bunch update
+                    lineData.updateRangeYAt(0, lineDoubleData);
+                    //surface.zoomExtents();
+                });
+            }
+        };
+
+        Timer timer = new Timer();
+        long delay = 0;
+        long interval = 50; // updates every 10 ms; 50
+        timer.schedule(updateDataTask, delay, interval);
+
+        // Create and configure the Column Chart Series
+        final FastColumnRenderableSeries columnSeries = sciChartBuilder.newColumnSeries()
+                .withStrokeStyle(0xA99A8A)
+                .withDataPointWidth(1)
+                .withLinearGradientColors(ColorUtil.LightSteelBlue, ColorUtil.SteelBlue)
+                .withDataSeries(lineData)
+                .build();
+
+        // Add the chart series to the RenderableSeriesCollection of the surface
+        Collections.addAll(surface.getRenderableSeries(), columnSeries);
+
+        // Should be called at the end of chart set up
+        surface.zoomExtents();
+
     }
 
     /**
@@ -177,11 +275,9 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
                 builder.setMessage("Permission to access device files is required for this app " +
                         "to load your MAP file(s). Please allow the permission.")
                         .setTitle("Permission required");
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        Log.e("MainActivity.java", "Alert dialogue clicked.");
-                        makeRequest();
-                    }
+                builder.setPositiveButton("OK", (dialog, id) -> {
+                    Log.e("MainActivity.java", "Alert dialogue clicked.");
+                    makeRequest();
                 });
                 AlertDialog dialog = builder.create();
                 dialog.show();
@@ -192,6 +288,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         } else {
             // If permission already exists, perform file search
             Log.e("MainActivity.java", "Permission was already granted.");
+            //verifyFolderExists();
             performFileSearch();
         }
     }
@@ -209,37 +306,17 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
      * Opens the file selector
      */
     public void performFileSearch() {
-        Intent intent = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-            intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
-            intent.setType("text/plain");
-            startActivityForResult(intent, READ_REQUEST_CODE);
-
-        } else {
-            //intent = new Intent(Intent.ACTION_GET_CONTENT );
-
-            Uri uri = Uri.fromFile(new File("/storage/emulated/0/Download/SampleMap.txt"));
-            assert uri != null;
-            Log.e("MainActivity.java", "Uri: " + uri.toString());
-
-            String fileName = getFileName(uri);
-            textViewMAP.setText(fileName);
-
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putString("MAPfilename", fileName);
-            editor.apply();
-
-            startMainFunctions();
-            noMAP = false;
-
-        }
-
-        //intent.addCategory(Intent.CATEGORY_OPENABLE);
-        //intent.setType("text/plain");
-        //startActivityForResult(intent, READ_REQUEST_CODE);
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            //Uri uri = Uri.parse(Environment.getExternalStorageDirectory() + "/CCi-MOBILE MAPs/");
+//            DocumentFile file = DocumentFile.fromTreeUri(this, myFolder);
+//            intent.putExtra(EXTRA_INITIAL_URI, file.getUri());
+//        }
+        intent.setType("text/plain");
+        startActivityForResult(intent, READ_REQUEST_CODE);
+        // Environment.getExternalStorageDirectory() +
+        //                    File.separator + "CCi-MOBILE MAPs"
     }
 
     /**
@@ -255,8 +332,6 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             if (!leftMAP.dataMissing && !rightMAP.dataMissing) {
                 updateGUI("both");
             }
-
-
         }
         //verifyFolderExists();
         //new VeryLongAsyncTask(this).execute();
@@ -269,21 +344,20 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
      * @param grantResults result
      */
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission granted
-                    Log.e("MainActivity.java", "Permission GRANTED for " +
-                            "WRITE_EXTERNAL_STORAGE.");
-                    performFileSearch();
-                } else {
-                    // permission denied
-                    Log.e("MainActivity.java", "Permission DENIED for " +
-                            "WRITE_EXTERNAL_STORAGE.");
-                }
+        if (requestCode == MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // permission granted
+                Log.e("MainActivity.java", "Permission GRANTED for " +
+                        "WRITE_EXTERNAL_STORAGE.");
+                //verifyFolderExists();
+                performFileSearch();
+            } else {
+                // permission denied
+                Log.e("MainActivity.java", "Permission DENIED for " +
+                        "WRITE_EXTERNAL_STORAGE.");
             }
         }
     }
@@ -295,12 +369,10 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
      */
     public String getFileName(Uri uri) {
         String result = null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            if (Objects.equals(uri.getScheme(), "content")) {
-                try (Cursor cursor = getContentResolver().query(uri, null, null, null, null)) {
-                    if (cursor != null && cursor.moveToFirst()) {
-                        result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
-                    }
+        if (Objects.equals(uri.getScheme(), "content")) {
+            try (Cursor cursor = getContentResolver().query(uri, null, null, null, null)) {
+                if (cursor != null && cursor.moveToFirst()) {
+                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
                 }
             }
         }
@@ -348,50 +420,17 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
     public void promptMAPfilename(View view) {
         MaterialAlertDialogBuilder saveAlert = new MaterialAlertDialogBuilder(this);
         saveAlert.setTitle("Save MAP");
-        View viewInflated = LayoutInflater.from(this).inflate(R.layout.text_input_filename, (ViewGroup) findViewById(android.R.id.content), false);
+        View viewInflated = LayoutInflater.from(this).inflate(R.layout.text_input_filename, findViewById(android.R.id.content), false);
         final EditText input = viewInflated.findViewById(R.id.input);
         saveAlert.setView(viewInflated);
 
-        saveAlert.setPositiveButton("Save", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                String saveFilename = input.getText().toString();
-                saveMAP(saveFilename);
-            }
+        saveAlert.setPositiveButton("Save", (dialog, which) -> {
+            dialog.dismiss();
+            String saveFilename = input.getText().toString();
+            saveMAP(saveFilename);
         });
-        saveAlert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
+        saveAlert.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
         saveAlert.show();
-
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setTitle("Save MAP");
-//
-//        View viewInflated = LayoutInflater.from(this).inflate(R.layout.text_input_filename, (ViewGroup) findViewById(android.R.id.content), false);
-//        final EditText input = viewInflated.findViewById(R.id.input);
-//        builder.setView(viewInflated);
-//
-//        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialogInterface, int i) {
-//                dialogInterface.dismiss();
-//                String saveFilename = input.getText().toString();
-//                saveMAP(saveFilename);
-//            }
-//        });
-//        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialogInterface, int i) {
-//                dialogInterface.cancel();
-//            }
-//        });
-//
-//        builder.show();
-
     }
 
     /**
@@ -533,13 +572,27 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
      * Creates a folder in phone storage if one doesn't exist.
      */
     void verifyFolderExists() {
-        File folder = new File(Environment.getExternalStorageDirectory() +
-                File.separator + "CCiMOBILE MAPs");
-        boolean success = true;
-        if (!folder.exists()) {
-            success = folder.mkdirs();
+        // Check if external storage is available
+        if (isExternalStorageWritable()) {
+            File folder = new File(Environment.getExternalStorageDirectory() +
+                    File.separator + "CCi-MOBILE MAPs");
+            myFolder = Uri.fromFile(folder);
+
+            boolean success = true;
+            if (!folder.exists()) {
+                success = folder.mkdirs();
+                Snackbar.make(findViewById(R.id.rootMain), "Created folder in phone storage: 'CCi-MOBILE MAPs.'", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            }
+            folderExists = success;
+        } else {
+            Snackbar.make(findViewById(R.id.rootMain), "Error: External phone storage unavailable. Cannot read or write to MAPs.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
         }
-        folderExists = success;
+    }
+
+    /* Checks if external storage is available for read and write */
+    public boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        return Environment.MEDIA_MOUNTED.equals(state);
     }
 
     /**
@@ -722,6 +775,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
 
             startMainFunctions();
             noMAP = false;
+
         }
     }
 
@@ -879,11 +933,11 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             rightMAP.getMAPData(MAP_filename, "right");
 
             if (leftMAP.dataMissing && rightMAP.dataMissing)
-                Snackbar.make(findViewById(R.id.rootMain), "Error: MAP could not be opened due to missing data from both left and right ear. Please select a different MAP.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                Snackbar.make(findViewById(R.id.rootMain), "Error: Left and right MAP data missing. Please select a valid MAP.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             else if (leftMAP.dataMissing)
-                Snackbar.make(findViewById(R.id.rootMain), "Error: MAP could not be opened due to missing data from left ear. Please select a different MAP.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                Snackbar.make(findViewById(R.id.rootMain), "Error: Left MAP data missing. Please select a valid MAP.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             else if (rightMAP.dataMissing)
-                Snackbar.make(findViewById(R.id.rootMain), "Error: MAP could not be opened due to missing data from right ear. Please select a different MAP.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                Snackbar.make(findViewById(R.id.rootMain), "Error: Right MAP data missing. Please select a valid MAP.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             if (leftMAP.dataMissing || rightMAP.dataMissing) {
                 errorMAP = true;
                 disableSliders("both");
@@ -895,7 +949,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             }
         }
         else {
-            Snackbar.make(findViewById(R.id.rootMain), "Please select a valid MAP.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            Snackbar.make(findViewById(R.id.rootMain), "Error: Empty MAP. Please select a valid MAP.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
         }
     }
 
@@ -1349,10 +1403,8 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             ftDev.resetDevice();
             ftDev.clrRts();
             setConfig(baudRate, dataBit, stopBit, parity, flowControl);
-            //midToast("config:", Toast.LENGTH_SHORT);
             textOut("config: ");
         } else {
-            //midToast("DevCount<0", Toast.LENGTH_SHORT);
             textOut("DevCount<0");
         }
 
@@ -1440,7 +1492,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         }
 
         if (currentPortIndex == portIndex && ftDev != null && ftDev.isOpen()) {
-            stringport.append(String.valueOf(portIndex));
+            stringport.append(portIndex);
             textOut(stringport.toString());
             return;
         }
@@ -1456,7 +1508,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
 
         if(ftDev == null)
         {
-            stringport.append(String.valueOf(portIndex));
+            stringport.append(portIndex);
             textOut(stringport.toString());
             return;
         }
@@ -1468,7 +1520,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         }
         else
         {
-            stringport.append(String.valueOf(portIndex));
+            stringport.append(portIndex);
             textOut(stringport.toString());
         }
     }
@@ -1563,30 +1615,13 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
     }
 
     /**
-     * Makes toast
-     * @param str s
-     * @param showTime st
-     */
-    void midToast(String str, int showTime) {
-        Toast toast = Toast.makeText(global_context, str, showTime);
-        toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
-
-        TextView v = toast.getView().findViewById(android.R.id.message);
-        v.setTextColor(Color.YELLOW);
-        toast.show();
-    }
-
-    /**
      * Prints text
      * @param s s
      */
     public void textOut(final String s) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                //status.append("\n" + s);
-                //status.setText(String.format("%s%s", getString(R.string.textStatusTextOut), s));
-            }
+        runOnUiThread(() -> {
+            //status.append("\n" + s);
+            //status.setText(String.format("%s%s", getString(R.string.textStatusTextOut), s));
         });
     }
 
@@ -1595,10 +1630,10 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
      * @param outputBuffer ob
      * @param sine_token st
      */
-    private void setOutputBuffer(byte outputBuffer[], short sine_token[] ) {
+    private void setOutputBuffer(byte[] outputBuffer, short[] sine_token) {
 
         short n = 8;
-        short electrode_token[] = new short[8]/*, sine_token[8]*/;
+        short[] electrode_token = new short[8]/*, sine_token[8]*/;
         for (short i = 0; i < n; ++i) {
             electrode_token[i] = (short)(i + 1);
             //sine_token[i] = i + 1;
@@ -1607,8 +1642,8 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         short pw = 25;
 
         short mode = 28;
-        short elecs[] = new short[64];
-        short amps[] = new short[64];
+        short[] elecs = new short[64];
+        short[] amps = new short[64];
         for (int i = 0; i < ppf; ++i) {
             int j = i / n;
             amps[i] = sine_token[j];
@@ -1660,7 +1695,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
      * @param left_map lm
      * @param right_map rm
      */
-    private void setOutputBuffer(byte outputBuffer[], MAP left_map, MAP right_map) {
+    private void setOutputBuffer(byte[] outputBuffer, MAP left_map, MAP right_map) {
 
         short left_pw = (short)left_map.pulseWidth;
         short right_pw = (short)right_map.pulseWidth;

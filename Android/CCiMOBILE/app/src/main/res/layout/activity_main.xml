@@ -21,7 +21,7 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|enterAlways"
@@ -36,29 +36,16 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <!--<TextView-->
-            <!--android:id="@+id/textView214"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginStart="8dp"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--android:gravity="start"-->
-            <!--android:text="@string/textCurrentMAP"-->
-            <!--app:layout_constraintEnd_toStartOf="@+id/textView215"-->
-            <!--app:layout_constraintHorizontal_bias="0.5"-->
-            <!--app:layout_constraintStart_toStartOf="parent"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/textStatus" />-->
-
         <TextView
             android:id="@+id/textView215"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:gravity="end"
             android:text="@string/textMAPSelect"
-            app:layout_constraintTop_toBottomOf="@id/textConnectionStatus"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textConnectionStatus" />
 
 
         <Button
@@ -66,53 +53,54 @@
             style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="64dp"
             android:onClick="selectMAP"
             android:text="@string/manage_map_button"
             app:icon="@drawable/ic_folder_open_black_24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/buttonSaveMAP"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toggleButtonOnOff" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/buttonSaveMAP"
             style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginBottom="64dp"
             android:onClick="promptMAPfilename"
             android:text="@string/textSaveMap"
             app:icon="@drawable/ic_file_download_black_24dp"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/toggleButtonOnOff"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/selectMAPbutton"
-            app:layout_constraintTop_toBottomOf="@+id/toggleButtonOnOff" />
+            app:layout_constraintStart_toEndOf="@+id/selectMAPbutton" />
 
         <ToggleButton
             android:id="@+id/toggleButtonOnOff"
             style="@style/toggleButton"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="32dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginBottom="64dp"
             android:background="@drawable/playpauseicons_bg"
             android:checked="false"
             android:onClick="buttonOnOff"
             android:textOff=""
             android:textOn=""
-            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="h,1:1"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/bubbleRightGain" />
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/buttonSaveMAP" />
 
         <TextView
             android:id="@+id/textStatus"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:gravity="bottom"
             android:includeFontPadding="false"
             android:text="@string/cci_mobile"
@@ -124,11 +112,11 @@
             android:id="@+id/textConnectionStatus"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:textColor="@color/colorPrimary"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="24dp"
             android:gravity="end"
             android:text="@string/not_connected"
+            android:textColor="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="@id/imageStatus"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -152,14 +140,13 @@
             android:text="@string/textLeftSens"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textView215" />
+            app:layout_constraintTop_toBottomOf="@+id/chartSurface" />
 
         <com.xw.repo.BubbleSeekBar
             android:id="@+id/bubbleSeekBarLeftSensitivity"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:progress="0"
             app:bsb_max="10"
@@ -169,6 +156,7 @@
             app:bsb_show_section_text="true"
             app:bsb_show_thumb_text="true"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewLeftSensitivity" />
 
@@ -176,8 +164,6 @@
             android:id="@+id/textViewLeftGain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="10dp"
             android:text="@string/textLeftGain"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -188,7 +174,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:progress="0"
             app:bsb_max="50"
@@ -206,7 +191,6 @@
             android:id="@+id/textViewRightSensitivity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
             android:text="@string/textRightSens"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -217,7 +201,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:progress="0"
             app:bsb_max="10"
@@ -235,19 +218,16 @@
             android:id="@+id/textViewRightGain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="10dp"
             android:text="@string/textRightGain"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/bubbleRightSens" />
+            app:layout_constraintTop_toBottomOf="@+id/bubbleRightSens" />
 
         <com.xw.repo.BubbleSeekBar
             android:id="@+id/bubbleRightGain"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:progress="0"
             app:bsb_max="50"
@@ -259,6 +239,19 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewRightGain" />
+
+        <view
+            android:id="@+id/chartSurface"
+            class="com.scichart.charting.visuals.SciChartSurface"
+            android:layout_width="0dp"
+            android:layout_height="216dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView215" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

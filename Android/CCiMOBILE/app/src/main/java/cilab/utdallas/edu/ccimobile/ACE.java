@@ -79,7 +79,9 @@ public class ACE {
     public Stimuli processAudio(double [] inputData)
     {
         Stimuli stimuli = new Stimuli();
-        int j = 0; int indx =0; int offset = 0;
+        int j = 0;
+        int indx = 0;
+        int offset = 0;
 
         stimuli.Amplitudes = new int[map.pulsesPerFrame];
         stimuli.Electrodes = new int[map.pulsesPerFrame];
@@ -92,13 +94,13 @@ public class ACE {
             inputBuffer[i] = inputData[i-sizeOfBufferHistory];
         }
 
-        for (int subframe = 0; subframe < map.pulsesPerFramePerChannel; subframe++)
-        {
+        for (int subframe = 0; subframe < map.pulsesPerFramePerChannel; subframe++) {
             workingData = new double[BLOCK_SIZE];
 
             j = 0;
-            for(int i = offset; i < BLOCK_SIZE + offset; i++) {
-                workingData[j++] = inputBuffer[i]; }
+            for (int i = offset; i < BLOCK_SIZE + offset; i++) {
+                workingData[j++] = inputBuffer[i];
+            }
 
             applyWindow(); // Apply Window
             fft();
@@ -110,9 +112,18 @@ public class ACE {
             applyPatientMap();
             stimulationOrder();
 
+            // do on/off electrode stuff here?
             for (int i = 0; i < map.nMaxima; i++) {
                 stimuli.Amplitudes[indx] = current_levels[i];
                 stimuli.Electrodes[indx] = electrode_numbers[i];
+
+//                if (stimuli.Electrodes[indx] == 10) {
+//                    stimuli.Amplitudes[indx] = current_levels[i];
+//                } else {
+//                    stimuli.Amplitudes[indx] = 0;
+//                }
+                // stimuli.Electrodes[indx] = electrode_numbers[i];
+
                 indx=indx+1;
             }
             offset+= blockShift;
@@ -236,19 +247,20 @@ public class ACE {
     //converts magnitudes to current levels
     public void applyPatientMap()
     {
-        double workingVal; int index;
-        //Convert magnitudes to current levels i.e. apply patient map
-        for(int j = 0; j < map.nMaxima; j++) {
-            if(magnitudes[j] != 0) {
+        double workingVal;
+        int index;
+        // Convert magnitudes to current levels i.e. apply patient map
+        for (int j = 0; j < map.nMaxima; j++) {
+            if (magnitudes[j] != 0) {
                 //index = electrodeBands[channelIndex[j]]-1; //channelIndex[j];
                 index = channelIndex[j]; //channelIndex[j];
                 workingVal = ranges[index] * magnitudes[j] * volumeLevel;
                 magnitudes[j] = map.THR[index] + workingVal;  // + (int)voltage_magnitudes;
-                if(magnitudes[j] < map.THR[index]) //zero out signal less than THR
+                if (magnitudes[j] < map.THR[index]) //zero out signal less than THR
                     magnitudes[j] = 0;
-                if(magnitudes[j] > map.MCL[index])
+                if (magnitudes[j] > map.MCL[index])
                     magnitudes[j] = map.MCL[index];
-                if(magnitudes[j] < 0)
+                if (magnitudes[j] < 0)
                     magnitudes[j] = 0; //from original code: this is so that it does not wrap around to give negative values
             }
         }
@@ -364,7 +376,7 @@ public class ACE {
     }
 
     //This is the nMaximaL sorting stuff
-    public void shell_sort(int channelMagnitudes[], int channelIndex[], int number_of_bands)
+    public void shell_sort(int[] channelMagnitudes, int[] channelIndex, int number_of_bands)
     {
         int i,
                 j,
@@ -396,7 +408,7 @@ public class ACE {
     }
 
     //This is the nMaximaL sorting stuff
-    public void shell_sort(double channelMagnitudes[], int channelIndex[], int number_of_bands)
+    public void shell_sort(double[] channelMagnitudes, int[] channelIndex, int number_of_bands)
     {
         int     i,
                 j,

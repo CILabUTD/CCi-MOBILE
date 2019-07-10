@@ -81,16 +81,13 @@ public class SettingsActivity extends AppCompatActivity implements ParametersFra
 
         fab = findViewById(R.id.fab);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ParametersFrag fragmentObj = (ParametersFrag) mSectionsPagerAdapter.instantiateItem(mViewPager, 0);
-                boolean problems = fragmentObj.updateMAPButton();
-                if (!problems)
-                    Snackbar.make(findViewById(R.id.rootSettings), "MAP updated successfully.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                sendIntentBack(fragmentObj);
+        fab.setOnClickListener(view -> {
+            ParametersFrag fragmentObj = (ParametersFrag) mSectionsPagerAdapter.instantiateItem(mViewPager, 0);
+            boolean problems = fragmentObj.updateMAPButton();
+            if (!problems)
+                Snackbar.make(findViewById(R.id.rootSettings), "MAP updated successfully.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            sendIntentBack(fragmentObj);
 
-            }
         });
 
 
@@ -294,20 +291,20 @@ public class SettingsActivity extends AppCompatActivity implements ParametersFra
 
         private void updateElectrodeLayout() {
             ArrayList<Electrode> eList = new ArrayList<>();
-            int numBands = 22;
+            //int numBands = 22;
 
             if (leftExists && rightExists) {
-                for (int i = 0; i < numBands; i++) {
+                for (int i = 0; i < leftMAPnbands; i++) {
                     eList.add(new Electrode(leftMAPelectrodes[i],true,leftMAPTHR[i],leftMAPMCL[i],leftMAPgains[i],rightMAPTHR[i],rightMAPMCL[i],rightMAPgains[i]));
                 }
             }
             else if (leftExists) {
-                for (int i = 0; i < numBands; i++) {
+                for (int i = 0; i < leftMAPnbands; i++) {
                     eList.add(new Electrode(leftMAPelectrodes[i],true,leftMAPTHR[i],leftMAPMCL[i],leftMAPgains[i],-1,-1,-1));
                 }
             }
             else if (rightExists) {
-                for (int i = 0; i < numBands; i++) {
+                for (int i = 0; i < rightMAPnbands; i++) {
                     eList.add(new Electrode(rightMAPelectrodes[i],true,-1,-1,-1,rightMAPTHR[i],rightMAPMCL[i],rightMAPgains[i]));
                 }
             }

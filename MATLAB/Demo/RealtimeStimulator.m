@@ -413,14 +413,20 @@ end
 handles.stop = 0;
 guidata(hObject, handles);
 hAx = handles.axes2;
-maxA = 255;  minA = 0;
+maxA = 255;
+minA = 0;
 xlabel('Electrodes');
 elecbar = zeros(1,22);
-xlhand = get(hAx,'xlabel'); set(xlhand,'fontsize',5);
+xlhand = get(hAx,'xlabel');
+set(xlhand,'fontsize',5);
 
-hAy = handles.axes3; axes(handles.axes3);
-maxA2 = 0.2;  minA2 = -0.2;
-index = 1; sigplot = zeros(1,16000); nSamples = numel(sigplot); % round(fs*timeBase);
+hAy = handles.axes3;
+axes(handles.axes3);
+maxA2 = 0.2;
+minA2 = -0.2;
+index = 1;
+sigplot = zeros(1,16000);
+nSamples = numel(sigplot); % round(fs*timeBase);
 hLine = plot(hAy,(1:nSamples)/16000,sigplot(:,index:index+nSamples-1));
 xlabel('time');
 ylim([minA2 maxA2]);
@@ -455,13 +461,16 @@ while handles.stop == 0 % use while else timing won't be right
         
         axes(handles.axes2);
         elecbar = zeros(1,22);
-        cc = stimuli.left.current_levels(1:8); ee = stimuli.left.electrodes(1:8);
+        cc = stimuli.left.current_levels(1:8);
+        ee = stimuli.left.electrodes(1:8);
         elecbar(ee) = cc;
         bgraph = bar(elecbar(22:-1:1));
         set(bgraph,'FaceColor', [0.4 0 0.4]);
         ylim([minA maxA]); xlim([1 22]);
-        xlhand = get(hAx,'xlabel'); set(xlhand,'fontsize',1);
-        hAx.XTick=1:1:22; hAx.XTickLabel =(22:-1:1);
+        xlhand = get(hAx,'xlabel');
+        set(xlhand,'fontsize',1);
+        hAx.XTick=1:1:22;
+        hAx.XTickLabel =(22:-1:1);
         set(hAx,'Color',[0.1 0 0.1]);
         
         drawnow;

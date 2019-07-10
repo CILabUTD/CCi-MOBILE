@@ -1,158 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    android:id="@+id/electrodeSettings"
-    tools:context="cilab.utdallas.edu.ccimobile.SettingsActivity"
-    tools:layout_editor_absoluteX="8dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.constraintlayout.widget.ConstraintLayout
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+xmlns:tools="http://schemas.android.com/tools"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintTop_toTopOf="parent"
+android:id="@+id/testingLayout"
+tools:context="cilab.utdallas.edu.ccimobile.TestingActivity"
+tools:layout_editor_absoluteX="8dp"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_weight="1"
+        android:text="Hello World!"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/topLeft"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/left"
-            android:textAllCaps="true"
-            android:textStyle="bold"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintStart_toStartOf="@+id/THR1"
-            app:layout_constraintTop_toTopOf="parent" />
+    <view
+        android:id="@+id/chartView"
+        class="com.scichart.charting.visuals.SciChartSurface"
+        android:layout_width="0dp"
+        android:layout_height="128dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_weight="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-        <TextView
-            android:id="@+id/topRight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/right"
-            android:textAllCaps="true"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/THR2"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/electrodeNum"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/electrode"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/onOff"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_weight="1.75"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/topLeft" />
-
-        <TextView
-            android:id="@+id/onOff"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:text="@string/on_off"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/electrodeNum"
-            app:layout_constraintEnd_toStartOf="@+id/THR1"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_weight="1.25"
-            app:layout_constraintStart_toEndOf="@+id/electrodeNum" />
-
-        <TextView
-            android:id="@+id/THR1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/THRstring"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/electrodeNum"
-            app:layout_constraintEnd_toStartOf="@+id/MCL1"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@+id/onOff"
-            tools:layout_editor_absoluteY="240dp" />
-
-        <TextView
-            android:id="@+id/MCL1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/MCLstring"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/electrodeNum"
-            app:layout_constraintEnd_toStartOf="@+id/Gain1"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@+id/THR1"
-            tools:layout_editor_absoluteY="240dp" />
-
-        <TextView
-            android:id="@+id/Gain1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/gainString"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/electrodeNum"
-            app:layout_constraintEnd_toStartOf="@+id/THR2"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@+id/MCL1"
-            tools:layout_editor_absoluteY="240dp" />
-
-        <TextView
-            android:id="@+id/THR2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/THRstring"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/electrodeNum"
-            app:layout_constraintEnd_toStartOf="@+id/MCL2"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@+id/Gain1"
-            tools:layout_editor_absoluteY="240dp" />
-
-        <TextView
-            android:id="@+id/MCL2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/MCLstring"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/electrodeNum"
-            app:layout_constraintEnd_toStartOf="@+id/Gain2"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@+id/THR2"
-            tools:layout_editor_absoluteY="240dp" />
-
-        <TextView
-            android:id="@+id/Gain2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/gainString"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/electrodeNum"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@+id/MCL2"
-            tools:layout_editor_absoluteY="240dp" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/myRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintTop_toBottomOf="@id/electrodeNum"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toStartOf="parent"
-            />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

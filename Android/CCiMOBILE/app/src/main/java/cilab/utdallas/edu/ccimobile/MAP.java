@@ -218,25 +218,19 @@ class MAP {
 
     private void generateStimulationModeCode() {
         if (implantGeneration.equals("CIC4")) {
-            switch (stimulationMode) {
-                case "MP1+2":
-                    stimulationModeCode = 28;
-                    break;
+            if ("MP1+2".equals(stimulationMode)) {
+                stimulationModeCode = 28;
                 //add other codes for other stimulation modes here
-                default:
-                    stimulationModeCode = 28;
-                    break;
+            } else {
+                stimulationModeCode = 28;
             }
         }
         if (implantGeneration.equals("CIC3")) {
-            switch (stimulationMode) {
-                case "MP1+2":
-                    stimulationModeCode = 30;
-                    break;
+            if ("MP1+2".equals(stimulationMode)) {
+                stimulationModeCode = 30;
                 //add other codes for other stimulation modes here
-                default:
-                    stimulationModeCode = 30;
-                    break;
+            } else {
+                stimulationModeCode = 30;
             }
         }
     }
