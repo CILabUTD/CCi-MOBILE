@@ -114,16 +114,16 @@ public class ACE {
 
             // do on/off electrode stuff here?
             for (int i = 0; i < map.nMaxima; i++) {
-
+                stimuli.Amplitudes[indx] = current_levels[i];
                 stimuli.Electrodes[indx] = electrode_numbers[i];
 
-//                if (stimuli.Electrodes[indx] == 3) {
+//                if (stimuli.Electrodes[indx] == 10) {
 //                    stimuli.Amplitudes[indx] = current_levels[i];
 //                } else {
 //                    stimuli.Amplitudes[indx] = 0;
 //                }
                 // stimuli.Electrodes[indx] = electrode_numbers[i];
-                stimuli.Amplitudes[indx] = current_levels[i];
+
                 indx=indx+1;
             }
             offset+= blockShift;

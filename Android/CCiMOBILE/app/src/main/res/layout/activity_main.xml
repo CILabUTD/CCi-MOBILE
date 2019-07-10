@@ -21,7 +21,7 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|enterAlways"
@@ -136,18 +136,17 @@
             android:id="@+id/textViewLeftSensitivity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="32dp"
             android:text="@string/textLeftSens"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textView215" />
+            app:layout_constraintTop_toBottomOf="@+id/chartSurface" />
 
         <com.xw.repo.BubbleSeekBar
             android:id="@+id/bubbleSeekBarLeftSensitivity"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:progress="0"
             app:bsb_max="10"
@@ -157,6 +156,7 @@
             app:bsb_show_section_text="true"
             app:bsb_show_thumb_text="true"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewLeftSensitivity" />
 
@@ -164,7 +164,6 @@
             android:id="@+id/textViewLeftGain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:text="@string/textLeftGain"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -175,7 +174,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:progress="0"
             app:bsb_max="50"
@@ -193,7 +191,6 @@
             android:id="@+id/textViewRightSensitivity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:text="@string/textRightSens"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -204,7 +201,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:progress="0"
             app:bsb_max="10"
@@ -222,18 +218,16 @@
             android:id="@+id/textViewRightGain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:text="@string/textRightGain"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/bubbleRightSens" />
+            app:layout_constraintTop_toBottomOf="@+id/bubbleRightSens" />
 
         <com.xw.repo.BubbleSeekBar
             android:id="@+id/bubbleRightGain"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:progress="0"
             app:bsb_max="50"
@@ -250,17 +244,14 @@
             android:id="@+id/chartSurface"
             class="com.scichart.charting.visuals.SciChartSurface"
             android:layout_width="0dp"
-            android:layout_height="128dp"
+            android:layout_height="216dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
             android:layout_weight="1"
-            app:layout_constraintBottom_toTopOf="@+id/buttonSaveMAP"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/bubbleRightGain" />
+            app:layout_constraintTop_toBottomOf="@+id/textView215" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

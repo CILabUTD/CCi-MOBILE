@@ -165,9 +165,11 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         // chart
         SciChartSurface surface = findViewById(R.id.chartSurface);
 
+        surface.setTheme(R.style.SciChart_Bright_Spark);
+
         // Licensing SciChartSurface
         try {
-            surface.setRuntimeLicenseKeyFromResource(this, "app\\src\\main\\res\\raw\\license.xml");
+            SciChartSurface.setRuntimeLicenseKeyFromResource(this, "app\\src\\main\\res\\raw\\license.xml");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -180,14 +182,14 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
 
         // Create a numeric X axis
         final IAxis xAxis = sciChartBuilder.newNumericAxis()
-                .withAxisTitle("Electrode")
+                .withAxisTitle("Channel")
                 .withVisibleRange(1, 22)
                 .build();
 
         // Create a numeric Y axis
-        final IAxis yAxis = sciChartBuilder.newNumericAxis()
-                .withAxisTitle("Current")
-                .withVisibleRange(0, 200)
+        final IAxis yAxis = sciChartBuilder.newNumericAxis() // 250 max
+                .withAxisTitle("Clinical Level")
+                .withVisibleRange(0, 250)
                 .build();
 
         // Add the Y axis to the YAxes collection of the surface
@@ -197,52 +199,42 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         Collections.addAll(surface.getXAxes(), xAxis);
 
         final XyDataSeries lineData = sciChartBuilder.newXyDataSeries(Integer.class, Double.class).build();
-
         final int dataCount = 22;
+
+        // initialize with max values
         for (int i = 0; i < dataCount; i++)
         {
-//            lineData.append(i+1, 300 * Math.abs(Math.sin(i * 2 * Math.PI / dataCount)));
-            lineData.append(i+1, (double) 200);
+            lineData.append(i+1, (double) 250);
         }
 
         // Set up an update
         final DoubleValues lineDoubleData = new DoubleValues(dataCount);
         lineDoubleData.setSize(dataCount);
 
-        int [] elecbar = new int [22];
-
         TimerTask updateDataTask = new TimerTask() {
-            private double _phaseShift = 0.0;
             @Override
             public void run() {
                 UpdateSuspender.using(surface, () -> {
-                    // Fill the DoubleValues collections
-                    Arrays.fill(elecbar, 0);
-                    for (int i : leftStimuli.Electrodes) {
-                        elecbar[i-1] = leftStimuli.Amplitudes[i-1];
-                    }
-
+                    // Clear data
                     for (int i = 0; i < dataCount; i++) {
-                        lineDoubleData.set(i, elecbar[i]);
+                        lineDoubleData.set(i, 0);
                     }
 
-//                    for (int i = 0; i < leftStimuli.Electrodes.length; i++)
-//                    {
-//                        lineDoubleData.set(leftStimuli.Electrodes[i], leftStimuli.Amplitudes[i]);
-//                        lineDoubleData.set(i, elecbar[i]);
-//                    }
+                    // Put in active electrodes & current values (convert to channels) for first nMaxima
+                    for (int i = 0; i < leftMAP.nMaxima; i++) {
+                        lineDoubleData.set(dataCount-leftStimuli.Electrodes[i], leftStimuli.Amplitudes[i]);
+                    }
 
                     // Update DataSeries using bunch update
                     lineData.updateRangeYAt(0, lineDoubleData);
                     //surface.zoomExtents();
                 });
-                _phaseShift += 0.01;
             }
         };
 
         Timer timer = new Timer();
         long delay = 0;
-        long interval = 50; // updates every 10 ms
+        long interval = 50; // updates every 10 ms; 50
         timer.schedule(updateDataTask, delay, interval);
 
         // Create and configure the Column Chart Series
