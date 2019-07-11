@@ -79,6 +79,7 @@ public class ElectrodeAdapter extends RecyclerView.Adapter<ElectrodeAdapter.View
 
         holder.elecNum.setText(String.valueOf(electrode_num));
         holder.onOffBox.setChecked(on_off);
+        holder.onOffBox.setEnabled(false);
 
         if (THR1 != -1) { // only update text if electrode exists
             holder.T1.setText(String.valueOf(THR1));
