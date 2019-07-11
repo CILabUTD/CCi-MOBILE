@@ -9,6 +9,10 @@
         android:id="@+id/menuEnvironments"
         android:title="@string/environments" />
     <item
-        android:id="@+id/menuTesting"
-        android:title="Testing"/>
+        android:id="@+id/moreInfo"
+        android:title="How to Use"
+        />
+    <!--<item-->
+        <!--android:id="@+id/menuTesting"-->
+        <!--android:title="Testing"/>-->
 </menu>

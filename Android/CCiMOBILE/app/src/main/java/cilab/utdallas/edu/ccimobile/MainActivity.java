@@ -234,7 +234,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
 
         Timer timer = new Timer();
         long delay = 0;
-        long interval = 50; // updates every 10 ms; 50
+        long interval = 50; // updates every X ms
         timer.schedule(updateDataTask, delay, interval);
 
         // Create and configure the Column Chart Series
@@ -611,10 +611,14 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
                 myIntent = new Intent(MainActivity.this, EnvironmentsActivity.class);
                 MainActivity.this.startActivityForResult(myIntent, 1);
                 return true;
-            case R.id.menuTesting:
+            case R.id.moreInfo:
                 myIntent = new Intent(MainActivity.this, TestingActivity.class);
                 MainActivity.this.startActivityForResult(myIntent, 1);
                 return true;
+//            case R.id.menuTesting:
+//                myIntent = new Intent(MainActivity.this, TestingActivity.class);
+//                MainActivity.this.startActivityForResult(myIntent, 1);
+//                return true;
             default:
                 // The user's action was not recognized.
                 // Invoke the superclass to handle it.

@@ -10,33 +10,92 @@ android:id="@+id/testingLayout"
 tools:context="cilab.utdallas.edu.ccimobile.TestingActivity"
 tools:layout_editor_absoluteX="8dp"
 xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal">
+xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="Welcome to the CCi-MOBILE app! To begin your first use, please follow the steps below."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_weight="1"
-        android:text="Hello World!"
-        android:textAlignment="center"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:text="1. Download a sample patient MAP file by clicking Download Sample below. This will download a sample .txt file to your device."
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
-    <view
-        android:id="@+id/chartView"
-        class="com.scichart.charting.visuals.SciChartSurface"
+    <TextView
+        android:id="@+id/textView20"
         android:layout_width="0dp"
-        android:layout_height="128dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:text="2. Go back to this app's home page and plug in the CCi-MOBILE board. Wait a few seconds for the startup process to complete."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonSample" />
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:text="3. Click the Select MAP button, and select the sample .txt file you just downloaded."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView20" />
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_weight="1"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="The app is now ready to stream! Start and stop streaming by using the play/pause button. Electrode activity is displayed in a clinical level vs. channel chart. Quick access parameters (i.e., sensitivity, gain) are available on the home page. All parameters are available for adjustment on the Settings tab. While in the Settings tab, use the update button to confirm your changes. You can save your adjusted patient MAPs by using the Save MAP button. The Environments tab is for demonstrative purposes (add your own code to each environment). From now on, begin using the app by plugging in the CCi-MOBILE board and selecting your patient MAP. You do not need to download the sample map each time. To convert existing MAP files into JSON format, you can write over the sample MAP with an external program (e.g., Notepad), or make the changes by adjusting parameters within the CCi-MOBILE app and save the resulting file with the Save MAP button."
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/textView18" />
+
+    <Button
+        android:id="@+id/buttonSample"
+        android:onClick="downloadSampleMAP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:text="Download Sample"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView" />
+
+    <TextView
+        android:id="@+id/textView21"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="View the open-source code on GitHub (CILabUTD/CCi-MOBILE). For more help, please email us at cochlearimplantlaboratory@gmail.com."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView19" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
