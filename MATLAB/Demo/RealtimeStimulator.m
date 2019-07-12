@@ -22,7 +22,7 @@ function varargout = RealtimeStimulator(varargin)
 
 % Edit the above text to modify the response to help RealtimeStimulator
 
-% Last Modified by GUIDE v2.5 06-Oct-2016 22:51:51
+% Last Modified by GUIDE v2.5 29-May-2019 13:30:54
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -411,7 +411,6 @@ end
 handles.stop = 0; guidata(hObject, handles);
 hAx = handles.axes2;
 maxA = 255;  minA = 0; 
-xlabel('Electrodes'); 
 elecbar = zeros(1,22); 
 xlhand = get(hAx,'xlabel'); set(xlhand,'fontsize',5);
 
@@ -427,19 +426,58 @@ while handles.stop==0 % use while else timing won't be right
     drawnow;     handles = guidata(hObject); p = handles.parameters;
     if Wait(s)>= 512
         AD_data_bytes = Read(s, 512);
-        AD_data=typecast(int8(AD_data_bytes), 'int16');    
+        AD_data=typecast(int8(AD_data_bytes), 'int16');  
+        
+        
         %tic;
         if (p.General.LeftOn == 1)
             audio_left = double(AD_data(1:2:end));          % Type cast to double for processing
             audio_left =  (p.Left.scale_factor).*audio_left; %2.3/32768 at 25 dB gain or 1/32768 at 33dB gain for 1kHz at 65dB SPl to equate to MCL p.sensitivity.
             stimuli.left = ACE_Processing_Realtime(audio_left, bufferHistory_left, p.Left);
+            
+            
+        % REMOVE AFTER DEMO to include the DIET Box
+            a=7;
+            %for (i=1:p.Left.pulses_per_frame)
+            for (i=1:numel(stimuli.left.electrodes))
+                outputBuffer(a) = uint8(stimuli.left.electrodes(i)); a=a+1; %left electrodes
+            end
+            a= 133;
+            %for (i=1:p.Left.pulses_per_frame)
+            for (i=1:numel(stimuli.left.electrodes))
+                outputBuffer(a) = uint8(stimuli.left.current_levels(i)); a=a+1; %left amplitudes
+            end
+            bufferHistory_left = audio_left(p.Left.block_size-p.Left.NHIST+1:end);
+        else
+            %a= 133;
+            outputBuffer(133:248) = uint8(0); %zero out left amplitudes, if not active
         end
+        % REMOVE AFTER DEMO to include the DIET Box                
         
         if (p.General.RightOn == 1)
             audio_right=double(AD_data(2:2:end));
             audio_right = (p.Right.scale_factor).*audio_right;
             stimuli.right = ACE_Processing_Realtime(audio_right, bufferHistory_right, p.Right);
+            
+         % REMOVE AFTER DEMO to include the DIET Box       
+            a=265;
+            %for (i=1:p.Right.pulses_per_frame)
+            for (i=1:numel(stimuli.right.electrodes))
+                outputBuffer(a) =uint8(stimuli.right.electrodes(i)); a=a+1; %right electrodes
+            end
+            a=391;
+            for (i=1:numel(stimuli.right.electrodes))
+                %for (i=1:p.Right.pulses_per_frame)
+                outputBuffer(a) = uint8(stimuli.right.current_levels(i)); a=a+1; %right amplitudes
+            end
+            bufferHistory_right = audio_right(p.Right.block_size-p.Right.NHIST+1:end);
+        else
+            %a=391;
+            outputBuffer(391:506) = uint8(0); %zero out right amplitudes
         end
+        %Write(s, outputBuffer,516); % Write the BTE processed stimuli to the coil
+        % REMOVE AFTER DEMO to include the DIET Box     
+
         
         axes(handles.axes3);
         sigplot(nSamples-127:end) = audio_left;
@@ -447,22 +485,181 @@ while handles.stop==0 % use while else timing won't be right
         %drawnow  %updates the display
         sigplot(1:nSamples-128) = sigplot(129:nSamples);
         set(hAy,'Color',[0.1 0 0.1]);
-                
+        hAy.YColor = [1 1 1];
+        
         axes(handles.axes2);
         elecbar = zeros(1,22);
         cc = stimuli.left.current_levels(1:8); ee = stimuli.left.electrodes(1:8);
         elecbar(ee) = cc;
         bgraph = bar(elecbar(22:-1:1)); 
         set(bgraph,'FaceColor', [0.4 0 0.4]);
-        ylim([minA maxA]); xlim([1 22]); 
-        xlhand = get(hAx,'xlabel'); set(xlhand,'fontsize',1);
-        hAx.XTick=1:1:22; hAx.XTickLabel =(22:-1:1);
+        ylim([minA maxA]); 
+        xlim([1 22]); 
+        xlhand = get(hAx,'xlabel'); 
+        set(xlhand,'fontsize',1);
+        hAx.XTick=1:1:22;
+        hAx.XColor = [1 1 1];
+        hAx.XTickLabel =(22:-1:1);
+        xlabel('Electrodes (low frequency to high frequency)','FontWeight','bold','Color','w');
+        ylabel('Clinical Levels (CU)','FontWeight','bold','Color','w');
         set(hAx,'Color',[0.1 0 0.1]);
+        hAx.YColor = [1 1 1];
         
         drawnow;
         Write(s, dummy_output_buffer,516);
         clear AD_data_bytes; clear AD_data;
     end
-    
+
 end
 delete(s); clear s;
+
+
+
+% --- Executes on button press in checkbox5.
+function checkbox5_Callback(hObject, eventdata, handles)
+% hObject    handle to checkbox5 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of checkbox5
+
+
+% --- Executes on slider movement.
+function slider14_Callback(hObject, eventdata, handles)
+% hObject    handle to slider14 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+
+
+% --- Executes during object creation, after setting all properties.
+function slider14_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to slider14 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% --- Executes on slider movement.
+function slider15_Callback(hObject, eventdata, handles)
+% hObject    handle to slider15 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+
+
+% --- Executes during object creation, after setting all properties.
+function slider15_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to slider15 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% --- Executes on slider movement.
+function slider16_Callback(hObject, eventdata, handles)
+% hObject    handle to slider16 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+
+
+% --- Executes during object creation, after setting all properties.
+function slider16_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to slider16 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% --- Executes on button press in checkbox4.
+function checkbox4_Callback(hObject, eventdata, handles)
+% hObject    handle to checkbox4 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of checkbox4
+
+
+% --- Executes on slider movement.
+function slider11_Callback(hObject, eventdata, handles)
+% hObject    handle to slider11 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+
+
+% --- Executes during object creation, after setting all properties.
+function slider11_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to slider11 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% --- Executes on slider movement.
+function slider12_Callback(hObject, eventdata, handles)
+% hObject    handle to slider12 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+
+
+% --- Executes during object creation, after setting all properties.
+function slider12_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to slider12 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% --- Executes on slider movement.
+function slider13_Callback(hObject, eventdata, handles)
+% hObject    handle to slider13 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+
+
+% --- Executes during object creation, after setting all properties.
+function slider13_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to slider13 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
