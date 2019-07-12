@@ -1,23 +1,8 @@
------- This is the README for CCi-Mobile Version 2.2c -----
+% AudioScope
+% GUI to visualize audio signal from the BTE in realtime
 
-Folder: 'AudioScope'
-These functions are used to display the audio being captured
-from the BTE microphones on the board.
+AudioScope is a simple application to visualize the incoming acoustic signals from the BTEs. It displays the acoustic waveforms in real-time as they are captured.
+Run AudioScope.m, a GUI will appear. On pressing the start button, acoustic signal waveform will appear. This will run in real-time, similar to an oscilloscope. Press the stop button to stop the process.
 
-HOW TO USE AUDIOSCOPE
-  AudioScope is a simple application to visualize the incoming 
-  acoustic signals from the BTEs. It displays the acoustic waveforms
-  in real-time as they are captured. Run AudioScope.m, a GUI will 
-  appear. On pressing the start button, acoustic signal waveform 
-  will appear. This will run in real-time, similar to an 
-  oscilloscope. Press the stop button to stop the process.
 
-   LIST OF ITEMS in 'AudioScope.m'
-   'AudioScope.fig'
-	Description:  To open, edit or view the GUI in MATLAB, execute
-	'guide' in the command line and select the .fig file. This file
-	can be edited, created, changed, and modified to specific
-	needs of various speech and hearing research experiments.
 
-   'AudioScope.m'
-	Description: This function captures and displays the audio.

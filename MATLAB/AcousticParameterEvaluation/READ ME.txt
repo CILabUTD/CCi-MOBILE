@@ -1,0 +1,40 @@
+File- CIAP_2019_AcousticParameterEvaluationDemo.mlapp
+For: Ram
+
+WHAT TO UPDATE
+-To initialize your GUI/app, the names of each (.wav) files for each section (Spech, Music, Noise) values need 
+to be loaded into the following variables		
+
+		1. Set app.SpeechListBox = () 
+		2. app.SpeechListBox.ItemsData
+		3. Set app.MusicListBox = ()
+		4. app.MusicListBox.ItemsData
+		5. Set app.NoiseListBox = ()
+		6. app.NoiseListBox.ItemsData
+
+I have created a callback for all of the elements that need to be updated in the code. Each of the functions 
+has a section to drop in code and to update the value.  
+NOTE: For each function, the variable GUI_Val needs to be updated and assigned back to the app working variable.
+- app.PlayAudioButton - the function is named PlayAudioButtonPushed (line 39)
+- app.ViewElectrodogramButton - the function is named ViewElectrodogramButtonPushed (line 52)
+- app.PerformanceSummaryButton - the function is named PerformanceSummaryButtonPushed (line 65)
+- app.RealizabilityTestButton - the function is named RealizabilityTestButtonPushed (line 78)
+- app.ProcessedParametersButton - the function is named ProcessedParametersButtonPushed (line 91)
+- app.PerformanceSummaryButton_2 - the function is named PerformanceSummaryButton_2Pushed (line 104)
+AGAIN: On all of these callbacks/functions, the variable GUI_Val needs to be updated.
+
+
+Each of these functions/callbacks is structured as follows:
+
+% -------------------------------------------------------- %
+% Insert code when Random Button is Selected
+
+(This is where you would insert your code)
+
+
+% Assign value to 'GUI_Val'
+
+(This is where you assign your value to the variable 'GUI_Val')
+app.RandomButton.Value = GUI_Val;
+
+% -------------------------------------------------------- %

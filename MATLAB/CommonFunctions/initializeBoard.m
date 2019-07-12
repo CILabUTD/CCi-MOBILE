@@ -3,7 +3,7 @@ function boardHandle = initializeBoard(p)
 %   Detailed explanation goes here
 
 
-boardHandle = class_interface(8,5000000);  % 8 is the COM port on my machine - Update this to match the COM port of the interface card on your machine
+boardHandle = class_interface(7,5000000);  % 8 is the COM port on my machine - Update this to match the COM port of the interface card on your machine
 % Go to Device Manager under COM ports and find the port number on your machine. 
 % Successful installation of the board will show two COM port devices.
 % COM port will typically be the lower of the two numbers. 

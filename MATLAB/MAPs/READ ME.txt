@@ -1,12 +1,4 @@
------- This is the README for CCi-Mobile Version 2.2c -----
+% MAPs
 
-Folder: MAPs
-This folder contains sample MAPs. Create new MAP files for 
-your subjects by modifying the parameters. The SampleMap.m
-can be copied and edited for each individual user.
-
-  LIST OF ITEMS in 'MAPs'
-  'SampleMap.m'
-	Description: Signal processing parameters are stored
-	within the MATLAB program.
-
+This folder contains sample MAPs.
+Create new MAP files for your subjects by modifying the parameters.

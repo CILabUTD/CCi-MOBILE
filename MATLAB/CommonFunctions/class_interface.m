@@ -1,7 +1,8 @@
 %CLASS_INTERFACE Example MATLAB class wrapper to an underlying C++ class
 classdef class_interface < handle
     properties (SetAccess = private, Hidden = true)
-        objectHandle; % Handle to the underlying C++ class instance
+        objectHandle; 
+        % Handle to the underlying C++ class instance
     end
     methods
         %% Constructor - Create a new C++ class instance 

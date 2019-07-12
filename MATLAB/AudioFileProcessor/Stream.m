@@ -1,4 +1,4 @@
-function Stream(stimuli)
+function Stream(stimuli,app)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Funtion Stream(signal) reads the stimuli and its parameters from the input
 % structure signal and streams them to the CCIMobile platform
@@ -69,9 +69,20 @@ end
 indL = 0; indR = 0;
 frame_no=1;
 
+% NEW! Juliana Saba, 2019 Edit: Add call to AppDesigner
+% Turn the lamp on
+app.AudioFileProcessor.Visible = 'on';
+app.AudioFileProcessor.Interruptible = 'on';
+app.CCiMOBILECommunicationPanel.Visible = 'on';
+app.StreamingtoCCiMOBILELamp.Interruptible = 'on';
+app.StreamingtoCCiMOBILELamp.Enable = 'on';
+app.StreamingtoCCiMOBILELamp.Color = [0.43,0.70,0.24];
+pause(0.0001)
+
 while frame_no<nframes % use while else timing won't be right
     
     if Wait(s)>= 512
+
         AD_data_bytes = Read(s, 512);
         
         if (isfield(p,'Left') ==1)&&(p.General.LeftOn == 1)
@@ -139,3 +150,13 @@ while frame_no<3 % send at least 2 null frames to clear out memory
     
 end
 delete(s); clear s;
+
+% NEW! Juliana Saba, 2019 Edit: Add call to AppDesigner
+% Turn the lamp off
+app.AudioFileProcessor.Visible = 'on';
+app.AudioFileProcessor.Interruptible = 'on';
+app.CCiMOBILECommunicationPanel.Visible = 'on';
+app.StreamingtoCCiMOBILELamp.Interruptible = 'on';
+app.StreamingtoCCiMOBILELamp.Color = [0.76,0.18,0.18];
+app.StreamingtoCCiMOBILELamp.Enable = 'off';
+pause(0.0001)

@@ -1,40 +1,10 @@
------- This is the README for CCi-Mobile Version 2.2c -----
+% AudioRecorder
+% Records the stereo audio signal from the BTE and stores into wave file
+% 'BTEaudio.wav'
 
-Folder: 'AudioRecorder'
-These functions are used to record audio from the behind-the-ear
-microphones (Cochlear Corp) or any additional microphones attached
-through the audio ports of the board.
+AudioRecorder allows you to record the incoming acoustic signals from the BTEs and stores the stereo acoustic signal in an audio file.
+Run AudioRecorder.m, GUI for Audio Recording will appear.
+Press the start button, to record the acoustic signals from the BTEs bilaterally. Press the stop button to stop recording. An audio (.wav) file will be created with name ‘BTEaudio.wav’ in the directory. Press the play button to play the captured audio from your PC’s speakers. 
 
-HOW TO USE AUDIO RECORDER 
-  AudioRecorder allows you to record the incoming acoustic signals 
-  from the   BTEs and stores the stereo acoustic signal in an audio file.
-  Run AudioRecorder.m, GUI for Audio Recording will appear.
-  Press the start button, to record the acoustic signals from the 
-  BTEs bilaterally. Press the stop button to stop recording. An audio 
-  (.wav) file will be created with name â€˜BTEaudio.wavâ€™ in the directory.
-  Press the play button to play the captured audio from your PCâ€™s 
-  speakers. This application can also be used to check the 
-  integrity of the audio signal as well as timing integrity of 
-  real-time processing.
+This application can also be used to check the integrity of the audio signal as well as timing integrity of real-time processing.
 
-  LIST OF ITEMS in 'AudioRecorder'
-  'AudioRecorder.fig'
-	Description: To open, edit or view the GUI in MATLAB, execute
-	'guide' in the command line and select the .fig file. This file
-	can be edited, created, changed, and modified to specific
-	needs of various speech and hearing research experiments. The
-	default GUI includes a waveform display in real-time, a record,
-	stop, and play button. 
-
-  'AudioRecorder.m'
-	Description: To run the AudioRecord, run this script. This function
-	controls the (.wav) saving format, the time, etc. 
-
-  'BTEaudio.wav'
-	Description: When the AudioRecorder has executed, the recorded
-	sample will be saved in this format with this title. NOTE: this
- 	file will get renamed and rewritten if performing multiple audio
-	recordings.
-
-  'mic.png'
-	Description: Photos generated for the AudioRecorder
