@@ -107,7 +107,7 @@ end
 
 axisHandle = handles.axes4;
 axes(axisHandle)
-matlabImage = imread('interface.jpg');
+matlabImage = imread('header.png');
 imshow(matlabImage, 'XData', [1 1]);
 %image(matlabImage)
 %axis off
