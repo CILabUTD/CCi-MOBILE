@@ -40,7 +40,7 @@
             android:windowSoftInputMode="stateHidden">
         </activity>
         <activity android:name=".EnvironmentsActivity" />
-        <activity android:name=".TestingActivity" />
+        <activity android:name=".HowToUseActivity" />
     </application>
 
 </manifest>

@@ -13,7 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,7 +21,13 @@ import androidx.fragment.app.Fragment;
 
 import java.util.Objects;
 
-public class ParametersFrag extends Fragment {
+import static cilab.utdallas.edu.ccimobile.SharedHelper.getDouble;
+import static cilab.utdallas.edu.ccimobile.SharedHelper.isDoubleInRange;
+import static cilab.utdallas.edu.ccimobile.SharedHelper.isIntInRange;
+import static cilab.utdallas.edu.ccimobile.SharedHelper.isInteger;
+import static cilab.utdallas.edu.ccimobile.SharedHelper.putDouble;
+
+public class ParametersFragment extends Fragment {
     private TextView textViewITL, textViewITR, textViewSFL, textViewSFR, textViewNCL, textViewNCR, textViewFTL, textViewFTR;
     private EditText editTextSRL, editTextSRR, editTextPWL, editTextPWR, editTextSL, editTextSR, editTextGL, editTextGR, editTextQFL, editTextQFR, editTextBLL, editTextBLR, editTextSLL, editTextSLR;
     private Spinner spinnerSPSL, spinnerSPSR, spinnerNML, spinnerNMR, spinnerSML, spinnerSMR, spinnerVL, spinnerVR, spinnerSOL, spinnerSOR, spinnerWL, spinnerWR;
@@ -62,15 +67,15 @@ public class ParametersFrag extends Fragment {
     }
 
 
-    public ParametersFrag() {
+    public ParametersFragment() {
         // required empty constructor
     }
 
     /**
      * Returns a new instance of this fragment.
      */
-    public static ParametersFrag newInstance(int sectionNumber) {
-        ParametersFrag fragment = new ParametersFrag();
+    public static ParametersFragment newInstance(int sectionNumber) {
+        ParametersFragment fragment = new ParametersFragment();
 //        Bundle args = new Bundle();
 //        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
 //        fragment.setArguments(args);
@@ -438,42 +443,42 @@ public class ParametersFrag extends Fragment {
             leftMAPwindow = spinnerWL.getSelectedItem().toString();
 
             // Check if user input is valid integer
-            if (isInteger(editTextSRL.getText().toString()) && isIntInRange(Integer.valueOf(editTextSRL.getText().toString()), max_stimulation_rate, min_stimulation_rate)) {
+            if (isInteger(getView(), editTextSRL.getText().toString()) && isIntInRange(getView(), Integer.valueOf(editTextSRL.getText().toString()), max_stimulation_rate, min_stimulation_rate)) {
                 leftMAPstimulationRate = Integer.valueOf(editTextSRL.getText().toString());
             } else {
                 userProblems = true;
             }
-            if (isInteger(editTextPWL.getText().toString()) && isIntInRange(Integer.valueOf(editTextPWL.getText().toString()), max_pulsewidth, min_pulsewidth)) {
+            if (isInteger(getView(), editTextPWL.getText().toString()) && isIntInRange(getView(), Integer.valueOf(editTextPWL.getText().toString()), max_pulsewidth, min_pulsewidth)) {
                 leftMAPpulseWidth = Integer.valueOf(editTextPWL.getText().toString());
             } else {
                 userProblems = true;
             }
 
-            if (isDoubleInRange(Double.valueOf(editTextSL.getText().toString()), max_sensitivity, min_sensitivity)) {
+            if (isDoubleInRange(getView(), Double.valueOf(editTextSL.getText().toString()), max_sensitivity, min_sensitivity)) {
                 leftMAPsensitivity = Double.valueOf(editTextSL.getText().toString());
             } else {
                 userProblems = true;
             }
 
-            if (isDoubleInRange(Double.valueOf(editTextGL.getText().toString()), max_gain, min_gain)) {
+            if (isDoubleInRange(getView(), Double.valueOf(editTextGL.getText().toString()), max_gain, min_gain)) {
                 leftMAPgain = Double.valueOf(editTextGL.getText().toString());
             } else {
                 userProblems = true;
             }
 
-            if (isDoubleInRange(Double.valueOf(editTextQFL.getText().toString()), max_Qfactor, min_Qfactor)) {
+            if (isDoubleInRange(getView(), Double.valueOf(editTextQFL.getText().toString()), max_Qfactor, min_Qfactor)) {
                 leftMAPQfactor = Double.valueOf(editTextQFL.getText().toString());
             } else {
                 userProblems = true;
             }
 
-            if (isDoubleInRange(Double.valueOf(editTextBLL.getText().toString()), max_baselevel, min_baselevel)) {
+            if (isDoubleInRange(getView(), Double.valueOf(editTextBLL.getText().toString()), max_baselevel, min_baselevel)) {
                 leftMAPbaseLevel = Double.valueOf(editTextBLL.getText().toString());
             } else {
                 userProblems = true;
             }
 
-            if (isDoubleInRange(Double.valueOf(editTextSLL.getText().toString()), max_saturationlevel, min_saturationlevel)) {
+            if (isDoubleInRange(getView(), Double.valueOf(editTextSLL.getText().toString()), max_saturationlevel, min_saturationlevel)) {
                 leftMAPsaturationLevel = Double.valueOf(editTextSLL.getText().toString());
             } else {
                 userProblems = true;
@@ -510,42 +515,42 @@ public class ParametersFrag extends Fragment {
             rightMAPwindow = spinnerWR.getSelectedItem().toString();
 
             // Check if user input is valid integer
-            if (isInteger(editTextSRR.getText().toString()) && isIntInRange(Integer.valueOf(editTextSRR.getText().toString()), max_stimulation_rate, min_stimulation_rate)) {
+            if (isInteger(getView(), editTextSRR.getText().toString()) && isIntInRange(getView(), Integer.valueOf(editTextSRR.getText().toString()), max_stimulation_rate, min_stimulation_rate)) {
                 rightMAPstimulationRate = Integer.valueOf(editTextSRR.getText().toString());
             } else {
                 userProblems = true;
             }
-            if (isInteger(editTextPWR.getText().toString()) && isIntInRange(Integer.valueOf(editTextPWR.getText().toString()), max_pulsewidth, min_pulsewidth)) {
+            if (isInteger(getView(), editTextPWR.getText().toString()) && isIntInRange(getView(), Integer.valueOf(editTextPWR.getText().toString()), max_pulsewidth, min_pulsewidth)) {
                 rightMAPpulseWidth = Integer.valueOf(editTextPWR.getText().toString());
             } else {
                 userProblems = true;
             }
 
-            if (isDoubleInRange(Double.valueOf(editTextSR.getText().toString()), max_sensitivity, min_sensitivity)) {
+            if (isDoubleInRange(getView(), Double.valueOf(editTextSR.getText().toString()), max_sensitivity, min_sensitivity)) {
                 rightMAPsensitivity = Double.valueOf(editTextSR.getText().toString());
             } else {
                 userProblems = true;
             }
 
-            if (isDoubleInRange(Double.valueOf(editTextGR.getText().toString()), max_gain, min_gain)) {
+            if (isDoubleInRange(getView(), Double.valueOf(editTextGR.getText().toString()), max_gain, min_gain)) {
                 rightMAPgain = Double.valueOf(editTextGR.getText().toString());
             } else {
                 userProblems = true;
             }
 
-            if (isDoubleInRange(Double.valueOf(editTextQFR.getText().toString()), max_Qfactor, min_Qfactor)) {
+            if (isDoubleInRange(getView(), Double.valueOf(editTextQFR.getText().toString()), max_Qfactor, min_Qfactor)) {
                 rightMAPQfactor = Double.valueOf(editTextQFR.getText().toString());
             } else {
                 userProblems = true;
             }
 
-            if (isDoubleInRange(Double.valueOf(editTextBLR.getText().toString()), max_baselevel, min_baselevel)) {
+            if (isDoubleInRange(getView(), Double.valueOf(editTextBLR.getText().toString()), max_baselevel, min_baselevel)) {
                 rightMAPbaseLevel = Double.valueOf(editTextBLR.getText().toString());
             } else {
                 userProblems = true;
             }
 
-            if (isDoubleInRange(Double.valueOf(editTextSLR.getText().toString()), max_saturationlevel, min_saturationlevel)) {
+            if (isDoubleInRange(getView(), Double.valueOf(editTextSLR.getText().toString()), max_saturationlevel, min_saturationlevel)) {
                 rightMAPsaturationLevel = Double.valueOf(editTextSLR.getText().toString());
             } else {
                 userProblems = true;
@@ -622,9 +627,9 @@ public class ParametersFrag extends Fragment {
         checkPulseWidthLeft();
         checkStimulationRateLeft();
         checkTimingParametersLeft();
-        computePulseTimingLeft();
-        checkLevelsLeft();
-        checkVolumeLeft();
+        computePulseTiming("left");
+        checkLevels("left");
+        checkVolume("left");
     }
 
     private void rightMAPcheckStimulationParameters() {
@@ -636,9 +641,9 @@ public class ParametersFrag extends Fragment {
         checkPulseWidthRight();
         checkStimulationRateRight();
         checkTimingParametersRight();
-        computePulseTimingRight();
-        checkLevelsRight();
-        checkVolumeRight();
+        computePulseTiming("right");
+        checkLevels("right");
+        checkVolume("right");
     }
 
     private void checkImplantTypeLeft() {
@@ -881,48 +886,46 @@ public class ParametersFrag extends Fragment {
         }
     }
 
-    private void computePulseTimingLeft() {
-        leftPulsesPerFramePerChannel = (int) Math.round((8 * (double) leftMAPstimulationRate) / 1000); //8ms //%floor(floor((8.0*rate_set)/1000));
-        leftPulsesPerFrame = leftMAPnMaxima * leftPulsesPerFramePerChannel;
-        leftMAPstimulationRate = 125 * leftPulsesPerFramePerChannel; //125 frames of 8ms in 1s
-        //blockShiftL = (BLOCK_SIZE / leftPulsesPerFramePerChannel); //ceil(fs / p.Left.analysis_rate);
-        int leftFrameDuration = 8;
-        leftInterpulseDuration = (double) leftFrameDuration * 1000 / ((double) leftPulsesPerFrame) - 2 * (double) leftMAPpulseWidth - (double) leftInterPhaseGap - (double) leftDurationSYNC - (double) leftAdditionalGap;
-        leftnRFcycles = (int) Math.round((leftInterpulseDuration / 0.1));
-    }
-
-    private void computePulseTimingRight() {
-        rightPulsesPerFramePerChannel = (int) Math.round((8 * (double) rightMAPstimulationRate) / 1000); //8ms //%floor(floor((8.0*rate_set)/1000));
-        rightPulsesPerFrame = rightMAPnMaxima * rightPulsesPerFramePerChannel;
-        rightMAPstimulationRate = 125 * rightPulsesPerFramePerChannel; //125 frames of 8ms in 1s
-        //blockShiftL = (BLOCK_SIZE / rightPulsesPerFramePerChannel); //ceil(fs / p.Right.analysis_rate);
-        int rightFrameDuration = 8;
-        rightInterpulseDuration = (double) rightFrameDuration * 1000 / ((double) rightPulsesPerFrame) - 2 * (double) rightMAPpulseWidth - (double) rightInterPhaseGap - (double) rightDurationSYNC - (double) rightAdditionalGap;
-        rightnRFcycles = (int) Math.round((rightInterpulseDuration / 0.1));
-    }
-
-    private void checkLevelsLeft() {
-        // do something
-    }
-
-    private void checkLevelsRight() {
-        // do something
-    }
-
-    private void checkVolumeLeft() {
-        if (leftMAPvolume > 10) {
-            leftMAPvolume = 10;
+    private void computePulseTiming(String side) {
+        switch (side) {
+            case "left":
+                leftPulsesPerFramePerChannel = (int) Math.round((8 * (double) leftMAPstimulationRate) / 1000); //8ms //%floor(floor((8.0*rate_set)/1000));
+                leftPulsesPerFrame = leftMAPnMaxima * leftPulsesPerFramePerChannel;
+                leftMAPstimulationRate = 125 * leftPulsesPerFramePerChannel; //125 frames of 8ms in 1s
+                //blockShiftL = (BLOCK_SIZE / leftPulsesPerFramePerChannel); //ceil(fs / p.Left.analysis_rate);
+                int leftFrameDuration = 8;
+                leftInterpulseDuration = (double) leftFrameDuration * 1000 / ((double) leftPulsesPerFrame) - 2 * (double) leftMAPpulseWidth - (double) leftInterPhaseGap - (double) leftDurationSYNC - (double) leftAdditionalGap;
+                leftnRFcycles = (int) Math.round((leftInterpulseDuration / 0.1));
+                break;
+            case "right":
+                rightPulsesPerFramePerChannel = (int) Math.round((8 * (double) rightMAPstimulationRate) / 1000); //8ms //%floor(floor((8.0*rate_set)/1000));
+                rightPulsesPerFrame = rightMAPnMaxima * rightPulsesPerFramePerChannel;
+                rightMAPstimulationRate = 125 * rightPulsesPerFramePerChannel; //125 frames of 8ms in 1s
+                //blockShiftL = (BLOCK_SIZE / rightPulsesPerFramePerChannel); //ceil(fs / p.Right.analysis_rate);
+                int rightFrameDuration = 8;
+                rightInterpulseDuration = (double) rightFrameDuration * 1000 / ((double) rightPulsesPerFrame) - 2 * (double) rightMAPpulseWidth - (double) rightInterPhaseGap - (double) rightDurationSYNC - (double) rightAdditionalGap;
+                rightnRFcycles = (int) Math.round((rightInterpulseDuration / 0.1));
+                break;
         }
     }
 
-    private void checkVolumeRight() {
-        if (rightMAPvolume > 10) {
-            rightMAPvolume = 10;
-        }
+    private void checkLevels(String side) {
+        // do something
     }
 
-    private double getDouble(final SharedPreferences prefs, final String key) {
-        return Double.longBitsToDouble(prefs.getLong(key, Double.doubleToLongBits((double) 0)));
+    private void checkVolume(String side) {
+        switch (side) {
+            case "left":
+                if (leftMAPvolume > 10) {
+                    leftMAPvolume = 10;
+                }
+                break;
+            case "right":
+                if (rightMAPvolume > 10) {
+                    rightMAPvolume = 10;
+                }
+                break;
+        }
     }
 
     private int getSpinIndex(Spinner spinner, String str) {
@@ -939,46 +942,4 @@ public class ParametersFrag extends Fragment {
         return index;
     }
 
-    private boolean isInteger(String s) {
-        boolean result = isInteger(s, 10);
-        if (!result) {
-            Toast.makeText(getContext(), "Please enter an integer.", Toast.LENGTH_LONG).show(); // Set your toast message
-        }
-        return result;
-    }
-
-    private boolean isInteger(String s, int radix) {
-        if (s.isEmpty())
-            return false;
-        for (int i = 0; i < s.length(); i++) {
-            if (i == 0 && s.charAt(i) == '-') {
-                if (s.length() == 1) return false;
-                else continue;
-            }
-            if (Character.digit(s.charAt(i), radix) < 0) return false;
-        }
-        return true;
-    }
-
-    private boolean isIntInRange(int number, int upperbound, int lowerbound) {
-        if ((number >= lowerbound) && (number <= upperbound)) {
-            return true;
-        } else {
-            Toast.makeText(getContext(), "Value is out bounds.", Toast.LENGTH_LONG).show(); // Set your toast message
-            return false;
-        }
-    }
-
-    private boolean isDoubleInRange(double number, int upperbound, int lowerbound) {
-        if ((number >= lowerbound) && (number <= upperbound)) {
-            return true;
-        } else {
-            Toast.makeText(getContext(), "Value is out bounds.", Toast.LENGTH_LONG).show(); // Set your toast message
-            return false;
-        }
-    }
-
-    private void putDouble(final SharedPreferences.Editor edit, final String key, final double value) {
-        edit.putLong(key, Double.doubleToRawLongBits(value));
-    }
 }

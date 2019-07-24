@@ -56,7 +56,8 @@ public class InitializationService extends IntentService{
     boolean bReadThreadEnable = false;
 
     short sine_stim[];
-    short sin_token[]; short null_token[];
+    short sin_token[];
+    short null_token[];
     short sine_token[];
 
     Stimuli stimuli;

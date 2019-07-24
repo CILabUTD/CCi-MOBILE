@@ -1,8 +1,6 @@
 package cilab.utdallas.edu.ccimobile;
 
-import android.Manifest;
 import android.app.DownloadManager;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -32,10 +29,8 @@ import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.ftdi.j2xx.D2xxManager;
@@ -67,6 +62,8 @@ import java.util.Objects;
 import java.util.Queue;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import static cilab.utdallas.edu.ccimobile.SharedHelper.getPermission;
 
 /**
  * The MainActivity class manages the home activity of the application
@@ -133,6 +130,14 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        getMainActivityViews();
+        getMainActivityChart();
+    }
+
+    /**
+     * Sets up views for MainActivity
+     */
+    public void getMainActivityViews() {
         Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
 
@@ -151,8 +156,6 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
 
         buttonOnOff = findViewById(R.id.toggleButtonOnOff);
         buttonOnOff.setEnabled(false);
-
-        // Disable buttons/sliders
         buttonSaveMAP.setEnabled(false);
 
         disableSliders("both");
@@ -161,7 +164,12 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         leftGain.setText(R.string.textLeftGain);
         rightSensitivity.setText(R.string.textRightSens);
         rightGain.setText(R.string.textRightGain);
+    }
 
+    /**
+     * Sets up SciChart for MainActivity
+     */
+    public void getMainActivityChart() {
         // chart
         SciChartSurface surface = findViewById(R.id.chartSurface);
 
@@ -250,7 +258,6 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
 
         // Should be called at the end of chart set up
         surface.zoomExtents();
-
     }
 
     /**
@@ -260,46 +267,9 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
      * @param view view
      */
     public void selectMAP(View view) {
-        // Check if permission already exists
-        int permission = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        // If permission does not already exist
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            Log.e("MainActivity.java", "Permission DOES NOT ALREADY EXIST for " +
-                    "WRITE_EXTERNAL_STORAGE.");
-            // If user has previously denied permission, first explain why the permission is needed,
-            // then make request
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("Permission to access device files is required for this app " +
-                        "to load your MAP file(s). Please allow the permission.")
-                        .setTitle("Permission required");
-                builder.setPositiveButton("OK", (dialog, id) -> {
-                    Log.e("MainActivity.java", "Alert dialogue clicked.");
-                    makeRequest();
-                });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-            } else {
-                // If user has not previously denied permission, make request without explanation
-                makeRequest();
-            }
-        } else {
-            // If permission already exists, perform file search
-            Log.e("MainActivity.java", "Permission was already granted.");
-            //verifyFolderExists();
+        if (getPermission(this, this, MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE)) {
             performFileSearch();
         }
-    }
-
-    /**
-     * Prompts the user for permission.
-     */
-    protected void makeRequest() {
-        ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
     }
 
     /**
@@ -308,15 +278,8 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
     public void performFileSearch() {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            //Uri uri = Uri.parse(Environment.getExternalStorageDirectory() + "/CCi-MOBILE MAPs/");
-//            DocumentFile file = DocumentFile.fromTreeUri(this, myFolder);
-//            intent.putExtra(EXTRA_INITIAL_URI, file.getUri());
-//        }
         intent.setType("text/plain");
         startActivityForResult(intent, READ_REQUEST_CODE);
-        // Environment.getExternalStorageDirectory() +
-        //                    File.separator + "CCi-MOBILE MAPs"
     }
 
     /**
@@ -334,7 +297,6 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             }
         }
         //verifyFolderExists();
-        //new VeryLongAsyncTask(this).execute();
     }
 
     /**
@@ -612,13 +574,9 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
                 MainActivity.this.startActivityForResult(myIntent, 1);
                 return true;
             case R.id.moreInfo:
-                myIntent = new Intent(MainActivity.this, TestingActivity.class);
+                myIntent = new Intent(MainActivity.this, HowToUseActivity.class);
                 MainActivity.this.startActivityForResult(myIntent, 1);
                 return true;
-//            case R.id.menuTesting:
-//                myIntent = new Intent(MainActivity.this, TestingActivity.class);
-//                MainActivity.this.startActivityForResult(myIntent, 1);
-//                return true;
             default:
                 // The user's action was not recognized.
                 // Invoke the superclass to handle it.
@@ -783,43 +741,6 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         }
     }
 
-    /**
-     * Creates a loading animation.
-     */
-    static private class VeryLongAsyncTask extends AsyncTask<Void, Void, Void> {
-        private final ProgressDialog progressDialog;
-
-        VeryLongAsyncTask(Context ctx) {
-            progressDialog = new CustomProgressDialog(ctx, R.style.MyTheme);
-            progressDialog.setCanceledOnTouchOutside(false);
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            progressDialog.show();
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            // sleep for 7 seconds
-            try {
-                Thread.sleep(7000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            progressDialog.hide();
-        }
-    }
-
 
     /**
      * Starts the board.
@@ -854,7 +775,6 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
                 setProgressBarIndeterminateVisibility(false);
                 //results = resultData.getString("result");
                 String msg = "Completion Message";
-                //Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
                 Snackbar.make(findViewById(R.id.rootMain), msg, Snackbar.LENGTH_LONG).setAction("Action", null).show();
 
                 break;
@@ -888,9 +808,6 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
                 status.setText(R.string.textReady);
                 initializeConnection();
 
-                //buttonStartStop.setEnabled(true);
-                //buttonStartStop.setButtonDrawable(R.drawable.start);
-
                 buttonOnOff.setEnabled(true);
                 buttonOnOff.setChecked(false);
 
@@ -901,7 +818,6 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             case InitializationService.STATUS_ERROR:
                 /* Handle the error */
                 String error = resultData.getString(Intent.EXTRA_TEXT);
-                //Toast.makeText(this, error, Toast.LENGTH_LONG).show();
                 Snackbar.make(findViewById(R.id.rootMain), "Error: " + error, Snackbar.LENGTH_LONG).setAction("Action", null).show();
 
                 break;
@@ -1152,14 +1068,6 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         statusImage = findViewById(R.id.imageStatus);
         connectionStatus.setText(R.string.Connecting3);
         buttonSaveMAP.setEnabled(true);
-
-        //buttonStartStop = findViewById(R.id.toggleButtonStartStop);
-        //buttonStartStop.setText(null);
-        //buttonStartStop.setTextOn(null);
-        //buttonStartStop.setTextOff(null);
-        //buttonStartStop.setButtonDrawable(R.drawable.start0);
-        //buttonStartStop.setEnabled(false);
-
         updateGUI("both");
 
         // left
@@ -1178,7 +1086,6 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
                 leftMAP.sensitivity = value;
                 leftScaleFactor = value / 32768;
                 leftACE = new ACE(leftMAP);
-                //Toast.makeText(getApplicationContext(), "Left Sensitivity value changed to " + value, Toast.LENGTH_SHORT).show();
                 Snackbar.make(findViewById(R.id.rootMain), "Left Sensitivity value changed to " + value, Snackbar.LENGTH_SHORT).setAction("Action", null).show();
 
                 // Update preferences value
@@ -1209,7 +1116,6 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             public void getProgressOnActionUp(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat) {
                 leftMAP.gain = value;
                 leftACE = new ACE(leftMAP);
-                //Toast.makeText(getApplicationContext(), "Left Gain value changed to " + value + " dB", Toast.LENGTH_SHORT).show();
                 Snackbar.make(findViewById(R.id.rootMain), "Left Gain value changed to " + value + " dB", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
 
                 // Update preferences value
@@ -1239,7 +1145,6 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
                 rightMAP.sensitivity = value;
                 rightScaleFactor = value / 32768;
                 rightACE = new ACE(rightMAP);
-                //Toast.makeText(getApplicationContext(), "Right Sensitivity value changed to " + value, Toast.LENGTH_SHORT).show();
                 Snackbar.make(findViewById(R.id.rootMain), "Right Sensitivity value changed to " + value, Snackbar.LENGTH_SHORT).setAction("Action", null).show();
 
                 // Update preferences value
@@ -1269,7 +1174,6 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             public void getProgressOnActionUp(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat) {
                 rightMAP.gain = value;
                 rightACE = new ACE(rightMAP);
-                //Toast.makeText(getApplicationContext(), "Right Gain value changed to " + value + " dB", Toast.LENGTH_SHORT).show();
                 Snackbar.make(findViewById(R.id.rootMain), "Right Gain value changed to " + value + " dB", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
 
                 // Update preferences value
@@ -1773,9 +1677,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         start = true;
         portIndex = 1;
         if (ftDev == null){
-            //status.append("DEVICE IS NULL");
             status.setText(R.string.textDeviceNull);
-            //Toast.makeText(this,"Device not Connected. Please reconnect the board,",Toast.LENGTH_LONG).show();
             Snackbar.make(findViewById(R.id.rootMain), "Device not connected. Please reconnect the board.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
 
         }

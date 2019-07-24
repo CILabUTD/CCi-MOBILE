@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import static cilab.utdallas.edu.ccimobile.SharedHelper.readExternalFile;
+
 class MAP {
     private final int frameDuration = 8;             //8 ms frame
     private final int interPhaseGap = 8;            //Interphase Gap is 8us
@@ -68,7 +70,7 @@ class MAP {
         BufferedReader reader;
         try {
 
-            String data = FileOperations.getInstance().readExternalFile(FILE_NAME);
+            String data = readExternalFile(FILE_NAME);
 
             // convert String to InputStreamReader
             InputStream stream = new ByteArrayInputStream(data.getBytes());

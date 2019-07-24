@@ -12,7 +12,6 @@ import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -31,7 +30,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
-public class SettingsActivity extends AppCompatActivity implements ParametersFrag.OnParametersSelectedListener {
+import static cilab.utdallas.edu.ccimobile.SharedHelper.getDouble;
+
+public class SettingsActivity extends AppCompatActivity implements ParametersFragment.OnParametersSelectedListener {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
@@ -47,8 +48,8 @@ public class SettingsActivity extends AppCompatActivity implements ParametersFra
 
     @Override
     public void onAttachFragment(Fragment fragment) {
-        if (fragment instanceof ParametersFrag) {
-            ParametersFrag paramFragment = (ParametersFrag) fragment;
+        if (fragment instanceof ParametersFragment) {
+            ParametersFragment paramFragment = (ParametersFragment) fragment;
             paramFragment.setOnParametersSelectedListener(this);
         }
     }
@@ -82,7 +83,7 @@ public class SettingsActivity extends AppCompatActivity implements ParametersFra
         fab = findViewById(R.id.fab);
 
         fab.setOnClickListener(view -> {
-            ParametersFrag fragmentObj = (ParametersFrag) mSectionsPagerAdapter.instantiateItem(mViewPager, 0);
+            ParametersFragment fragmentObj = (ParametersFragment) mSectionsPagerAdapter.instantiateItem(mViewPager, 0);
             boolean problems = fragmentObj.updateMAPButton();
             if (!problems)
                 Snackbar.make(findViewById(R.id.rootSettings), "MAP updated successfully.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
@@ -153,9 +154,9 @@ public class SettingsActivity extends AppCompatActivity implements ParametersFra
 
     /**
      * Sends back an intent to MainActivity
-     * @param fo ParametersFrag fragment object
+     * @param fo ParametersFragment fragment object
      */
-    public void sendIntentBack(ParametersFrag fo) {
+    public void sendIntentBack(ParametersFragment fo) {
         // Send info back to first activity
         Intent intent = new Intent();
 
@@ -375,7 +376,7 @@ public class SettingsActivity extends AppCompatActivity implements ParametersFra
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return ParametersFrag.newInstance(position + 1);
+                    return ParametersFragment.newInstance(position + 1);
                 case 1:
                     return ElectrodesFragment.newInstance(position + 1);
                 default:
@@ -393,10 +394,6 @@ public class SettingsActivity extends AppCompatActivity implements ParametersFra
             // Show 3 total pages.
             return 2;
         }
-    }
-
-    double getDouble(final SharedPreferences prefs, final String key) {
-        return Double.longBitsToDouble(prefs.getLong(key, Double.doubleToLongBits((double) 0)));
     }
 
 }
