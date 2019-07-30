@@ -64,6 +64,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import static cilab.utdallas.edu.ccimobile.SharedHelper.getPermission;
+import static cilab.utdallas.edu.ccimobile.SharedHelper.putDouble;
 
 /**
  * The MainActivity class manages the home activity of the application
@@ -101,9 +102,10 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
 
     private boolean start = false;
     short[] sine_stim, sin_token, null_token, sine_token;
-
-    public MAP leftMAP, rightMAP;
+    
     private ACE leftACE, rightACE;
+
+    public PatientMAP patientMAPleft, patientMAPright;
 
     private double leftScaleFactor, rightScaleFactor;
 
@@ -229,7 +231,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
                     }
 
                     // Put in active electrodes & current values (convert to channels) for first nMaxima
-                    for (int i = 0; i < leftMAP.nMaxima; i++) {
+                    for (int i = 0; i < patientMAPleft.getnMaxima(); i++) {
                         lineDoubleData.set(dataCount-leftStimuli.Electrodes[i], leftStimuli.Amplitudes[i]);
                     }
 
@@ -292,7 +294,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         }
         else {
             initializeMAP();
-            if (!leftMAP.dataMissing && !rightMAP.dataMissing) {
+            if (!patientMAPleft.isDataMissing() && !patientMAPright.isDataMissing()) {
                 updateGUI("both");
             }
         }
@@ -409,10 +411,10 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
 
         writeJSONGeneral(writer);
 
-        if (leftMAP.exists)
-            writeJSONMAP(writer, leftMAP, "Left");
-        if (rightMAP.exists)
-            writeJSONMAP(writer, rightMAP, "Right");
+        if (patientMAPleft.isExists())
+            writeJSONMAP(writer, patientMAPleft, "Left");
+        if (patientMAPright.isExists())
+            writeJSONMAP(writer, patientMAPright, "Right");
 
         writer.endObject(); // last }
         writer.close();
@@ -444,29 +446,29 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
      * @param writer w
      * @throws IOException e
      */
-    public void writeJSONMAP(JsonWriter writer, MAP map, String side) throws IOException {
+    public void writeJSONMAP(JsonWriter writer, PatientMAP map, String side) throws IOException {
         writer.name(side);
 
         writer.beginArray();
         writer.beginObject();
 
-        writer.name(side + ".implantType").value(map.implantType);
-        writer.name(side + ".samplingFrequency").value(map.samplingFrequency);
-        writer.name(side + ".numberOfChannels").value(map.numberOfChannels);
-        writer.name(side + ".soundProcessingStrategy").value(map.soundProcessingStrategy);
-        writer.name(side + ".nMaxima").value(map.nMaxima);
-        writer.name(side + ".stimulationMode").value(map.stimulationMode);
-        writer.name(side + ".stimulationRate").value(map.stimulationRate);
-        writer.name(side + ".pulseWidth").value(map.pulseWidth);
-        writer.name(side + ".sensitivity").value(map.sensitivity);
-        writer.name(side + ".gain").value(map.gain);
-        writer.name(side + ".volume").value(map.volume);
-        writer.name(side + ".Qfactor").value(map.Qfactor);
-        writer.name(side + ".baseLevel").value(map.baseLevel);
-        writer.name(side + ".saturationLevel").value(map.saturationLevel);
-        writer.name(side + ".stimulationOrder").value(map.stimulationOrder);
-        writer.name(side + ".frequencyTable").value(map.frequencyTable);
-        writer.name(side + ".window").value(map.window);
+        writer.name(side + ".implantType").value(map.getImplantType());
+        writer.name(side + ".samplingFrequency").value(map.getSamplingFrequency());
+        writer.name(side + ".numberOfChannels").value(map.getNumberOfChannels());
+        writer.name(side + ".soundProcessingStrategy").value(map.getSoundProcessingStrategy());
+        writer.name(side + ".nMaxima").value(map.getnMaxima());
+        writer.name(side + ".stimulationMode").value(map.getStimulationMode());
+        writer.name(side + ".stimulationRate").value(map.getStimulationRate());
+        writer.name(side + ".pulseWidth").value(map.getPulseWidth());
+        writer.name(side + ".sensitivity").value(map.getSensitivity());
+        writer.name(side + ".gain").value(map.getGain());
+        writer.name(side + ".volume").value(map.getVolume());
+        writer.name(side + ".Qfactor").value(map.getQfactor());
+        writer.name(side + ".baseLevel").value(map.getBaseLevel());
+        writer.name(side + ".saturationLevel").value(map.getSaturationLevel());
+        writer.name(side + ".stimulationOrder").value(map.getStimulationOrder());
+        writer.name(side + ".frequencyTable").value(map.getFrequencyTable());
+        writer.name(side + ".window").value(map.getWindow());
 
         writer.name(side + ".El_CF1_CF2_THR_MCL_Gain");
         writeJSONElectrodes(writer, map);
@@ -480,18 +482,24 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
      * @param writer w
      * @throws IOException e
      */
-    public void writeJSONElectrodes(JsonWriter writer, MAP map) throws IOException {
+    public void writeJSONElectrodes(JsonWriter writer, PatientMAP map) throws IOException {
         writer.beginArray();
         int numElectrodes = 22;
+
+        int[] THR = map.getTHR();
+        int[] MCL = map.getMCL();
+        double[] gains = map.getGains();
+        double[] lowerCutOffFrequencies = map.getLowerCutOffFrequencies();
+        double[] higherCutOffFrequencies = map.getHigherCutOffFrequencies();
 
         for (int i = 0; i < numElectrodes; i++) {
             writer.beginObject();
             writer.name("electrodes").value(numElectrodes - i);
-            writer.name("lowerCutOffFrequencies").value(map.lowerCutOffFrequencies[i]);
-            writer.name("higherCutOffFrequencies").value(map.higherCutOffFrequencies[i]);
-            writer.name("THR").value(map.THR[i]);
-            writer.name("MCL").value(map.MCL[i]);
-            writer.name("gains").value(map.gains[i]);
+            writer.name("lowerCutOffFrequencies").value(lowerCutOffFrequencies[i]);
+            writer.name("higherCutOffFrequencies").value(higherCutOffFrequencies[i]);
+            writer.name("THR").value(THR[i]);
+            writer.name("MCL").value(MCL[i]);
+            writer.name("gains").value(gains[i]);
             writer.endObject();
         }
 
@@ -567,6 +575,8 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         switch (item.getItemId()) {
             case R.id.menuSettings:
                 Intent myIntent = new Intent(MainActivity.this, SettingsActivity.class);
+                myIntent.putExtra("PatientMAPleft", patientMAPleft);
+                myIntent.putExtra("PatientMAPright", patientMAPright);
                 MainActivity.this.startActivityForResult(myIntent, RETURN_FROM_SETTINGS);
                 return true;
             case R.id.menuEnvironments:
@@ -589,91 +599,25 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
      * @param data updated MAP data
      */
     void updateMAPFromSettings(Intent data) {
-        if (leftMAP.exists) {
-            leftMAP.sensitivity = data.getDoubleExtra("leftSensitivity", 0);
-            if (leftMAP.sensitivity > 10) {
-                leftMAP.sensitivity = 10;
-            } else if (leftMAP.sensitivity < 0) {
-                leftMAP.sensitivity = 0;
-            }
+        if (patientMAPleft.isExists()) {
+            PatientMAP pmapleft = data.getParcelableExtra("PatientMAPleft");
+            patientMAPleft.updateChangedParameters(pmapleft);
 
-            bubbleLeftSens.setProgress((float) leftMAP.sensitivity);
-
-            leftMAP.gain = data.getDoubleExtra("leftGain", 0);
-            if (leftMAP.gain > 50) {
-                leftMAP.gain = 50;
-            } else if (leftMAP.gain < 0) {
-                leftMAP.gain = 0;
-            }
-
-            bubbleLeftGain.setProgress((float) leftMAP.gain);
-
-            leftMAP.implantGeneration = data.getStringExtra("leftMAPimplantGeneration");
-            leftMAP.stimulationModeCode = data.getIntExtra("leftMAPstimulationModeCode", 0);
-            leftMAP.pulsesPerFramePerChannel = data.getIntExtra("leftMAPpulsesPerFramePerChannel", 0);
-            leftMAP.pulsesPerFrame = data.getIntExtra("leftMAPpulsesPerFrame", 0);
-            leftMAP.interpulseDuration = data.getDoubleExtra("leftMAPinterpulseDuration", 0);
-            leftMAP.nRFcycles = data.getIntExtra("leftMAPnRFcycles", 0);
-
-            // need to update pulsewidth and all the other parameters
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-            leftMAP.stimulationRate = preferences.getInt("Left.stimulationRate", 0);
-            leftMAP.pulseWidth = preferences.getInt("Left.pulseWidth", 0);
-            leftMAP.sensitivity = getDouble(preferences, "Left.sensitivity");
-            leftMAP.gain = getDouble(preferences, "Left.gain");
-            leftMAP.Qfactor = getDouble(preferences, "Left.Qfactor");
-            leftMAP.baseLevel = getDouble(preferences, "Left.baseLevel");
-            leftMAP.saturationLevel = getDouble(preferences, "Left.saturationLevel");
-            leftMAP.nMaxima = preferences.getInt("Left.nMaxima", 0);
-            leftMAP.volume = preferences.getInt("Left.volume", 0);
-            leftMAP.stimulationOrder = preferences.getString("Left.stimulationOrder", "");
-            leftMAP.window = preferences.getString("Left.window", "");
+            bubbleLeftSens.setProgress((float) patientMAPleft.getSensitivity());
+            bubbleLeftGain.setProgress((float) patientMAPleft.getGain());
 
             // re-initialize ACE
-            leftACE = new ACE(leftMAP);
+            leftACE = new ACE(patientMAPleft);
         }
-        if (rightMAP.exists) {
-            rightMAP.sensitivity = data.getDoubleExtra("rightSensitivity", 0);
-            if (rightMAP.sensitivity > 10) {
-                rightMAP.sensitivity = 10;
-            } else if (rightMAP.sensitivity < 0) {
-                rightMAP.sensitivity = 0;
-            }
+        if (patientMAPright.isExists()) {
+            PatientMAP pmapright = data.getParcelableExtra("PatientMAPright");
+            patientMAPright.updateChangedParameters(pmapright);
 
-            bubbleRightSens.setProgress((float) rightMAP.sensitivity);
-
-
-            rightMAP.gain = data.getDoubleExtra("rightGain", 0);
-            if (rightMAP.gain > 50) {
-                rightMAP.gain = 50;
-            } else if (rightMAP.gain < 0) {
-                rightMAP.gain = 0;
-            }
-
-            bubbleRightGain.setProgress((float) rightMAP.gain);
-
-            rightMAP.implantGeneration = data.getStringExtra("rightMAPimplantGeneration");
-            rightMAP.stimulationModeCode = data.getIntExtra("rightMAPstimulationModeCode", 0);
-            rightMAP.pulsesPerFramePerChannel = data.getIntExtra("rightMAPpulsesPerFramePerChannel", 0);
-            rightMAP.pulsesPerFrame = data.getIntExtra("rightMAPpulsesPerFrame", 0);
-            rightMAP.interpulseDuration = data.getDoubleExtra("rightMAPinterpulseDuration", 0);
-            rightMAP.nRFcycles = data.getIntExtra("rightMAPnRFcycles", 0);
-
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-            rightMAP.stimulationRate = preferences.getInt("Right.stimulationRate", 0);
-            rightMAP.pulseWidth = preferences.getInt("Right.pulseWidth", 0);
-            rightMAP.sensitivity = getDouble(preferences, "Right.sensitivity");
-            rightMAP.gain = getDouble(preferences, "Right.gain");
-            rightMAP.Qfactor = getDouble(preferences, "Right.Qfactor");
-            rightMAP.baseLevel = getDouble(preferences, "Right.baseLevel");
-            rightMAP.saturationLevel = getDouble(preferences, "Right.saturationLevel");
-            rightMAP.nMaxima = preferences.getInt("Right.nMaxima", 0);
-            rightMAP.volume = preferences.getInt("Right.volume", 0);
-            rightMAP.stimulationOrder = preferences.getString("Right.stimulationOrder", "");
-            rightMAP.window = preferences.getString("Right.window", "");
+            bubbleRightSens.setProgress((float) patientMAPright.getSensitivity());
+            bubbleRightGain.setProgress((float) patientMAPright.getGain());
 
             // re-initialize ACE
-            rightACE = new ACE(rightMAP);
+            rightACE = new ACE(patientMAPright);
         }
         updateOutputBufferMAP();
     }
@@ -684,12 +628,12 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
     void updateOutputBufferMAP() {
         if (writeBuffer != null)
         {
-            if (leftMAP.exists && rightMAP.exists) { // both left and right
-                setOutputBuffer(writeBuffer, leftMAP, rightMAP);
-            } else if (leftMAP.exists) { // only left
-                setOutputBuffer(writeBuffer, leftMAP, leftMAP); // zero buffer
-            } else if (rightMAP.exists) { // only right
-                setOutputBuffer(writeBuffer, rightMAP, rightMAP); // zero buffer
+            if (patientMAPleft.isExists() && patientMAPright.isExists()) { // both left and right
+                setOutputBuffer(writeBuffer, patientMAPleft, patientMAPright);
+            } else if (patientMAPleft.isExists()) { // only left
+                setOutputBuffer(writeBuffer, patientMAPleft, patientMAPleft); // zero buffer
+            } else if (patientMAPright.isExists()) { // only right
+                setOutputBuffer(writeBuffer, patientMAPright, patientMAPright); // zero buffer
             }
         }
     }
@@ -829,7 +773,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
      */
     private void initialize() {
         initializeMAP();
-        if (!leftMAP.dataMissing && !rightMAP.dataMissing) {
+        if (!patientMAPleft.isDataMissing() && !patientMAPright.isDataMissing()) {
             initializeStimuli();
             initializeGUI();
         }
@@ -839,8 +783,9 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
      * Initializes the MAPs.
      */
     private void initializeMAP() {
-        leftMAP = new MAP();
-        rightMAP = new MAP();
+        // here
+        patientMAPleft = new PatientMAP();
+        patientMAPright = new PatientMAP();
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String MAP_filename;
@@ -849,22 +794,16 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         // Check if filename string is empty
         assert MAP_filename != null;
         if (!MAP_filename.isEmpty()) {
-            leftMAP.getMAPData(MAP_filename, "left");
-            rightMAP.getMAPData(MAP_filename, "right");
+            patientMAPleft.getMAPData(MAP_filename, "left");
+            patientMAPright.getMAPData(MAP_filename, "right");
 
-            if (leftMAP.dataMissing && rightMAP.dataMissing)
-                Snackbar.make(findViewById(R.id.rootMain), "Error: Left and right MAP data missing. Please select a valid MAP.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-            else if (leftMAP.dataMissing)
-                Snackbar.make(findViewById(R.id.rootMain), "Error: Left MAP data missing. Please select a valid MAP.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-            else if (rightMAP.dataMissing)
-                Snackbar.make(findViewById(R.id.rootMain), "Error: Right MAP data missing. Please select a valid MAP.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-            if (leftMAP.dataMissing || rightMAP.dataMissing) {
+            if (patientMAPleft.isDataMissing() || patientMAPright.isDataMissing()) {
                 errorMAP = true;
                 disableSliders("both");
-            }
-            else {
+                Snackbar.make(findViewById(R.id.rootMain), "Error: Left and/or right MAP data missing. Please select a valid MAP.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            } else {
                 errorMAP = false;
-                if (leftMAP.exists || rightMAP.exists)
+                if (patientMAPleft.isExists() || patientMAPright.isExists())
                     writeMAPToPreferences();
             }
         }
@@ -875,86 +814,88 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
 
     /**
      * Saves MAP parameters to Preferences. Called when a new MAP is selected.
+     * Saving to Preferences for ParametersFragment.
      */
     public void writeMAPToPreferences() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = preferences.edit();
-        if (leftMAP.exists) {
-            editor.putInt("leftMAPnbands",leftMAP.nbands);
+
+        if (patientMAPleft.isExists()) {
+            editor.putInt("leftMAPnbands",patientMAPleft.getNbands());
             editor.putBoolean("leftMapExists", true);
-            editor.putString("Left.implantType", leftMAP.implantType);
-            editor.putInt("Left.samplingFrequency", leftMAP.samplingFrequency);
-            editor.putInt("Left.numberOfChannels", leftMAP.numberOfChannels);
-            editor.putString("Left.frequencyTable", leftMAP.frequencyTable);
-            editor.putString("Left.soundProcessingStrategy", leftMAP.soundProcessingStrategy);
-            editor.putInt("Left.nMaxima", leftMAP.nMaxima);
-            editor.putString("Left.stimulationMode", leftMAP.stimulationMode);
-            editor.putInt("Left.stimulationRate", leftMAP.stimulationRate);
-            editor.putInt("Left.pulseWidth", leftMAP.pulseWidth);
-            putDouble(editor, "Left.sensitivity", leftMAP.sensitivity);
-            putDouble(editor, "Left.gain", leftMAP.gain);
-            editor.putInt("Left.volume", leftMAP.volume);
-            putDouble(editor, "Left.Qfactor", leftMAP.Qfactor);
-            putDouble(editor, "Left.baseLevel", leftMAP.baseLevel);
-            putDouble(editor, "Left.saturationLevel", leftMAP.saturationLevel);
-            editor.putString("Left.stimulationOrder", leftMAP.stimulationOrder);
-            editor.putString("Left.window", leftMAP.window);
+            editor.putString("Left.implantType", patientMAPleft.getImplantType());
+            editor.putInt("Left.samplingFrequency", patientMAPleft.getSamplingFrequency());
+            editor.putInt("Left.numberOfChannels", patientMAPleft.getNumberOfChannels());
+            editor.putString("Left.frequencyTable", patientMAPleft.getFrequencyTable());
+            editor.putString("Left.soundProcessingStrategy", patientMAPleft.getSoundProcessingStrategy());
+            editor.putInt("Left.nMaxima", patientMAPleft.getnMaxima());
+            editor.putString("Left.stimulationMode", patientMAPleft.getStimulationMode());
+            editor.putInt("Left.stimulationRate", patientMAPleft.getStimulationRate());
+            editor.putInt("Left.pulseWidth", patientMAPleft.getPulseWidth());
+            putDouble(editor, "Left.sensitivity", patientMAPleft.getSensitivity());
+            putDouble(editor, "Left.gain", patientMAPleft.getGain());
+            editor.putInt("Left.volume", patientMAPleft.getVolume());
+            putDouble(editor, "Left.Qfactor", patientMAPleft.getQfactor());
+            putDouble(editor, "Left.baseLevel", patientMAPleft.getBaseLevel());
+            putDouble(editor, "Left.saturationLevel", patientMAPleft.getSaturationLevel());
+            editor.putString("Left.stimulationOrder", patientMAPleft.getStimulationOrder());
+            editor.putString("Left.window", patientMAPleft.getWindow());
 
             // Getting electrode array
-            for (int i = 0; i < leftMAP.nbands; i++ ) {
-                editor.putInt("leftTHR" + i,leftMAP.THR[i]);
-                editor.putInt("leftMCL" + i, leftMAP.MCL[i]);
-                putDouble(editor,"leftgain" + i,leftMAP.gains[i]);
-                editor.putInt("leftelectrodes" + i,leftMAP.electrodes[i]);
+            for (int i = 0; i < patientMAPleft.getNbands(); i++ ) {
+                editor.putInt("leftTHR" + i, patientMAPleft.getTHR(i));
+                editor.putInt("leftMCL" + i, patientMAPleft.getMCL(i));
+                putDouble(editor,"leftgain" + i, patientMAPleft.getGains(i));
+                editor.putInt("leftelectrodes" + i, patientMAPleft.getElectrodes(i));
             }
 
-            // update ACE
-            leftACE = new ACE(leftMAP);
+            leftACE = new ACE(patientMAPleft);
 
         } else {
             editor.putBoolean("leftMapExists", false);
         }
-        if (rightMAP.exists) {
-            editor.putInt("rightMAPnbands",rightMAP.nbands);
+        
+        if (patientMAPright.isExists()) {
+            editor.putInt("rightMAPnbands",patientMAPright.getNbands());
             editor.putBoolean("rightMapExists", true);
-            editor.putString("Right.implantType", rightMAP.implantType);
-            editor.putInt("Right.samplingFrequency", rightMAP.samplingFrequency);
-            editor.putInt("Right.numberOfChannels", rightMAP.numberOfChannels);
-            editor.putString("Right.frequencyTable", rightMAP.frequencyTable);
-            editor.putString("Right.soundProcessingStrategy", rightMAP.soundProcessingStrategy);
-            editor.putInt("Right.nMaxima", rightMAP.nMaxima);
-            editor.putString("Right.stimulationMode", rightMAP.stimulationMode);
-            editor.putInt("Right.stimulationRate", rightMAP.stimulationRate);
-            editor.putInt("Right.pulseWidth", rightMAP.pulseWidth);
-            putDouble(editor, "Right.sensitivity", rightMAP.sensitivity);
-            putDouble(editor, "Right.gain", rightMAP.gain);
-            editor.putInt("Right.volume", rightMAP.volume);
-            putDouble(editor, "Right.Qfactor", rightMAP.Qfactor);
-            putDouble(editor, "Right.baseLevel", rightMAP.baseLevel);
-            putDouble(editor, "Right.saturationLevel", rightMAP.saturationLevel);
-            editor.putString("Right.stimulationOrder", rightMAP.stimulationOrder);
-            editor.putString("Right.window", rightMAP.window);
+            editor.putString("Right.implantType", patientMAPright.getImplantType());
+            editor.putInt("Right.samplingFrequency", patientMAPright.getSamplingFrequency());
+            editor.putInt("Right.numberOfChannels", patientMAPright.getNumberOfChannels());
+            editor.putString("Right.frequencyTable", patientMAPright.getFrequencyTable());
+            editor.putString("Right.soundProcessingStrategy", patientMAPright.getSoundProcessingStrategy());
+            editor.putInt("Right.nMaxima", patientMAPright.getnMaxima());
+            editor.putString("Right.stimulationMode", patientMAPright.getStimulationMode());
+            editor.putInt("Right.stimulationRate", patientMAPright.getStimulationRate());
+            editor.putInt("Right.pulseWidth", patientMAPright.getPulseWidth());
+            putDouble(editor, "Right.sensitivity", patientMAPright.getSensitivity());
+            putDouble(editor, "Right.gain", patientMAPright.getGain());
+            editor.putInt("Right.volume", patientMAPright.getVolume());
+            putDouble(editor, "Right.Qfactor", patientMAPright.getQfactor());
+            putDouble(editor, "Right.baseLevel", patientMAPright.getBaseLevel());
+            putDouble(editor, "Right.saturationLevel", patientMAPright.getSaturationLevel());
+            editor.putString("Right.stimulationOrder", patientMAPright.getStimulationOrder());
+            editor.putString("Right.window", patientMAPright.getWindow());
 
             // Getting electrode array
-            for (int i = 0; i < rightMAP.nbands; i++ ) {
-                editor.putInt("rightTHR" + i,rightMAP.THR[i]);
-                editor.putInt("rightMCL" + i, rightMAP.MCL[i]);
-                putDouble(editor,"rightgain" + i,rightMAP.gains[i]);
-                editor.putInt("rightelectrodes" + i,rightMAP.electrodes[i]);
+            for (int i = 0; i < patientMAPright.getNbands(); i++ ) {
+                editor.putInt("rightTHR" + i, patientMAPright.getTHR(i));
+                editor.putInt("rightMCL" + i, patientMAPright.getMCL(i));
+                putDouble(editor,"rightgain" + i, patientMAPright.getGains(i));
+                editor.putInt("rightelectrodes" + i, patientMAPright.getElectrodes(i));
             }
 
-            // update ACE
-            rightACE = new ACE(rightMAP);
+            rightACE = new ACE(patientMAPright);
+
         } else {
             editor.putBoolean("rightMapExists", false);
         }
 
-        if (leftMAP.exists && rightMAP.exists) { // assign audio recording settings
+        if (patientMAPleft.isExists() && patientMAPright.isExists()) { // assign audio recording settings
             settingsMono = false;
             settingsLeft = false;
             settingsRight = false;
             settingsStereo = true;
-        } else if (leftMAP.exists) {
+        } else if (patientMAPleft.isExists()) {
             settingsMono = true;
             settingsLeft = true;
             settingsRight = false;
@@ -968,26 +909,6 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
 
         editor.apply();
         updateOutputBufferMAP();
-    }
-
-    /**
-     * Preferences editor
-     * @param edit edit
-     * @param key key
-     * @param value value
-     */
-    void putDouble(final SharedPreferences.Editor edit, final String key, final double value) {
-        edit.putLong(key, Double.doubleToRawLongBits(value));
-    }
-
-    /**
-     * Returns double
-     * @param prefs prefs
-     * @param key key
-     * @return double
-     */
-    double getDouble(final SharedPreferences prefs, final String key) {
-        return Double.longBitsToDouble(prefs.getLong(key, Double.doubleToLongBits((double) 0)));
     }
 
     /**
@@ -1083,15 +1004,15 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
 
             @Override
             public void getProgressOnActionUp(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat) {
-                leftMAP.sensitivity = value;
+                patientMAPleft.setSensitivity(value);
                 leftScaleFactor = value / 32768;
-                leftACE = new ACE(leftMAP);
+                leftACE = new ACE(patientMAPleft);
                 Snackbar.make(findViewById(R.id.rootMain), "Left Sensitivity value changed to " + value, Snackbar.LENGTH_SHORT).setAction("Action", null).show();
 
                 // Update preferences value
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
                 SharedPreferences.Editor editor = preferences.edit();
-                putDouble(editor, "Left.sensitivity", leftMAP.sensitivity);
+                putDouble(editor, "Left.sensitivity", patientMAPleft.getSensitivity());
                 editor.apply();
 
             }
@@ -1114,14 +1035,14 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
 
             @Override
             public void getProgressOnActionUp(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat) {
-                leftMAP.gain = value;
-                leftACE = new ACE(leftMAP);
+                patientMAPleft.setGain(value);
+                leftACE = new ACE(patientMAPleft);
                 Snackbar.make(findViewById(R.id.rootMain), "Left Gain value changed to " + value + " dB", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
 
                 // Update preferences value
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
                 SharedPreferences.Editor editor = preferences.edit();
-                putDouble(editor, "Left.gain", leftMAP.gain);
+                putDouble(editor, "Left.gain", patientMAPleft.getGain());
                 editor.apply();
             }
 
@@ -1142,15 +1063,15 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
 
             @Override
             public void getProgressOnActionUp(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat) {
-                rightMAP.sensitivity = value;
+                patientMAPright.setSensitivity(value);
                 rightScaleFactor = value / 32768;
-                rightACE = new ACE(rightMAP);
+                rightACE = new ACE(patientMAPright);
                 Snackbar.make(findViewById(R.id.rootMain), "Right Sensitivity value changed to " + value, Snackbar.LENGTH_SHORT).setAction("Action", null).show();
 
                 // Update preferences value
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
                 SharedPreferences.Editor editor = preferences.edit();
-                putDouble(editor, "Right.sensitivity", rightMAP.sensitivity);
+                putDouble(editor, "Right.sensitivity", patientMAPright.getSensitivity());
                 editor.apply();
             }
 
@@ -1172,14 +1093,14 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
 
             @Override
             public void getProgressOnActionUp(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat) {
-                rightMAP.gain = value;
-                rightACE = new ACE(rightMAP);
+                patientMAPright.setGain(value);
+                rightACE = new ACE(patientMAPright);
                 Snackbar.make(findViewById(R.id.rootMain), "Right Gain value changed to " + value + " dB", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
 
                 // Update preferences value
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
                 SharedPreferences.Editor editor = preferences.edit();
-                putDouble(editor, "Right.gain", rightMAP.gain);
+                putDouble(editor, "Right.gain", patientMAPright.getGain());
                 editor.apply();
             }
 
@@ -1196,11 +1117,11 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
      */
     private void updateGUI(String side) {
         if (side.equals("left") || side.equals("both")) {
-            if (leftMAP.exists && !leftMAP.dataMissing) {
+            if (patientMAPleft.isExists() && !patientMAPleft.isDataMissing()) {
                 enableSliders("left");
-                bubbleLeftSens.setProgress((float) leftMAP.sensitivity);
-                bubbleLeftGain.setProgress((float) leftMAP.gain);
-                leftACE = new ACE(leftMAP);
+                bubbleLeftSens.setProgress((float) patientMAPleft.getSensitivity());
+                bubbleLeftGain.setProgress((float) patientMAPleft.getGain());
+                leftACE = new ACE(patientMAPleft);
                 leftSensitivity.setText(R.string.textLeftSens);
                 leftGain.setText(R.string.textLeftGain);
             } else {
@@ -1210,11 +1131,11 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             }
         }
         if (side.equals("right") || side.equals("both")) {
-            if (rightMAP.exists && !rightMAP.dataMissing) {
+            if (patientMAPright.isExists() && !patientMAPright.isDataMissing()) {
                 enableSliders("right");
-                bubbleRightGain.setProgress((float) rightMAP.gain);
-                bubbleRightSens.setProgress((float) rightMAP.sensitivity);
-                rightACE = new ACE(rightMAP);
+                bubbleRightGain.setProgress((float) patientMAPright.getGain());
+                bubbleRightSens.setProgress((float) patientMAPright.getSensitivity());
+                rightACE = new ACE(patientMAPright);
                 rightSensitivity.setText(R.string.textRightSens);
                 rightGain.setText(R.string.textRightGain);
             } else {
@@ -1603,16 +1524,16 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
      * @param left_map lm
      * @param right_map rm
      */
-    private void setOutputBuffer(byte[] outputBuffer, MAP left_map, MAP right_map) {
+    private void setOutputBuffer(byte[] outputBuffer, PatientMAP left_map, PatientMAP right_map) {
 
-        short left_pw = (short)left_map.pulseWidth;
-        short right_pw = (short)right_map.pulseWidth;
+        short left_pw = (short)left_map.getPulseWidth();
+        short right_pw = (short)right_map.getPulseWidth();
 
-        short left_ppf = (short)left_map.pulsesPerFrame;
-        short right_ppf = (short)right_map.pulsesPerFrame;
+        short left_ppf = (short)left_map.getPulsesPerFrame();
+        short right_ppf = (short)right_map.getPulsesPerFrame();
 
-        short left_nRFcycles = (short)left_map.nRFcycles;
-        short right_nRFcycles = (short)right_map.nRFcycles;
+        short left_nRFcycles = (short)left_map.getnRFcycles();
+        short right_nRFcycles = (short)right_map.getnRFcycles();
 
         //Header
         outputBuffer[0] = (byte)136;
@@ -1628,8 +1549,8 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         outputBuffer[262] = (byte)4;
         outputBuffer[263] = (byte)252;
 
-        outputBuffer[380] = (byte)left_map.stimulationModeCode; //mode left
-        outputBuffer[381] = (byte)right_map.stimulationModeCode; //mode right
+        outputBuffer[380] = (byte)left_map.getStimulationModeCode(); //mode left
+        outputBuffer[381] = (byte)right_map.getStimulationModeCode(); //mode right
         outputBuffer[382] = (byte)(left_pw / 256); //left pulsewidth high[15:8]
         outputBuffer[383] = (byte)(left_pw % 256); //left pulsewidth low[7:0]
         outputBuffer[384] = (byte)(right_pw / 256); //right pulsewidth high[15:8]
@@ -1684,7 +1605,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         else {
             status.setText(R.string.textRunning);
             setOutputBuffer(nullWriteBuffer, null_token); // zero buffer
-            setOutputBuffer(writeBuffer, leftMAP, rightMAP); // zero buffer
+            setOutputBuffer(writeBuffer, patientMAPleft, patientMAPright); // zero buffer
             readThread1 = new readThread();
             readThread1.start();
         }
@@ -1720,8 +1641,8 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
             int rc = ftDev.write(nullWriteBuffer, 516, true); // to get the board started
             rc = ftDev.write(nullWriteBuffer, 516, true);// to get the board started
 
-            leftScaleFactor = leftMAP.sensitivity/32768;
-            rightScaleFactor = rightMAP.sensitivity/32768;
+            leftScaleFactor = patientMAPleft.getSensitivity()/32768;
+            rightScaleFactor = patientMAPright.getSensitivity()/32768;
 
             int k = 0;
 
@@ -1767,11 +1688,11 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
          * Updates the output buffer
          */
         private void updateOutputBuffer() {
-            for (int i = 0; i < leftMAP.pulsesPerFrame; ++i) {
+            for (int i = 0; i < patientMAPleft.getPulsesPerFrame(); ++i) {
                 writeBuffer[i + 6] = (byte)leftStimuli.Electrodes[i];
                 writeBuffer[i + 132] = (byte)leftStimuli.Amplitudes[i];
             }
-            for (int i = 0; i < rightMAP.pulsesPerFrame; ++i) {
+            for (int i = 0; i < patientMAPright.getPulsesPerFrame(); ++i) {
                 writeBuffer[i + 264] = (byte)rightStimuli.Electrodes[i];
                 writeBuffer[i + 390] = (byte)rightStimuli.Amplitudes[i];
             }

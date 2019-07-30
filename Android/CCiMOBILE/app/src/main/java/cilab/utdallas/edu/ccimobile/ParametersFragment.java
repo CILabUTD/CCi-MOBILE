@@ -1,6 +1,7 @@
 package cilab.utdallas.edu.ccimobile;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -255,6 +256,10 @@ public class ParametersFragment extends Fragment {
      */
     private void getMAPFromPreferences() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+
+//        Intent intent = Objects.requireNonNull(getActivity()).getIntent();
+//        PatientMAP pmapleft = intent.getParcelableExtra("PatientMAPleft");
+//        PatientMAP pmapright = intent.getParcelableExtra("PatientMAPright");
 
         leftExists = preferences.getBoolean("leftMapExists", false);
         rightExists = preferences.getBoolean("rightMapExists", false);

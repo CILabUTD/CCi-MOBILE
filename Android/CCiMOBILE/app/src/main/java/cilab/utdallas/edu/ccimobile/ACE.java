@@ -26,34 +26,64 @@ public class ACE {
 
     private DoubleFFT_1D fft_1D;
 
-    private MAP map;
+    // private MAP map;
+    private PatientMAP pmap;
+
+//    /**
+//     * This function creates a new MAP.
+//     * @param map m
+//     */
+//    ACE (MAP map) {
+//        this.map = map;
+//        blockShift = (int)(Math.ceil((double)map.samplingFrequency/map.stimulationRate));
+//        int NHIST = BLOCK_SIZE - blockShift;
+//        sizeOfBufferHistory= map.pulsesPerFramePerChannel*blockShift - blockShift; //
+//        window = new double[BLOCK_SIZE];
+//        windowFrequencyResponse = new double[3];
+//        weights = new double[map.nbands][NUMBER_OF_BINS];
+//        powerGains = new double[map.nbands];
+//        bandGains = new double[map.nbands];
+//        ranges = new int[map.nbands];
+//        inputBuffer = new double[sizeOfBufferHistory+BLOCK_SIZE];
+//        workingData = new double[BLOCK_SIZE];
+//        fft_1D = new DoubleFFT_1D((long) BLOCK_SIZE);
+//        magnitudes = new double[map.nMaxima];
+//        channelIndex = new int[map.nMaxima];
+//        scalarMultiplier = 1/(map.saturationLevel - map.baseLevel);
+//        lgf_alpha = 416.2063;
+//        electrodeBands = new int[map.nbands];
+//        bandBins = new int[map.nbands];
+//        current_levels = new int[map.nMaxima];
+//        electrode_numbers = new int[map.nMaxima];
+//        initialize();
+//    }
 
     /**
-     * This function creates a new MAP.
-     * @param map m
+     * Constructor for patient MAP
+     * @param pm patient MAP
      */
-    ACE (MAP map) {
-        this.map = map;
-        blockShift = (int)(Math.ceil((double)map.samplingFrequency/map.stimulationRate));
+    ACE (PatientMAP pm) {
+        this.pmap = pm;
+        blockShift = (int)(Math.ceil((double)pmap.getSamplingFrequency()/pmap.getStimulationRate()));
         int NHIST = BLOCK_SIZE - blockShift;
-        sizeOfBufferHistory= map.pulsesPerFramePerChannel*blockShift - blockShift; //
+        sizeOfBufferHistory= pmap.getPulsesPerFramePerChannel()*blockShift - blockShift; //
         window = new double[BLOCK_SIZE];
         windowFrequencyResponse = new double[3];
-        weights = new double[map.nbands][NUMBER_OF_BINS];
-        powerGains = new double[map.nbands];
-        bandGains = new double[map.nbands];
-        ranges = new int[map.nbands];
+        weights = new double[pmap.getNbands()][NUMBER_OF_BINS];
+        powerGains = new double[pmap.getNbands()];
+        bandGains = new double[pmap.getNbands()];
+        ranges = new int[pmap.getNbands()];
         inputBuffer = new double[sizeOfBufferHistory+BLOCK_SIZE];
         workingData = new double[BLOCK_SIZE];
         fft_1D = new DoubleFFT_1D((long) BLOCK_SIZE);
-        magnitudes = new double[map.nMaxima];
-        channelIndex = new int[map.nMaxima];
-        scalarMultiplier = 1/(map.saturationLevel - map.baseLevel);
+        magnitudes = new double[pmap.getnMaxima()];
+        channelIndex = new int[pmap.getnMaxima()];
+        scalarMultiplier = 1/(pmap.getSaturationLevel() - pmap.getBaseLevel());
         lgf_alpha = 416.2063;
-        electrodeBands = new int[map.nbands];
-        bandBins = new int[map.nbands];
-        current_levels = new int[map.nMaxima];
-        electrode_numbers = new int[map.nMaxima];
+        electrodeBands = new int[pmap.getNbands()];
+        bandBins = new int[pmap.getNbands()];
+        current_levels = new int[pmap.getnMaxima()];
+        electrode_numbers = new int[pmap.getnMaxima()];
         initialize();
     }
 
@@ -62,7 +92,7 @@ public class ACE {
      * This function calls the initialization functions.
      */
     private void initialize() {
-        createWindow(map.window);
+        createWindow(pmap.getWindow());
         fftBandBins();
         initializeFilters();
         initializeChannelIndices();
@@ -83,8 +113,8 @@ public class ACE {
         int indx = 0;
         int offset = 0;
 
-        stimuli.Amplitudes = new int[map.pulsesPerFrame];
-        stimuli.Electrodes = new int[map.pulsesPerFrame];
+        stimuli.Amplitudes = new int[pmap.getPulsesPerFrame()];
+        stimuli.Electrodes = new int[pmap.getPulsesPerFrame()];
 
         //System.out.println("Frame No: " +frame_no+ "\n");
         //startTimeFrame = System.currentTimeMillis();
@@ -94,7 +124,7 @@ public class ACE {
             inputBuffer[i] = inputData[i-sizeOfBufferHistory];
         }
 
-        for (int subframe = 0; subframe < map.pulsesPerFramePerChannel; subframe++) {
+        for (int subframe = 0; subframe < pmap.getPulsesPerFramePerChannel(); subframe++) {
             workingData = new double[BLOCK_SIZE];
 
             j = 0;
@@ -113,7 +143,7 @@ public class ACE {
             stimulationOrder();
 
             // do on/off electrode stuff here?
-            for (int i = 0; i < map.nMaxima; i++) {
+            for (int i = 0; i < pmap.getnMaxima(); i++) {
                 stimuli.Amplitudes[indx] = current_levels[i];
                 stimuli.Electrodes[indx] = electrode_numbers[i];
 
@@ -188,9 +218,9 @@ public class ACE {
      */
     public void weightedSquareSum() {
         double weightedMagTemp; //temporary variable to store the weighted magnitude
-        double [] tempChannelMagnitudes = new double[map.nbands];
+        double [] tempChannelMagnitudes = new double[pmap.getNbands()];
 
-        for (int j = 0; j < map.nbands; j++) {
+        for (int j = 0; j < pmap.getNbands(); j++) {
             weightedMagTemp = 0;
             for (int k = 0; k < NUMBER_OF_BINS; k++) {
                 weightedMagTemp = weightedMagTemp + weights[j][k] * workingData[k];
@@ -201,20 +231,20 @@ public class ACE {
     }
 
     public void applyChannelGains(){
-        for (int j = 0; j < map.nbands; j++) {
+        for (int j = 0; j < pmap.getNbands(); j++) {
             workingData[j] = workingData[j] * bandGains[j];
         }
     }
 
     public void sorting() {
-        int [] channelIndices = new int[map.nbands];
-        for(int i = 0; i < map.nbands; i++) {
+        int [] channelIndices = new int[pmap.getNbands()];
+        for(int i = 0; i < pmap.getNbands(); i++) {
             channelIndices[i] = i;   }
-        shell_sort(workingData, channelIndices, map.nbands);
+        shell_sort(workingData, channelIndices, pmap.getNbands());
         //gets the highest nmaxima values
-        for(int i = 0; i < map.nMaxima; i++) {
-            magnitudes[i] = workingData[map.nbands-i-1];
-            channelIndex[i] = channelIndices[map.nbands-i-1];
+        for(int i = 0; i < pmap.getnMaxima(); i++) {
+            magnitudes[i] = workingData[pmap.getNbands()-i-1];
+            channelIndex[i] = channelIndices[pmap.getNbands()-i-1];
         }
     }
 
@@ -226,9 +256,9 @@ public class ACE {
         //% Scale the input between base_level and sat_level:
         //r = (u - p.base_level)/(p.sat_level - p.base_level);
 
-        for (int j = 0; j < map.nMaxima; j++) {
+        for (int j = 0; j < pmap.getnMaxima(); j++) {
             //workingVal = (leftChannelMagnitudes[j] - baseLevel)/(saturationLevel-baseLevel);
-            workingVal = scalarMultiplier * (magnitudes[j] - map.baseLevel);
+            workingVal = scalarMultiplier * (magnitudes[j] - pmap.getBaseLevel());
             if (workingVal > 1)
                 workingVal = 1;
             if (workingVal < 0) {
@@ -250,16 +280,16 @@ public class ACE {
         double workingVal;
         int index;
         // Convert magnitudes to current levels i.e. apply patient map
-        for (int j = 0; j < map.nMaxima; j++) {
+        for (int j = 0; j < pmap.getnMaxima(); j++) {
             if (magnitudes[j] != 0) {
                 //index = electrodeBands[channelIndex[j]]-1; //channelIndex[j];
                 index = channelIndex[j]; //channelIndex[j];
                 workingVal = ranges[index] * magnitudes[j] * volumeLevel;
-                magnitudes[j] = map.THR[index] + workingVal;  // + (int)voltage_magnitudes;
-                if (magnitudes[j] < map.THR[index]) //zero out signal less than THR
+                magnitudes[j] = pmap.getTHR(index) + workingVal;  // + (int)voltage_magnitudes;
+                if (magnitudes[j] < pmap.getTHR(index)) //zero out signal less than THR
                     magnitudes[j] = 0;
-                if (magnitudes[j] > map.MCL[index])
-                    magnitudes[j] = map.MCL[index];
+                if (magnitudes[j] > pmap.getMCL(index))
+                    magnitudes[j] = pmap.getMCL(index);
                 if (magnitudes[j] < 0)
                     magnitudes[j] = 0; //from original code: this is so that it does not wrap around to give negative values
             }
@@ -269,29 +299,30 @@ public class ACE {
     //Stimulation order
     public void stimulationOrder()
     {
-        int [] channelIndices = new int[map.nMaxima];
-        for (int j = 0; j < map.nMaxima; j++) // initialize all for 1:nmaxima
+        int [] channelIndices = new int[pmap.getnMaxima()];
+        for (int j = 0; j < pmap.getnMaxima(); j++) // initialize all for 1:nmaxima
             channelIndices[j] = j;
 
-        if (map.stimulationOrder.equals("apex-to-base")) { //apex to base
-            shell_sort(channelIndex, channelIndices, map.nMaxima); // get the order
-            for (int j = 0; j < map.nMaxima; j++) {
+        if (pmap.getStimulationOrder().equals("apex-to-base")) { //apex to base
+            shell_sort(channelIndex, channelIndices, pmap.getnMaxima()); // get the order
+            for (int j = 0; j < pmap.getnMaxima(); j++) {
                 current_levels[j] = (int) magnitudes[channelIndices[j]]; //reorder
-                electrode_numbers[j] = map.electrodes[channelIndex[j]];
+                electrode_numbers[j] = pmap.getElectrodes(channelIndex[j]);
             }
         }
 
-        else if (map.stimulationOrder.equals("base-to-apex")) { //base to apex
-            shell_sort(channelIndex, channelIndices, map.nMaxima);
-            for (int j = 0; j < map.nMaxima; j++) {
-                electrode_numbers[j] = map.electrodes[(channelIndex[map.nMaxima - j - 1])];// highest to lowest
-                current_levels[j] = (int) magnitudes[channelIndices[map.nMaxima - j - 1]];
+        else if (pmap.getStimulationOrder().equals("base-to-apex")) { //base to apex
+            shell_sort(channelIndex, channelIndices, pmap.getnMaxima());
+            for (int j = 0; j < pmap.getnMaxima(); j++) {
+                electrode_numbers[j] = pmap.getElectrodes((channelIndex[pmap.getnMaxima()- j - 1]));// highest to lowest
+                current_levels[j] = (int) magnitudes[channelIndices[pmap.getnMaxima()- j - 1]];
             }
         }
         else { // if no stimulation order is intended
-            for (int j = 0; j < map.nMaxima; j++) {
+            for (int j = 0; j < pmap.getnMaxima(); j++) {
                 current_levels[j] = (int)magnitudes[j];
-                electrode_numbers[j] = map.electrodes[channelIndex[j]]; }
+                electrode_numbers[j] = pmap.getElectrodes(channelIndex[j]);
+            }
         }
     }
 
@@ -331,7 +362,7 @@ public class ACE {
         int width; int bin = 3;  int j = 0;
 
         // Filter gains
-        for(int i = 0; i < map.nbands; i++){
+        for(int i = 0; i < pmap.getNbands(); i++){
             width = bandBins[i];
             if (width == 1) { powerGains[i] = windowFrequencyResponse[0]; } // P1
             if (width == 2) { powerGains[i] = windowFrequencyResponse[1]; } // P2
@@ -339,40 +370,47 @@ public class ACE {
         }
 
         // Initialize weights
-        for(int i = 0; i < map.nbands; i++){
-            for(int z = 0; j < NUMBER_OF_BINS; j++) {
+        for (int i = 0; i < pmap.getNbands(); i++){
+            for (int z = 0; j < NUMBER_OF_BINS; j++) {
                 weights[i][z] = 0; } }
 
-        for(int i = 0; i < map.nbands; i++) {
+        for (int i = 0; i < pmap.getNbands(); i++) {
             width = bandBins[i];
-            for(int z = bin; z < bin + width; z++) {
-                weights[i][z-1] = 1; }
-            bin = bin + width; }
+            for (int z = bin; z < bin + width; z++) {
+                weights[i][z-1] = 1;
+            }
+            bin = bin + width;
+        }
 
-        for(int i = 0; i < map.nbands; i++) {
+        for (int i = 0; i < pmap.getNbands(); i++) {
             for(int z = 0; z < NUMBER_OF_BINS; z++) {
-                weights[i][z] = (weights[i][z]/(powerGains[i])); }}
+                weights[i][z] = (weights[i][z]/(powerGains[i]));
+            }
+        }
     }
 
     private void calculateDynamicRange() {
-        for(int i = 0; i < map.nbands; i++)  {
-            ranges[i] = map.MCL[i] - map.THR[i]; }
+        for(int i = 0; i < pmap.getNbands(); i++)  {
+            ranges[i] = pmap.getMCL(i) - pmap.getTHR(i);
+        }
     }
 
     private void initializeGains() {
-        for(int i = 0; i < map.nbands; i++) {
-            bandGains[i] = Math.pow(10.0, (map.gain + map.gains[i]) / 20.0); } // convert from dB to linear scale
+        for(int i = 0; i < pmap.getNbands(); i++) {
+            bandGains[i] = Math.pow(10.0, (pmap.getGain() + pmap.getGains(i)) / 20.0);
+        } // convert from dB to linear scale
     }
 
     private void initializeVolumeSettings() {
-        volumeLevel = (double)map.volume/10; // Volume is on a scale of 0 to 10;
+        volumeLevel = (double)pmap.getVolume()/10; // Volume is on a scale of 0 to 10;
     }
 
     private void initializeChannelIndices() {
-        for(int i = 0; i < map.nMaxima; i++) {
+        for(int i = 0; i < pmap.getnMaxima(); i++) {
             channelIndex[i] = i; }
-        for(int i = 0; i < map.nbands; i++) {
-            electrodeBands[i] = map.numberOfChannels - map.electrodes[i] +1; }
+        for(int i = 0; i < pmap.getNbands(); i++) {
+            electrodeBands[i] = pmap.getNumberOfChannels()- pmap.getElectrodes(i) + 1;
+        }
     }
 
     //This is the nMaximaL sorting stuff
@@ -440,7 +478,7 @@ public class ACE {
     }
 
     private void fftBandBins() {
-        switch (map.nbands) {
+        switch (pmap.getNbands()) {
             case 22:
                 bandBins = new int[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 4, 4, 5, 5, 6, 7, 8};
                 break;

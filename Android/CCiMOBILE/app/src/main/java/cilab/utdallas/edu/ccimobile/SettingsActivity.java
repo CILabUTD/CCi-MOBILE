@@ -18,6 +18,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,11 +37,6 @@ public class SettingsActivity extends AppCompatActivity implements ParametersFra
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
-
-    String leftImplantGeneration, rightImplantGeneration;
-    int leftStimulationModeCode, rightStimulationModeCode, leftPulsesPerFramePerChannel, rightPulsesPerFramePerChannel, leftPulsesPerFrame, rightPulsesPerFrame, leftnRFcycles, rightnRFcycles;
-    double leftMAPsensitivity, rightMAPsensitivity, leftMAPgain, rightMAPgain, leftInterpulseDuration, rightInterpulseDuration;
-    boolean leftExists, rightExists;
 
     FloatingActionButton fab;
     int[] colorIntArray = {R.color.colorAccent, R.color.colorAccent};
@@ -160,50 +156,67 @@ public class SettingsActivity extends AppCompatActivity implements ParametersFra
         // Send info back to first activity
         Intent intent = new Intent();
 
+        // here
+        PatientMAP patientMAPleft = new PatientMAP();
+        PatientMAP patientMAPright = new PatientMAP();
+
         // Get info from Parameters fragment
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this);
-        leftExists = preferences.getBoolean("leftMapExists", false);
-        rightExists = preferences.getBoolean("rightMapExists", false);
+        patientMAPleft.setExists(preferences.getBoolean("leftMapExists", false));
+        patientMAPright.setExists(preferences.getBoolean("rightMapExists", false));
 
-        if (leftExists) {
-            leftMAPsensitivity = getDouble(preferences, "Left.sensitivity");
-            leftMAPgain = getDouble(preferences, "Left.gain");
-            leftImplantGeneration = fo.getLeftImplantGeneration();
-            leftStimulationModeCode = fo.getLeftStimulationModeCode();
-            leftPulsesPerFramePerChannel = fo.getLeftPulsesPerFramePerChannel();
-            leftPulsesPerFrame = fo.getLeftPulsesPerFrame();
-            leftInterpulseDuration = fo.getLeftInterpulseDuration();
-            leftnRFcycles = fo.getLeftnRFcycles();
+        if (patientMAPleft.isExists()) {
+            // insert sound processing strategy
+            patientMAPleft.setnMaxima(preferences.getInt("Left.nMaxima", 0));
+            // insert stimulation mode
+            patientMAPleft.setStimulationModeCode(fo.getLeftStimulationModeCode());
+            patientMAPleft.setStimulationRate(preferences.getInt("Left.stimulationRate", 0));
+            patientMAPleft.setPulseWidth(preferences.getInt("Left.pulseWidth", 0));
+            patientMAPleft.setSensitivity(getDouble(preferences, "Left.sensitivity"));
+            patientMAPleft.setGain(getDouble(preferences, "Left.gain"));
+            patientMAPleft.setVolume(preferences.getInt("Left.volume", 0));
+            patientMAPleft.setQfactor(getDouble(preferences, "Left.Qfactor"));
+            patientMAPleft.setBaseLevel(getDouble(preferences, "Left.baseLevel"));
+            patientMAPleft.setSaturationLevel(getDouble(preferences, "Left.saturationLevel"));
+            patientMAPleft.setStimulationOrder(preferences.getString("Left.stimulationOrder", ""));
+            patientMAPleft.setWindow(preferences.getString("Left.window", ""));
+            // put in full check?
 
-            intent.putExtra("leftSensitivity", leftMAPsensitivity);
-            intent.putExtra("leftGain", leftMAPgain);
-            intent.putExtra("leftMAPimplantGeneration", leftImplantGeneration);
-            intent.putExtra("leftMAPstimulationModeCode", leftStimulationModeCode);
-            intent.putExtra("leftMAPpulsesPerFramePerChannel", leftPulsesPerFramePerChannel);
-            intent.putExtra("leftMAPpulsesPerFrame", leftPulsesPerFrame);
-            intent.putExtra("leftMAPinterpulseDuration", leftInterpulseDuration);
-            intent.putExtra("leftMAPnRFcycles", leftnRFcycles);
+            // other
+            patientMAPleft.setImplantGeneration(fo.getLeftImplantGeneration());
+            patientMAPleft.setPulsesPerFramePerChannel(fo.getLeftPulsesPerFramePerChannel());
+            patientMAPleft.setPulsesPerFrame(fo.getLeftPulsesPerFrame());
+            patientMAPleft.setInterpulseDuration(fo.getLeftInterpulseDuration());
+            patientMAPleft.setnRFcycles(fo.getLeftnRFcycles());
         }
 
-        if (rightExists) {
-            rightMAPsensitivity = getDouble(preferences, "Right.sensitivity");
-            rightMAPgain = getDouble(preferences, "Right.gain");
-            rightImplantGeneration = fo.getRightImplantGeneration();
-            rightStimulationModeCode = fo.getRightStimulationModeCode();
-            rightPulsesPerFramePerChannel = fo.getRightPulsesPerFramePerChannel();
-            rightPulsesPerFrame = fo.getRightPulsesPerFrame();
-            rightInterpulseDuration = fo.getRightInterpulseDuration();
-            rightnRFcycles = fo.getRightnRFcycles();
+        if (patientMAPright.isExists()) {
+            // insert sound processing strategy
+            patientMAPright.setnMaxima(preferences.getInt("Right.nMaxima", 0));
+            // insert stimulation mode
+            patientMAPright.setStimulationModeCode(fo.getRightStimulationModeCode());
+            patientMAPright.setStimulationRate(preferences.getInt("Right.stimulationRate", 0));
+            patientMAPright.setPulseWidth(preferences.getInt("Right.pulseWidth", 0));
+            patientMAPright.setSensitivity(getDouble(preferences, "Right.sensitivity"));
+            patientMAPright.setGain(getDouble(preferences, "Right.gain"));
+            patientMAPright.setVolume(preferences.getInt("Right.volume", 0));
+            patientMAPright.setQfactor(getDouble(preferences, "Right.Qfactor"));
+            patientMAPright.setBaseLevel(getDouble(preferences, "Right.baseLevel"));
+            patientMAPright.setSaturationLevel(getDouble(preferences, "Right.saturationLevel"));
+            patientMAPright.setStimulationOrder(preferences.getString("Right.stimulationOrder", ""));
+            patientMAPright.setWindow(preferences.getString("Right.window", ""));
+            // put in full check?
 
-            intent.putExtra("rightSensitivity", rightMAPsensitivity);
-            intent.putExtra("rightGain", rightMAPgain);
-            intent.putExtra("rightMAPimplantGeneration", rightImplantGeneration);
-            intent.putExtra("rightMAPstimulationModeCode", rightStimulationModeCode);
-            intent.putExtra("rightMAPpulsesPerFramePerChannel", rightPulsesPerFramePerChannel);
-            intent.putExtra("rightMAPpulsesPerFrame", rightPulsesPerFrame);
-            intent.putExtra("rightMAPinterpulseDuration", rightInterpulseDuration);
-            intent.putExtra("rightMAPnRFcycles", rightnRFcycles);
+            // other
+            patientMAPright.setImplantGeneration(fo.getRightImplantGeneration());
+            patientMAPright.setPulsesPerFramePerChannel(fo.getRightPulsesPerFramePerChannel());
+            patientMAPright.setPulsesPerFrame(fo.getRightPulsesPerFrame());
+            patientMAPright.setInterpulseDuration(fo.getRightInterpulseDuration());
+            patientMAPright.setnRFcycles(fo.getRightnRFcycles());
         }
+
+        intent.putExtra("PatientMAPleft", patientMAPleft);
+        intent.putExtra("PatientMAPright", patientMAPright);
 
         setResult(RESULT_OK, intent);
     }
@@ -246,44 +259,31 @@ public class SettingsActivity extends AppCompatActivity implements ParametersFra
         }
 
         /**
-         * Gets data from the MAP using SharedPreferences
+         * Gets data from the MAP
          */
         private void getElectrodeFromMAP() {
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+            Intent intent = Objects.requireNonNull(getActivity()).getIntent();
+            PatientMAP pmapleft = intent.getParcelableExtra("PatientMAPleft");
+            PatientMAP pmapright = intent.getParcelableExtra("PatientMAPright");
 
-            leftExists = preferences.getBoolean("leftMapExists", false);
-            rightExists = preferences.getBoolean("rightMapExists", false);
+            leftExists = pmapleft.isExists();
+            rightExists = pmapright.isExists();
 
             if (leftExists) {
-                leftMAPnbands = preferences.getInt("leftMAPnbands", 0);
-                leftMAPTHR = new int[leftMAPnbands];
-                leftMAPMCL = new int[leftMAPnbands];
-                leftMAPgains = new double[leftMAPnbands];
-                leftMAPelectrodes = new int[leftMAPnbands];
-
-                for (int i = 0; i < leftMAPnbands; i++) {
-                    leftMAPTHR[i] = preferences.getInt("leftTHR" + i, 0);
-                    leftMAPMCL[i] = preferences.getInt("leftMCL" + i, 0);
-                    leftMAPgains[i] = getDouble(preferences, "leftgain" + i);
-                    leftMAPelectrodes[i] = preferences.getInt("leftelectrodes" + i, 0);
-                }
+                leftMAPnbands = pmapleft.getNbands();
+                leftMAPTHR = pmapleft.getTHR();
+                leftMAPMCL = pmapleft.getMCL();
+                leftMAPgains = pmapleft.getGains();
+                leftMAPelectrodes = pmapleft.getElectrodes();
             }
 
             if (rightExists) {
-                rightMAPnbands = preferences.getInt("rightMAPnbands", 0);
-                rightMAPTHR = new int[rightMAPnbands];
-                rightMAPMCL = new int[rightMAPnbands];
-                rightMAPgains = new double[rightMAPnbands];
-                rightMAPelectrodes = new int[rightMAPnbands];
-
-                for (int i = 0; i < rightMAPnbands; i++) {
-                    rightMAPTHR[i] = preferences.getInt("rightTHR" + i, 0);
-                    rightMAPMCL[i] = preferences.getInt("rightMCL" + i, 0);
-                    rightMAPgains[i] = getDouble(preferences, "rightgain" + i);
-                    rightMAPelectrodes[i] = preferences.getInt("rightelectrodes" + i, 0);
-                }
+                rightMAPnbands = pmapright.getNbands();
+                rightMAPTHR = pmapright.getTHR();
+                rightMAPMCL = pmapright.getMCL();
+                rightMAPgains = pmapright.getGains();
+                rightMAPelectrodes = pmapright.getElectrodes();
             }
-
 
             if (leftExists || rightExists) {
                 updateElectrodeLayout();
@@ -320,10 +320,6 @@ public class SettingsActivity extends AppCompatActivity implements ParametersFra
         public void onItemClick(View view, int position) {
             // Toast.makeText(getContext(),"Example", Toast.LENGTH_SHORT).show();
             // Toast.makeText(this, "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
-        }
-
-        private double getDouble(final SharedPreferences prefs, final String key) {
-            return Double.longBitsToDouble(prefs.getLong(key, Double.doubleToLongBits((double) 0)));
         }
     }
 
