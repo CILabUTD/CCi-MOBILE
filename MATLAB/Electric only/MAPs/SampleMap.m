@@ -20,10 +20,10 @@ MAP.Left.ImplantType        = 'CI24RE';     %Implant chip type, e.g., CI24RE(CS/
 MAP.Left.SamplingFrequency  = 16000;        % Fixed
 MAP.Left.NumberOfChannels   = 22;           % 22 fixed for imlants from Cochlear Ltd.
 MAP.Left.Strategy           = 'ACE';        % 'ACE' or 'CIS' or 'Custom'
-MAP.Left.Nmaxima            = 8;            % Nmaxima 1 - 22 for n-of-m strategies
+MAP.Left.Nmaxima            = 16;           % Nmaxima 1 - 22 for n-of-m strategies
 MAP.Left.StimulationMode    = 'MP1+2';      % Electrode Configuration/Stimulation mode e.g., MP1, MP1+2, BP1, BP1+2, CG,....etc.
-MAP.Left.StimulationRate    = 1000;         % Stimulation rate per electrode in number of pulses per second (pps)
-MAP.Left.PulseWidth         = 25;           % Pulse width in us
+MAP.Left.StimulationRate    = 125;          % Stimulation rate per electrode in number of pulses per second (pps)
+MAP.Left.PulseWidth         = 350;          % Pulse width in us
 MAP.Left.IPG                = 8;            % Inter-Phase Gap (IPG) fixed at 8us (could be variable in future)
 MAP.Left.Sensitivity        = 2.3;          % Microphone Sensitivity (adjustable in GUI)
 MAP.Left.Gain               = 25;           % Global gain for envelopes in dB - standard is 25dB (adjustable in GUI)
@@ -36,8 +36,8 @@ MAP.Left.FrequencyTable     = 'Default';    % Frequency assignment for each band
 MAP.Left.Window             = 'Hanning';     % Window type
 MAP.Left.El_CF1_CF2_THR_MCL_Gain = [
   % El  F_Low   F_High  THR     MCL     Gain
-    22  188     313     100     200     0.0
-    21	313     438     100     200     0.0
+    22  188     313     189     228     0.0
+    21	313     438     10      240     0.0
     20	438     563     100     200     0.0
     19	563     688     100     200     0.0
     18	688     813     100     200     0.0

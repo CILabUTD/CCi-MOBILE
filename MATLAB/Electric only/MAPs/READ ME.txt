@@ -1,4 +1,4 @@
------- This is the README for CCi-Mobile Version 2.2c -----
+------ This is the README for CCi-Mobile Version 2.2s -----
 
 Folder: MAPs
 This folder contains sample MAPs. Create new MAP files for 
@@ -9,4 +9,3 @@ can be copied and edited for each individual user.
   'SampleMap.m'
 	Description: Signal processing parameters are stored
 	within the MATLAB program.
-

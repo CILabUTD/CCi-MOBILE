@@ -444,12 +444,16 @@ while handles.stop == 0 % use while else timing won't be right
             audio_left = double(AD_data(1:2:end));          % Type cast to double for processing
             audio_left =  (p.Left.scale_factor).*audio_left; % 2.3/32768 at 25 dB gain or 1/32768 at 33dB gain for 1kHz at 65dB SPl to equate to MCL p.sensitivity.
             stimuli.left = ACE_Processing_Realtime(audio_left, bufferHistory_left, p.Left);
+                % Verify current compliance (from stimuli)
+                stimuli = stimuli_check(stimuli);
         end
         
         if (p.General.RightOn == 1)
             audio_right=double(AD_data(2:2:end));
             audio_right = (p.Right.scale_factor).*audio_right;
             stimuli.right = ACE_Processing_Realtime(audio_right, bufferHistory_right, p.Right);
+                % Verify current compliance (from stimuli)
+                stimuli = stimuli_check(stimuli);
         end
         
         axes(handles.axes3);

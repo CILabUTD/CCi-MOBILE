@@ -1,15 +1,21 @@
 function Stream(stimuli)
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Funtion Stream(signal) reads the stimuli and its parameters from the input
 % structure signal and streams them to the CCIMobile platform
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %             Author: Hussnain Ali
 %               Date: 06/21/16
-% University of Texas at Dallas (c) Copyright 2016
+%            Updated: Ram Charan Chandra Shekar
+%               Date: 09/26/2019
+% University of Texas at Dallas (c) Copyright 2019
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-p=stimuli.map;
+
+p = stimuli.map;
+% Verify current compliance (from stimuli)
+stimuli = stimuli_check(stimuli);
+% Initialize the board
 s = initializeBoard(p);
+% Initialize the buffer
 outputBuffer = create_output_buffer(p);
 
 if (isfield(p,'Left') ==1)
