@@ -1,0 +1,10 @@
+% AudioRecorder
+% Records the stereo audio signal from the BTE and stores into wave file
+% 'BTEaudio.wav'
+
+AudioRecorder allows you to record the incoming acoustic signals from the BTEs and stores the stereo acoustic signal in an audio file.
+Run AudioRecorder.m, GUI for Audio Recording will appear.
+Press the start button, to record the acoustic signals from the BTEs bilaterally. Press the stop button to stop recording. An audio (.wav) file will be created with name ‘BTEaudio.wav’ in the directory. Press the play button to play the captured audio from your PC’s speakers. 
+
+This application can also be used to check the integrity of the audio signal as well as timing integrity of real-time processing.
+
