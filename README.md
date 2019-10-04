@@ -1,4 +1,5 @@
 CCi-MOBILE version 2.2s
+
 In the latest release of the CCi-MOBILE software suite, new features were added to existing functionality to communicate to the user when stimulation parameters (clinical levels/current levels) generated from custom signal processing are out of safe operating limits. Additionally, these safety features were migrated from traditional MATLAB script (.m) to protected scripts (.p files). These features help ensure researchers maintain the safety of cochlear implant users.
 
 [Please refer to the full documentation for this patch here.](MATLAB/Electric%20only/2019-CCi-MOBILE-Safety-Software-Patch_Sept26-2019.pdf)
