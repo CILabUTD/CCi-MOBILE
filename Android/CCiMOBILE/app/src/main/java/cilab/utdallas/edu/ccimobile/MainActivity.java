@@ -115,14 +115,20 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
 
     TextView status, connectionStatus, leftSensitivity, rightSensitivity, leftGain, rightGain, textViewMAP;
     ImageView statusImage;
+    TextView LEDLeft1, LEDLeft2, LEDLeft3, LEDLeft4, LEDLeft5, LEDLeft6, LEDLeft7, LEDLeft8, LEDLeft9, LEDLeft10, LEDLeft11, LEDLeft12, LEDLeft13, LEDLeft14, LEDLeft15, LEDLeft16, LEDLeft17, LEDLeft18, LEDLeft19, LEDLeft20, LEDLeft21, LEDLeft22;
+    TextView LEDRight1, LEDRight2, LEDRight3, LEDRight4, LEDRight5, LEDRight6, LEDRight7, LEDRight8, LEDRight9, LEDRight10, LEDRight11, LEDRight12, LEDRight13, LEDRight14, LEDRight15, LEDRight16, LEDRight17, LEDRight18, LEDRight19, LEDRight20, LEDRight21, LEDRight22;
     ToggleButton buttonStartStop, buttonOnOff;
     Button buttonSaveMAP;
+
+    Timer timer;
 
     BubbleSeekBar bubbleLeftSens, bubbleLeftGain, bubbleRightSens, bubbleRightGain;
 
     private static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 12;
     private static final int READ_REQUEST_CODE = 42;
     private static final int RETURN_FROM_SETTINGS = 3;
+
+
 
     /**
      * Called when the application is first created.
@@ -162,96 +168,351 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         rightSensitivity.setText(R.string.textRightSens);
         rightGain.setText(R.string.textRightGain);
 
-        // chart
-        SciChartSurface surface = findViewById(R.id.chartSurface);
+//        // chart
+//        SciChartSurface surface = findViewById(R.id.chartSurface);
+//
+//        surface.setTheme(R.style.SciChart_Bright_Spark);
+//
+//        // Licensing SciChartSurface
+//        try {
+//            SciChartSurface.setRuntimeLicenseKeyFromResource(this, "app\\src\\main\\res\\raw\\license.xml");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        // Initialize the SciChartBuilder
+//        SciChartBuilder.init(this);
+//
+//        // Obtain the SciChartBuilder instance
+//        final SciChartBuilder sciChartBuilder = SciChartBuilder.instance();
+//
+//        // Create a numeric X axis
+//        final IAxis xAxis = sciChartBuilder.newNumericAxis()
+//                .withAxisTitle("Channel")
+//                .withVisibleRange(1, 22)
+//                .build();
+//
+//        // Create a numeric Y axis
+//        final IAxis yAxis = sciChartBuilder.newNumericAxis() // 250 max
+//                .withAxisTitle("Clinical Level")
+//                .withVisibleRange(0, 250)
+//                .build();
+//
+//        // Add the Y axis to the YAxes collection of the surface
+//        Collections.addAll(surface.getYAxes(), yAxis);
+//
+//        // Add the X axis to the XAxes collection of the surface
+//        Collections.addAll(surface.getXAxes(), xAxis);
+//
+//        final XyDataSeries lineData = sciChartBuilder.newXyDataSeries(Integer.class, Double.class).build();
+//        final int dataCount = 22;
+//
+//        // initialize with max values
+//        for (int i = 0; i < dataCount; i++)
+//        {
+//            lineData.append(i+1, (double) 250);
+//        }
+//
+//        // Set up an update
+//        final DoubleValues lineDoubleData = new DoubleValues(dataCount);
+//        lineDoubleData.setSize(dataCount);
+//
+//        TimerTask updateDataTask = new TimerTask() {
+//            @Override
+//            public void run() {
+//                UpdateSuspender.using(surface, () -> {
+//                    // Clear data
+//                    for (int i = 0; i < dataCount; i++) {
+//                        lineDoubleData.set(i, 0);
+//                    }
+//
+//                    // Put in active electrodes & current values (convert to channels) for first nMaxima
+//                    for (int i = 0; i < leftMAP.nMaxima; i++) {
+//                        lineDoubleData.set(dataCount-leftStimuli.Electrodes[i], leftStimuli.Amplitudes[i]);
+//                    }
+//
+//                    // Update DataSeries using bunch update
+//                    lineData.updateRangeYAt(0, lineDoubleData);
+//                    //surface.zoomExtents();
+//                });
+//            }
+//        };
+//
+//        Timer timer = new Timer();
+//        long delay = 0;
+//        long interval = 50; // updates every X ms
+//        timer.schedule(updateDataTask, delay, interval);
+//
+//        // Create and configure the Column Chart Series
+//        final FastColumnRenderableSeries columnSeries = sciChartBuilder.newColumnSeries()
+//                .withStrokeStyle(0xA99A8A)
+//                .withDataPointWidth(1)
+//                .withLinearGradientColors(ColorUtil.LightSteelBlue, ColorUtil.SteelBlue)
+//                .withDataSeries(lineData)
+//                .build();
+//
+//        // Add the chart series to the RenderableSeriesCollection of the surface
+//        Collections.addAll(surface.getRenderableSeries(), columnSeries);
+//
+//        // Should be called at the end of chart set up
+//        surface.zoomExtents();
 
-        surface.setTheme(R.style.SciChart_Bright_Spark);
+        LEDLeft1 = findViewById(R.id.LEDLeft1);
+        LEDLeft2 = findViewById(R.id.LEDLeft2);
+        LEDLeft3 = findViewById(R.id.LEDLeft3);
+        LEDLeft4 = findViewById(R.id.LEDLeft4);
+        LEDLeft5 = findViewById(R.id.LEDLeft5);
+        LEDLeft6 = findViewById(R.id.LEDLeft6);
+        LEDLeft7 = findViewById(R.id.LEDLeft7);
+        LEDLeft8 = findViewById(R.id.LEDLeft8);
+        LEDLeft9 = findViewById(R.id.LEDLeft9);
+        LEDLeft10 = findViewById(R.id.LEDLeft10);
+        LEDLeft11 = findViewById(R.id.LEDLeft11);
+        LEDLeft12 = findViewById(R.id.LEDLeft12);
+        LEDLeft13 = findViewById(R.id.LEDLeft13);
+        LEDLeft14 = findViewById(R.id.LEDLeft14);
+        LEDLeft15 = findViewById(R.id.LEDLeft15);
+        LEDLeft16 = findViewById(R.id.LEDLeft16);
+        LEDLeft17 = findViewById(R.id.LEDLeft17);
+        LEDLeft18 = findViewById(R.id.LEDLeft18);
+        LEDLeft19 = findViewById(R.id.LEDLeft19);
+        LEDLeft20 = findViewById(R.id.LEDLeft20);
+        LEDLeft21 = findViewById(R.id.LEDLeft21);
+        LEDLeft22 = findViewById(R.id.LEDLeft22);
 
-        // Licensing SciChartSurface
-        try {
-            SciChartSurface.setRuntimeLicenseKeyFromResource(this, "app\\src\\main\\res\\raw\\license.xml");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        LEDRight1 = findViewById(R.id.LEDRight1);
+        LEDRight2 = findViewById(R.id.LEDRight2);
+        LEDRight3 = findViewById(R.id.LEDRight3);
+        LEDRight4 = findViewById(R.id.LEDRight4);
+        LEDRight5 = findViewById(R.id.LEDRight5);
+        LEDRight6 = findViewById(R.id.LEDRight6);
+        LEDRight7 = findViewById(R.id.LEDRight7);
+        LEDRight8 = findViewById(R.id.LEDRight8);
+        LEDRight9 = findViewById(R.id.LEDRight9);
+        LEDRight10 = findViewById(R.id.LEDRight10);
+        LEDRight11 = findViewById(R.id.LEDRight11);
+        LEDRight12 = findViewById(R.id.LEDRight12);
+        LEDRight13 = findViewById(R.id.LEDRight13);
+        LEDRight14 = findViewById(R.id.LEDRight14);
+        LEDRight15 = findViewById(R.id.LEDRight15);
+        LEDRight16 = findViewById(R.id.LEDRight16);
+        LEDRight17 = findViewById(R.id.LEDRight17);
+        LEDRight18 = findViewById(R.id.LEDRight18);
+        LEDRight19 = findViewById(R.id.LEDRight19);
+        LEDRight20 = findViewById(R.id.LEDRight20);
+        LEDRight21 = findViewById(R.id.LEDRight21);
+        LEDRight22 = findViewById(R.id.LEDRight22);
 
-        // Initialize the SciChartBuilder
-        SciChartBuilder.init(this);
+        String electrodeOff = ".";
+        String electrodeOn = "*";
 
-        // Obtain the SciChartBuilder instance
-        final SciChartBuilder sciChartBuilder = SciChartBuilder.instance();
-
-        // Create a numeric X axis
-        final IAxis xAxis = sciChartBuilder.newNumericAxis()
-                .withAxisTitle("Channel")
-                .withVisibleRange(1, 22)
-                .build();
-
-        // Create a numeric Y axis
-        final IAxis yAxis = sciChartBuilder.newNumericAxis() // 250 max
-                .withAxisTitle("Clinical Level")
-                .withVisibleRange(0, 250)
-                .build();
-
-        // Add the Y axis to the YAxes collection of the surface
-        Collections.addAll(surface.getYAxes(), yAxis);
-
-        // Add the X axis to the XAxes collection of the surface
-        Collections.addAll(surface.getXAxes(), xAxis);
-
-        final XyDataSeries lineData = sciChartBuilder.newXyDataSeries(Integer.class, Double.class).build();
-        final int dataCount = 22;
-
-        // initialize with max values
-        for (int i = 0; i < dataCount; i++)
-        {
-            lineData.append(i+1, (double) 250);
-        }
-
-        // Set up an update
-        final DoubleValues lineDoubleData = new DoubleValues(dataCount);
-        lineDoubleData.setSize(dataCount);
-
-        TimerTask updateDataTask = new TimerTask() {
+        TimerTask updateVisuals = new TimerTask() {
             @Override
             public void run() {
-                UpdateSuspender.using(surface, () -> {
-                    // Clear data
-                    for (int i = 0; i < dataCount; i++) {
-                        lineDoubleData.set(i, 0);
-                    }
+                // Turn on
+                if (leftMAP != null && leftMAP.exists && leftStimuli != null) {
+                    // Reset
+                    LEDLeft1.setText(electrodeOff);
+                    LEDLeft2.setText(electrodeOff);
+                    LEDLeft3.setText(electrodeOff);
+                    LEDLeft4.setText(electrodeOff);
+                    LEDLeft5.setText(electrodeOff);
+                    LEDLeft6.setText(electrodeOff);
+                    LEDLeft7.setText(electrodeOff);
+                    LEDLeft8.setText(electrodeOff);
+                    LEDLeft9.setText(electrodeOff);
+                    LEDLeft10.setText(electrodeOff);
+                    LEDLeft11.setText(electrodeOff);
+                    LEDLeft12.setText(electrodeOff);
+                    LEDLeft13.setText(electrodeOff);
+                    LEDLeft14.setText(electrodeOff);
+                    LEDLeft15.setText(electrodeOff);
+                    LEDLeft16.setText(electrodeOff);
+                    LEDLeft17.setText(electrodeOff);
+                    LEDLeft18.setText(electrodeOff);
+                    LEDLeft19.setText(electrodeOff);
+                    LEDLeft20.setText(electrodeOff);
+                    LEDLeft21.setText(electrodeOff);
+                    LEDLeft22.setText(electrodeOff);
 
-                    // Put in active electrodes & current values (convert to channels) for first nMaxima
-                    for (int i = 0; i < leftMAP.nMaxima; i++) {
-                        lineDoubleData.set(dataCount-leftStimuli.Electrodes[i], leftStimuli.Amplitudes[i]);
+                    for (int i=0; i<leftMAP.nMaxima; i++) {
+                        switch (leftStimuli.Electrodes[i]) {
+                            case 1:
+                                LEDLeft1.setText(electrodeOn);
+                                break;
+                            case 2:
+                                LEDLeft2.setText(electrodeOn);
+                                break;
+                            case 3:
+                                LEDLeft3.setText(electrodeOn);
+                                break;
+                            case 4:
+                                LEDLeft4.setText(electrodeOn);
+                                break;
+                            case 5:
+                                LEDLeft5.setText(electrodeOn);
+                                break;
+                            case 6:
+                                LEDLeft6.setText(electrodeOn);
+                                break;
+                            case 7:
+                                LEDLeft7.setText(electrodeOn);
+                                break;
+                            case 8:
+                                LEDLeft8.setText(electrodeOn);
+                                break;
+                            case 9:
+                                LEDLeft9.setText(electrodeOn);
+                                break;
+                            case 10:
+                                LEDLeft10.setText(electrodeOn);
+                                break;
+                            case 11:
+                                LEDLeft11.setText(electrodeOn);
+                                break;
+                            case 12:
+                                LEDLeft12.setText(electrodeOn);
+                                break;
+                            case 13:
+                                LEDLeft13.setText(electrodeOn);
+                                break;
+                            case 14:
+                                LEDLeft14.setText(electrodeOn);
+                                break;
+                            case 15:
+                                LEDLeft15.setText(electrodeOn);
+                                break;
+                            case 16:
+                                LEDLeft16.setText(electrodeOn);
+                                break;
+                            case 17:
+                                LEDLeft17.setText(electrodeOn);
+                                break;
+                            case 18:
+                                LEDLeft18.setText(electrodeOn);
+                                break;
+                            case 19:
+                                LEDLeft19.setText(electrodeOn);
+                                break;
+                            case 20:
+                                LEDLeft20.setText(electrodeOn);
+                                break;
+                            case 21:
+                                LEDLeft21.setText(electrodeOn);
+                                break;
+                            case 22:
+                                LEDLeft22.setText(electrodeOn);
+                                break;
+                            }
                     }
+                }
 
-                    // Update DataSeries using bunch update
-                    lineData.updateRangeYAt(0, lineDoubleData);
-                    //surface.zoomExtents();
-                });
+                if (rightMAP != null && rightMAP.exists && rightStimuli != null) {
+                    // Reset
+                    LEDRight1.setText(electrodeOff);
+                    LEDRight2.setText(electrodeOff);
+                    LEDRight3.setText(electrodeOff);
+                    LEDRight4.setText(electrodeOff);
+                    LEDRight5.setText(electrodeOff);
+                    LEDRight6.setText(electrodeOff);
+                    LEDRight7.setText(electrodeOff);
+                    LEDRight8.setText(electrodeOff);
+                    LEDRight9.setText(electrodeOff);
+                    LEDRight10.setText(electrodeOff);
+                    LEDRight11.setText(electrodeOff);
+                    LEDRight12.setText(electrodeOff);
+                    LEDRight13.setText(electrodeOff);
+                    LEDRight14.setText(electrodeOff);
+                    LEDRight15.setText(electrodeOff);
+                    LEDRight16.setText(electrodeOff);
+                    LEDRight17.setText(electrodeOff);
+                    LEDRight18.setText(electrodeOff);
+                    LEDRight19.setText(electrodeOff);
+                    LEDRight20.setText(electrodeOff);
+                    LEDRight21.setText(electrodeOff);
+                    LEDRight22.setText(electrodeOff);
+
+                    for (int i=0; i<rightMAP.nMaxima; i++) {
+                        switch (rightStimuli.Electrodes[i]) {
+                            case 1:
+                                LEDRight1.setText(electrodeOn);
+                                break;
+                            case 2:
+                                LEDRight2.setText(electrodeOn);
+                                break;
+                            case 3:
+                                LEDRight3.setText(electrodeOn);
+                                break;
+                            case 4:
+                                LEDRight4.setText(electrodeOn);
+                                break;
+                            case 5:
+                                LEDRight5.setText(electrodeOn);
+                                break;
+                            case 6:
+                                LEDRight6.setText(electrodeOn);
+                                break;
+                            case 7:
+                                LEDRight7.setText(electrodeOn);
+                                break;
+                            case 8:
+                                LEDRight8.setText(electrodeOn);
+                                break;
+                            case 9:
+                                LEDRight9.setText(electrodeOn);
+                                break;
+                            case 10:
+                                LEDRight10.setText(electrodeOn);
+                                break;
+                            case 11:
+                                LEDRight11.setText(electrodeOn);
+                                break;
+                            case 12:
+                                LEDRight12.setText(electrodeOn);
+                                break;
+                            case 13:
+                                LEDRight13.setText(electrodeOn);
+                                break;
+                            case 14:
+                                LEDRight14.setText(electrodeOn);
+                                break;
+                            case 15:
+                                LEDRight15.setText(electrodeOn);
+                                break;
+                            case 16:
+                                LEDRight16.setText(electrodeOn);
+                                break;
+                            case 17:
+                                LEDRight17.setText(electrodeOn);
+                                break;
+                            case 18:
+                                LEDRight18.setText(electrodeOn);
+                                break;
+                            case 19:
+                                LEDRight19.setText(electrodeOn);
+                                break;
+                            case 20:
+                                LEDRight20.setText(electrodeOn);
+                                break;
+                            case 21:
+                                LEDRight21.setText(electrodeOn);
+                                break;
+                            case 22:
+                                LEDRight22.setText(electrodeOn);
+                                break;
+                        }
+                    }
+                }
+
             }
         };
 
-        Timer timer = new Timer();
+        timer = new Timer();
         long delay = 0;
-        long interval = 50; // updates every X ms
-        timer.schedule(updateDataTask, delay, interval);
-
-        // Create and configure the Column Chart Series
-        final FastColumnRenderableSeries columnSeries = sciChartBuilder.newColumnSeries()
-                .withStrokeStyle(0xA99A8A)
-                .withDataPointWidth(1)
-                .withLinearGradientColors(ColorUtil.LightSteelBlue, ColorUtil.SteelBlue)
-                .withDataSeries(lineData)
-                .build();
-
-        // Add the chart series to the RenderableSeriesCollection of the surface
-        Collections.addAll(surface.getRenderableSeries(), columnSeries);
-
-        // Should be called at the end of chart set up
-        surface.zoomExtents();
-
+        long interval = 500; // updates every X ms
+        timer.schedule(updateVisuals, delay, interval);
     }
+
 
     /**
      * Called when the SELECT MAP button is pressed. It checks for permission from the user to
@@ -520,7 +781,7 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
      */
     public void writeJSONElectrodes(JsonWriter writer, MAP map) throws IOException {
         writer.beginArray();
-        int numElectrodes = 22;
+        int numElectrodes = map.nbands; // 22
 
         for (int i = 0; i < numElectrodes; i++) {
             writer.beginObject();

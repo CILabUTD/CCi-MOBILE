@@ -136,11 +136,11 @@
             android:id="@+id/textViewLeftSensitivity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="64dp"
             android:text="@string/textLeftSens"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/chartSurface" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutRight" />
 
         <com.xw.repo.BubbleSeekBar
             android:id="@+id/bubbleSeekBarLeftSensitivity"
@@ -240,17 +240,379 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewRightGain" />
 
-        <view
-            android:id="@+id/chartSurface"
-            class="com.scichart.charting.visuals.SciChartSurface"
-            android:layout_width="0dp"
-            android:layout_height="216dp"
+        <LinearLayout
+            android:id="@+id/linearLayoutLeft"
+            android:layout_width="409dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_weight="1"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/electrodesLeftLabel">
+
+            <TextView
+                android:id="@+id/LEDLeft22"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDLeft21"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDLeft20"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDLeft19"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDLeft18"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDLeft17"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDLeft16"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDLeft15"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDLeft14"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDLeft13"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDLeft12"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDLeft11"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDLeft10"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDLeft9"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDLeft8"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDLeft7"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDLeft6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDLeft5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDLeft4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDLeft3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDLeft2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDLeft1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutRight"
+            android:layout_width="409dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/electrodesRightLabel">
+
+            <TextView
+                android:id="@+id/LEDRight22"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDRight21"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDRight20"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDRight19"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDRight18"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDRight17"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDRight16"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDRight15"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDRight14"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDRight13"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDRight12"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDRight11"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDRight10"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDRight9"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDRight8"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDRight7"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDRight6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDRight5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDRight4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDRight3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDRight2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+            <TextView
+                android:id="@+id/LEDRight1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="." />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/electrodesLeftLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="Left Electrodes"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView215" />
+
+        <TextView
+            android:id="@+id/electrodesRightLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Right Electrodes"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/linearLayoutLeft" />
+
+        <TextView
+            android:id="@+id/textView24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
+            android:text="22"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView215" />
+
+        <TextView
+            android:id="@+id/textView25"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="8dp"
+            android:text="1"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView215" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
