@@ -42,14 +42,6 @@ import com.ftdi.j2xx.D2xxManager;
 import com.ftdi.j2xx.FT_Device;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
-import com.scichart.charting.model.dataSeries.XyDataSeries;
-import com.scichart.charting.visuals.SciChartSurface;
-import com.scichart.charting.visuals.axes.IAxis;
-import com.scichart.charting.visuals.renderableSeries.FastColumnRenderableSeries;
-import com.scichart.core.framework.UpdateSuspender;
-import com.scichart.core.model.DoubleValues;
-import com.scichart.drawing.utility.ColorUtil;
-import com.scichart.extensions.builders.SciChartBuilder;
 import com.xw.repo.BubbleSeekBar;
 
 import java.io.File;
@@ -61,7 +53,6 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Queue;
@@ -167,95 +158,6 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
         leftGain.setText(R.string.textLeftGain);
         rightSensitivity.setText(R.string.textRightSens);
         rightGain.setText(R.string.textRightGain);
-
-//        // chart
-//        SciChartSurface surface = findViewById(R.id.chartSurface);
-//
-//        surface.setTheme(R.style.SciChart_Bright_Spark);
-//
-//        // Licensing SciChartSurface
-//        try {
-//            SciChartSurface.setRuntimeLicenseKeyFromResource(this, "app\\src\\main\\res\\raw\\license.xml");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        // Initialize the SciChartBuilder
-//        SciChartBuilder.init(this);
-//
-//        // Obtain the SciChartBuilder instance
-//        final SciChartBuilder sciChartBuilder = SciChartBuilder.instance();
-//
-//        // Create a numeric X axis
-//        final IAxis xAxis = sciChartBuilder.newNumericAxis()
-//                .withAxisTitle("Channel")
-//                .withVisibleRange(1, 22)
-//                .build();
-//
-//        // Create a numeric Y axis
-//        final IAxis yAxis = sciChartBuilder.newNumericAxis() // 250 max
-//                .withAxisTitle("Clinical Level")
-//                .withVisibleRange(0, 250)
-//                .build();
-//
-//        // Add the Y axis to the YAxes collection of the surface
-//        Collections.addAll(surface.getYAxes(), yAxis);
-//
-//        // Add the X axis to the XAxes collection of the surface
-//        Collections.addAll(surface.getXAxes(), xAxis);
-//
-//        final XyDataSeries lineData = sciChartBuilder.newXyDataSeries(Integer.class, Double.class).build();
-//        final int dataCount = 22;
-//
-//        // initialize with max values
-//        for (int i = 0; i < dataCount; i++)
-//        {
-//            lineData.append(i+1, (double) 250);
-//        }
-//
-//        // Set up an update
-//        final DoubleValues lineDoubleData = new DoubleValues(dataCount);
-//        lineDoubleData.setSize(dataCount);
-//
-//        TimerTask updateDataTask = new TimerTask() {
-//            @Override
-//            public void run() {
-//                UpdateSuspender.using(surface, () -> {
-//                    // Clear data
-//                    for (int i = 0; i < dataCount; i++) {
-//                        lineDoubleData.set(i, 0);
-//                    }
-//
-//                    // Put in active electrodes & current values (convert to channels) for first nMaxima
-//                    for (int i = 0; i < leftMAP.nMaxima; i++) {
-//                        lineDoubleData.set(dataCount-leftStimuli.Electrodes[i], leftStimuli.Amplitudes[i]);
-//                    }
-//
-//                    // Update DataSeries using bunch update
-//                    lineData.updateRangeYAt(0, lineDoubleData);
-//                    //surface.zoomExtents();
-//                });
-//            }
-//        };
-//
-//        Timer timer = new Timer();
-//        long delay = 0;
-//        long interval = 50; // updates every X ms
-//        timer.schedule(updateDataTask, delay, interval);
-//
-//        // Create and configure the Column Chart Series
-//        final FastColumnRenderableSeries columnSeries = sciChartBuilder.newColumnSeries()
-//                .withStrokeStyle(0xA99A8A)
-//                .withDataPointWidth(1)
-//                .withLinearGradientColors(ColorUtil.LightSteelBlue, ColorUtil.SteelBlue)
-//                .withDataSeries(lineData)
-//                .build();
-//
-//        // Add the chart series to the RenderableSeriesCollection of the surface
-//        Collections.addAll(surface.getRenderableSeries(), columnSeries);
-//
-//        // Should be called at the end of chart set up
-//        surface.zoomExtents();
 
         LEDLeft1 = findViewById(R.id.LEDLeft1);
         LEDLeft2 = findViewById(R.id.LEDLeft2);
@@ -2111,8 +2013,10 @@ public class MainActivity extends AppCompatActivity implements InitializationRes
                     }
 
                     // STEP 2: Process Audio Signal
-                    leftStimuli = leftACE.processAudio(leftData);
-                    rightStimuli = rightACE.processAudio(rightData);
+                    if (leftMAP.exists)
+                        leftStimuli = leftACE.processAudio(leftData);
+                    if (rightMAP.exists)
+                        rightStimuli = rightACE.processAudio(rightData);
 
                     // STEP 3: Stream Stimuli
                     updateOutputBuffer(); // comment this to pass sine wave
