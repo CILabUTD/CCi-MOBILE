@@ -12,28 +12,28 @@ MAP.General.MapTitle         = 'S01_ACE_900Hz';    % Optional: Map Title
 
 MAP.General.NumberOfImplants = 2;                  % '1' for Unilateral and '2' for Bilateral
 MAP.General.ImplantedEar     = 'Bilateral';        % 'Left' for left side; 'Right' for right side; 'Bilateral' for both sides
-MAP.General.StimulateEars    = 'Bilateral';        % 'Left' for left only; 'Right' for right only; 'Both'|'Bilateral' for both sides; 'NULL' for no stimulation
+MAP.General.StimulateEars    = 'Both';             % 'Left' for left only; 'Right' for right only; 'Both'|'Bilateral' for both sides; 'NULL' for no stimulation
 
 %% Left Ear Parameters
 %  remove this section if left side does not exist
-MAP.Left.ImplantType        = 'CI24RE';     %Implant chip type, e.g., CI24RE(CS/CA), CI24R, CI24M, CI22M, ST
-MAP.Left.SamplingFrequency  = 16000;        % Fixed
-MAP.Left.NumberOfChannels   = 22;           % 22 fixed for imlants from Cochlear Ltd.
-MAP.Left.Strategy           = 'ACE';        % 'ACE' or 'CIS' or 'Custom'
-MAP.Left.Nmaxima            = 16;           % Nmaxima 1 - 22 for n-of-m strategies
-MAP.Left.StimulationMode    = 'MP1+2';      % Electrode Configuration/Stimulation mode e.g., MP1, MP1+2, BP1, BP1+2, CG,....etc.
-MAP.Left.StimulationRate    = 125;          % Stimulation rate per electrode in number of pulses per second (pps)
-MAP.Left.PulseWidth         = 350;          % Pulse width in us
-MAP.Left.IPG                = 8;            % Inter-Phase Gap (IPG) fixed at 8us (could be variable in future)
-MAP.Left.Sensitivity        = 2.3;          % Microphone Sensitivity (adjustable in GUI)
-MAP.Left.Gain               = 25;           % Global gain for envelopes in dB - standard is 25dB (adjustable in GUI)
-MAP.Left.Volume             = 10;           % Volume Level on a scale of 0 to 10; 0 being lowest and 10 being highest (adjustable in GUI)
-MAP.Left.Q                  = 20;           % Q-factor for the compression function
-MAP.Left.BaseLevel          = 0.0156;       % Base Level
-MAP.Left.SaturationLevel    = 0.5859;       % Saturation Level
-MAP.Left.ChannelOrderType   = 'base-to-apex'; % Channel Stimulation Order type: 'base-to-apex' or 'apex-to-base'
-MAP.Left.FrequencyTable     = 'Default';    % Frequency assignment for each band "Default" or "Custom"
-MAP.Left.Window             = 'Hanning';     % Window type
+MAP.Left.ImplantType        = 'CI24RE';         % Implant chip type, e.g., CI24RE(CS/CA), CI24R, CI24M, CI22M, ST
+MAP.Left.SamplingFrequency  = 16000;            % Fixed
+MAP.Left.NumberOfChannels   = 22;               % 22 fixed for implants from Cochlear Ltd.
+MAP.Left.Strategy           = 'ACE';            % 'ACE' or 'CIS' or 'Custom'
+MAP.Left.Nmaxima            = 8;                % Nmaxima 1 - 22 for n-of-m strategies
+MAP.Left.StimulationMode    = 'MP1+2';          % Electrode Configuration/Stimulation mode e.g., MP1, MP1+2, BP1, BP1+2, CG,....etc.
+MAP.Left.StimulationRate    = 500;              % Stimulation rate per electrode in number of pulses per second (pps)
+MAP.Left.PulseWidth         = 25;               % Pulse width in us
+MAP.Left.IPG                = 8;                % Inter-Phase Gap (IPG) fixed at 8us (could be variable in future)
+MAP.Left.Sensitivity        = 2.3;              % Microphone Sensitivity (adjustable in GUI)
+MAP.Left.Gain               = 25;               % Global gain for envelopes in dB - standard is 25dB (adjustable in GUI)
+MAP.Left.Volume             = 10;               % Volume Level on a scale of 0 to 10; 0 being lowest and 10 being highest (adjustable in GUI)
+MAP.Left.Q                  = 20;               % Q-factor for the compression function
+MAP.Left.BaseLevel          = 0.0156;           % Base Level
+MAP.Left.SaturationLevel    = 0.5859;           % Saturation Level
+MAP.Left.ChannelOrderType   = 'base-to-apex';   % Channel Stimulation Order type: 'base-to-apex' or 'apex-to-base'
+MAP.Left.FrequencyTable     = 'Default';        % Frequency assignment for each band "Default" or "Custom"
+MAP.Left.Window             = 'Hanning';        % Window type
 MAP.Left.El_CF1_CF2_THR_MCL_Gain = [
   % El  F_Low   F_High  THR     MCL     Gain
     22  188     313     189     228     0.0
@@ -72,7 +72,7 @@ MAP.Left.Comments               = '';                                           
 %  remove this section if right side does not exist
 MAP.Right.ImplantType       = 'CI24RE';
 MAP.Right.SamplingFrequency = 16000;            % Fixed
-MAP.Right.NumberOfChannels  = 22;               % 22 fixed for imlants from Cochlear Ltd.
+MAP.Right.NumberOfChannels  = 22;               % 22 fixed for implants from Cochlear Ltd.
 MAP.Right.Strategy          = 'ACE';            % 'ACE' or 'CIS' or 'Custom'
 MAP.Right.Nmaxima           = 8;                % Nmaxima 1 - 22 for n-of-m strategies
 MAP.Right.StimulationMode   = 'MP1+2';          % Electrode Configuration/Stimulation mode e.g., MP1, MP1+2, BP1, BP1+2, CG,....etc.
@@ -84,10 +84,10 @@ MAP.Right.Gain              = 25;               % Global gain for envelopes in d
 MAP.Right.Volume            = 10;               % Volume Level on a scale of 0 to 10; 0 being lowest and 10 being highest (adjustable in GUI)
 MAP.Right.Q                 = 20;               % Q-factor for the compression function
 MAP.Right.BaseLevel         = 0.0156;           % Base Level
-MAP.Right.SaturationLevel   = 0.556;            % Saturation Level
+MAP.Right.SaturationLevel   = 0.5856;           % Saturation Level
 MAP.Right.ChannelOrderType  = 'base-to-apex';   % Channel Stimulation Order type: 'base-to-apex' or 'apex-to-base'
 MAP.Right.FrequencyTable    = 'Default';        % Frequency assignment for each band "Default" or "Custom"
-MAP.Right.Window            = 'Hanning'         % Window type
+MAP.Right.Window            = 'Hanning';        % Window type
 MAP.Right.El_CF1_CF2_THR_MCL_Gain = [
   % El  F_Low   F_High  THR     MCL     Gain
     22  188     313     100     200     0.0
