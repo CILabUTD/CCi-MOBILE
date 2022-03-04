@@ -40,6 +40,7 @@
             android:windowSoftInputMode="stateHidden">
         </activity>
         <activity android:name=".EnvironmentsActivity" />
+        <activity android:name=".MusicActivity" />
         <activity android:name=".TestingActivity" />
     </application>
 

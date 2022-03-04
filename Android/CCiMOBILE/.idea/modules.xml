@@ -3,8 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/CCiMOBILE.iml" filepath="$PROJECT_DIR$/CCiMOBILE.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/bubbleseekbar/bubbleseekbar.iml" filepath="$PROJECT_DIR$/bubbleseekbar/bubbleseekbar.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/CCiMOBILE.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/CCiMOBILE.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/bubbleseekbar/CCiMOBILE.bubbleseekbar.iml" filepath="$PROJECT_DIR$/.idea/modules/bubbleseekbar/CCiMOBILE.bubbleseekbar.iml" />
     </modules>
   </component>
 </project>

@@ -9,6 +9,9 @@
         android:id="@+id/menuEnvironments"
         android:title="@string/environments" />
     <item
+        android:id="@+id/menuMusic"
+        android:title="Music" />
+    <item
         android:id="@+id/moreInfo"
         android:title="How to Use"
         />
